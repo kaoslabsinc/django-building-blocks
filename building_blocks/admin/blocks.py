@@ -1,7 +1,11 @@
 from django.contrib import admin
 
 
-class HasUUIDAdminBlock(admin.ModelAdmin):
+class AdminBlock(admin.ModelAdmin):
+    pass
+
+
+class HasUUIDAdminBlock(AdminBlock):
     search_fields = ('uuid',)
     list_display = ('uuid',)
     list_display_shortcode = ('shortcode',)
