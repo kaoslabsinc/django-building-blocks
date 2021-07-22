@@ -1,6 +1,8 @@
 import uuid
 
-from sample.models import HasUUIDExample
+from django.utils.timezone import now
+
+from sample.models import HasUUIDExample, ArchivableHasUUID
 
 
 def test_HasUUID():
@@ -11,3 +13,27 @@ def test_HasUUID():
 
     assert has_uuid.uuid_str == '8f95b2d0-9fe9-4250-b134-bcf377e33f24'
     assert has_uuid.shortcode == '8f95b2d0'
+
+
+def test_Archivable_archive():
+    archivable = ArchivableHasUUID()
+
+    assert archivable.is_active
+    assert archivable.archive_status == 'active'
+
+    archivable.archive()
+
+    assert not archivable.is_active
+    assert archivable.archive_status == 'archived'
+
+
+def test_Archivable_restore():
+    archivable = ArchivableHasUUID(archived_at=now())
+
+    assert not archivable.is_active
+    assert archivable.archive_status == 'archived'
+
+    archivable.restore()
+
+    assert archivable.is_active
+    assert archivable.archive_status == 'active'
