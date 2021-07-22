@@ -21,15 +21,15 @@ pip install django-building-blocks
 
 ## Admin Block classes
 
-Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used
-to create your desired admin class. For an example check out `example/sample/admin.py:HasUUIDExampleAdmin`
+Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used to
+create your desired admin class. For an example check out `example/sample/admin.py:HasUUIDExampleAdmin`
 
 Available Admin Blocks:
+
 - `HasUUIDAdminBlock`
 - `ArchivableAdminBlock`
 - `PublishableAdminBlock`
 - `HasInitialsAdminBlock`
-
 
 ## Development and Testing
 
