@@ -4,7 +4,7 @@ import uuid
 import pytest
 from django.utils.timezone import now
 
-from building_blocks.enums import PublishingStage
+from building_blocks.models.enums import PublishingStage
 from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
 
 

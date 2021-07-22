@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.utils.timezone import now
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
-from ..abstracts import Archivable, Publishable
-from ..enums import PublishingStage
+from ..models.abstracts import Archivable, Publishable
+from ..models.enums import PublishingStage
 
 
 class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
