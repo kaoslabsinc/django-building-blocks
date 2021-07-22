@@ -9,11 +9,15 @@ database models
 pip install django-building-blocks
 ```
 
-## Abstract model classes available
+## Abstract model classes
 
 - `HasUUID`
 - `Archivable`
 - `Publishable`
+
+## Mixin model classes
+
+- `HasInitials`
 
 ## Admin Block classes
 
@@ -24,6 +28,7 @@ Available Admin Blocks:
 - `HasUUIDAdminBlock`
 - `ArchivableAdminBlock`
 - `PublishableAdminBlock`
+- `HasInitialsAdminBlock`
 
 
 ## Development and Testing
