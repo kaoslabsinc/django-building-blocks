@@ -1,6 +1,6 @@
 from django.db import models
 
-from building_blocks.abstracts import HasUUID, Archivable
+from building_blocks.abstracts import HasUUID, Archivable, Publishable
 
 
 class HasUUIDExample(
@@ -13,6 +13,14 @@ class HasUUIDExample(
 class ArchivableHasUUID(
     HasUUID,
     Archivable,
+    models.Model
+):
+    pass
+
+
+class PublishableHasUUID(
+    HasUUID,
+    Publishable,
     models.Model
 ):
     pass
