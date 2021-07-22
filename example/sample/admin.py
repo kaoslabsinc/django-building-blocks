@@ -1,8 +1,9 @@
 from django.contrib import admin
 
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
-from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock
-from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
+from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
+    HasInitialsAdminBlock
+from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample
 
 
 @admin.register(HasUUIDExample)
@@ -71,4 +72,20 @@ class PublishableHasUUIDExampleAdmin(
     fieldsets = (
         *HasUUIDAdminBlock.fieldsets,
         *PublishableAdminBlock.fieldsets,
+    )
+
+
+@admin.register(HasInitialsExample)
+class HasInitialsExampleAdmin(
+    admin.ModelAdmin
+):
+    list_display = (
+        'full_name',
+        *HasInitialsAdminBlock.list_display
+    )
+
+    readonly_fields = HasInitialsAdminBlock.readonly_fields
+    fieldsets = (
+        (None, {'fields': ('full_name',)}),
+        *HasInitialsAdminBlock.fieldsets,
     )
