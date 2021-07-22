@@ -11,13 +11,13 @@ pip install django-building-blocks
 
 ## Abstract model classes
 
-- `HasUUID`
-- `Archivable`
-- `Publishable`
+- [`HasUUID`](building_blocks/models/abstracts.py#L10)
+- [`Archivable`](building_blocks/models/abstracts.py#L25)
+- [`Publishable`](building_blocks/models/abstracts.py#L48)
 
 ## Mixin model classes
 
-- `HasInitials`
+- [`HasInitials`](building_blocks/models/mixins.py#L4)
 
 ## Admin Block classes
 
@@ -26,10 +26,10 @@ create your desired admin class. For an example check out `example/sample/admin.
 
 Available Admin Blocks:
 
-- `HasUUIDAdminBlock`
-- `ArchivableAdminBlock`
-- `PublishableAdminBlock`
-- `HasInitialsAdminBlock`
+- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py#L10)
+- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py#L25)
+- [`PublishableAdminBlock`](building_blocks/admin/blocks.py#L35)
+- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py#L45)
 
 ## Development and Testing
 
