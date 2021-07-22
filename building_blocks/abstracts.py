@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.timezone import now
 
 from .enums import PublishingStage
-from .querysets import ArchivableQueryset
+from .querysets import ArchivableQueryset, PublishableQueryset
 
 
 class HasUUID(models.Model):
@@ -74,3 +74,5 @@ class Publishable(models.Model):
         assert self.publishing_stage == PublishingStage.archived, "Can only restore items in archive"
         self.publishing_stage = PublishingStage.draft
         self.publishing_stage_changed_at = now()
+
+    objects = PublishableQueryset.as_manager()
