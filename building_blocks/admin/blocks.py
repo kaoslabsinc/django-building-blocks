@@ -18,3 +18,12 @@ class HasUUIDAdminBlock(AdminBlock):
     fieldsets_shortcode = (
         ("Identifiers", {'fields': ('shortcode',)}),
     )
+
+
+class ArchivableAdminBlock(admin.ModelAdmin):
+    list_display = ('archive_status',)
+
+    readonly_fields = ('archive_status', 'archived_at', 'is_active')
+    fieldsets = (
+        ("Management", {'fields': ('archive_status', 'archived_at',)}),
+    )
