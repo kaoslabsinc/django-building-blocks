@@ -24,7 +24,7 @@ class HasUUIDExampleAdmin(admin.ModelAdmin):
 
 
 @admin.register(ArchivableHasUUID)
-class ArchivableHasUUIDExampleAdmin(
+class ArchivableHasUUIDAdmin(
     ArchivableAdmin,
     admin.ModelAdmin
 ):
@@ -50,7 +50,7 @@ class ArchivableHasUUIDExampleAdmin(
 
 
 @admin.register(PublishableHasUUID)
-class PublishableHasUUIDExampleAdmin(
+class PublishableHasUUIDAdmin(
     PublishableAdmin,
     admin.ModelAdmin
 ):
