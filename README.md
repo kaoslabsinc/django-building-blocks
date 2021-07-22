@@ -1,6 +1,26 @@
 # Django Building Blocks
 
-Abstract Django base models (and model class factories) to act as building blocks for rapid development of Django database models
+Abstract Django base models (and model class factories) to act as building blocks for rapid development of Django
+database models
+
+## Quick start
+
+```shell
+pip install django-building-blocks
+```
+
+## Abstract model classes available
+
+- `HasUUID`
+
+## Admin Block classes
+
+Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used
+to create your desired admin class. For an example check out `example/sample/admin.py:HasUUIDExampleAdmin`
+
+Available Admin Blocks:
+- `HasUUIDAdminBlock`
+
 
 ## Development and Testing
 
