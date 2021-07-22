@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+
+graft docs
+
+graft building_blocks/static
+graft building_blocks/templates
+graft building_blocks/*/static
+graft building_blocks/*/templates
