@@ -1,8 +1,11 @@
+import datetime as dt
 import uuid
 
+import pytest
 from django.utils.timezone import now
 
-from sample.models import HasUUIDExample, ArchivableHasUUID
+from building_blocks.enums import PublishingStage
+from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
 
 
 def test_HasUUID():
@@ -37,3 +40,94 @@ def test_Archivable_restore():
 
     assert archivable.is_active
     assert archivable.archive_status == 'active'
+
+
+def test_Publishable_publish(freezer):
+    publishable = PublishableHasUUID()
+
+    assert not publishable.is_active
+    assert publishable.publishing_stage_changed_at is None
+
+    publishable.publish()
+
+    assert publishable.is_active
+    assert publishable.publishing_stage == PublishingStage.published
+    assert publishable.publishing_stage_changed_at == now()
+
+
+def test_Publishable_unpublish(freezer):
+    publishable = PublishableHasUUID(
+        publishing_stage=PublishingStage.published,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+
+    assert publishable.is_active
+
+    publishable.unpublish()
+
+    assert not publishable.is_active
+    assert publishable.publishing_stage == PublishingStage.draft
+    assert publishable.publishing_stage_changed_at == now()
+
+
+def test_Publishable_archive(freezer):
+    publishable = PublishableHasUUID(
+        publishing_stage=PublishingStage.published,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+
+    assert publishable.is_active
+
+    publishable.archive()
+
+    assert not publishable.is_active
+    assert publishable.publishing_stage == PublishingStage.archived
+    assert publishable.publishing_stage_changed_at == now()
+
+
+def test_Publishable_restore(freezer):
+    publishable = PublishableHasUUID(
+        publishing_stage=PublishingStage.archived,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+
+    assert not publishable.is_active
+
+    publishable.restore()
+
+    assert not publishable.is_active
+    assert publishable.publishing_stage == PublishingStage.draft
+    assert publishable.publishing_stage_changed_at == now()
+
+
+def test_Publishable_assertions():
+    draft = PublishableHasUUID(
+        publishing_stage=PublishingStage.draft,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+    published = PublishableHasUUID(
+        publishing_stage=PublishingStage.published,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+    archived = PublishableHasUUID(
+        publishing_stage=PublishingStage.archived,
+        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
+    )
+
+    # publish()
+    with pytest.raises(AssertionError):
+        published.publish()
+    with pytest.raises(AssertionError):
+        archived.publish()
+
+    # unpublish()
+    with pytest.raises(AssertionError):
+        draft.unpublish()
+    with pytest.raises(AssertionError):
+        archived.unpublish()
+
+    # restore()
+    with pytest.raises(AssertionError):
+        draft.restore()
+    with pytest.raises(AssertionError):
+        published.restore()

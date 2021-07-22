@@ -13,6 +13,7 @@ pip install django-building-blocks
 
 - `HasUUID`
 - `Archivable`
+- `Publishable`
 
 ## Admin Block classes
 
@@ -22,6 +23,7 @@ to create your desired admin class. For an example check out `example/sample/adm
 Available Admin Blocks:
 - `HasUUIDAdminBlock`
 - `ArchivableAdminBlock`
+- `PublishableAdminBlock`
 
 
 ## Development and Testing

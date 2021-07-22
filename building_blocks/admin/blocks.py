@@ -30,3 +30,13 @@ class ArchivableAdminBlock(admin.ModelAdmin):
     fieldsets = (
         ("Management", {'fields': ('archive_status', 'archived_at',)}),
     )
+
+
+class PublishableAdminBlock(admin.ModelAdmin):
+    list_display = ('publishing_stage',)
+    list_filter = ('publishing_stage',)
+
+    readonly_fields = ('publishing_stage', 'publishing_stage_changed_at',)
+    fieldsets = (
+        ("Publishing", {'fields': ('publishing_stage', 'publishing_stage_changed_at',)}),
+    )
