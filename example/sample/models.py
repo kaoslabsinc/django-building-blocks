@@ -1,6 +1,7 @@
 from django.db import models
 
 from building_blocks.abstracts import HasUUID, Archivable, Publishable
+from building_blocks.mixins import HasInitials
 
 
 class HasUUIDExample(
@@ -24,3 +25,12 @@ class PublishableHasUUID(
     models.Model
 ):
     pass
+
+
+class HasInitialsExample(
+    HasInitials,
+    models.Model
+):
+    take_initials_from = 'full_name'
+
+    full_name = models.CharField(max_length=100)

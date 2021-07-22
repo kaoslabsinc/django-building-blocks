@@ -40,3 +40,12 @@ class PublishableAdminBlock(admin.ModelAdmin):
     fieldsets = (
         ("Publishing", {'fields': ('publishing_stage', 'publishing_stage_changed_at',)}),
     )
+
+
+class HasInitialsAdminBlock(AdminBlock):
+    list_display = ('initials',)
+
+    readonly_fields = ('initials',)
+    fieldsets = (
+        ("Misc.", {'fields': ('initials',)}),
+    )
