@@ -12,6 +12,7 @@ pip install django-building-blocks
 ## Abstract model classes available
 
 - `HasUUID`
+- `Archivable`
 
 ## Admin Block classes
 
@@ -20,6 +21,7 @@ to create your desired admin class. For an example check out `example/sample/adm
 
 Available Admin Blocks:
 - `HasUUIDAdminBlock`
+- `ArchivableAdminBlock`
 
 
 ## Development and Testing
