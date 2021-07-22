@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q
 
-from building_blocks.enums import PublishingStage
+from .enums import PublishingStage
 
 
 class ArchivableQueryset(models.QuerySet):
@@ -12,7 +12,6 @@ class ArchivableQueryset(models.QuerySet):
 
     def archived(self):
         return self.filter(~ArchivableQueryset._Q_IS_ACTIVE)
-
 
 
 class PublishableQueryset(models.QuerySet):

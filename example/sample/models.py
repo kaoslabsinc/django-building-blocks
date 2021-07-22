@@ -1,7 +1,7 @@
 from django.db import models
 
-from building_blocks.abstracts import HasUUID, Archivable, Publishable
-from building_blocks.mixins import HasInitials
+from building_blocks.models import HasInitials
+from building_blocks.models import HasUUID, Archivable, Publishable
 
 
 class HasUUIDExample(

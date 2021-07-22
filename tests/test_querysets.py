@@ -3,7 +3,7 @@ import datetime as dt
 import pytest
 from django.utils.timezone import now
 
-from building_blocks.enums import PublishingStage
+from building_blocks.models.enums import PublishingStage
 from sample.models import ArchivableHasUUID, PublishableHasUUID
 
 pytestmark = pytest.mark.django_db
