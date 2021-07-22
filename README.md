@@ -9,17 +9,19 @@ database models
 pip install django-building-blocks
 ```
 
-## Abstract model classes
+## Classes provided
+
+### Mixin model classes
+
+- [`HasInitials`](building_blocks/models/mixins.py#L4)
+
+### Abstract model classes
 
 - [`HasUUID`](building_blocks/models/abstracts.py#L10)
 - [`Archivable`](building_blocks/models/abstracts.py#L25)
 - [`Publishable`](building_blocks/models/abstracts.py#L48)
 
-## Mixin model classes
-
-- [`HasInitials`](building_blocks/models/mixins.py#L4)
-
-## Admin Block classes
+### Admin Block classes
 
 Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used to
 create your desired admin class. For an example check out `example/sample/admin.py:HasUUIDExampleAdmin`
