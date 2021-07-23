@@ -1,4 +1,4 @@
-import re
+from building_blocks.utils import create_initials
 
 
 class HasInitials:
@@ -8,5 +8,4 @@ class HasInitials:
     def initials(self):
         if self.take_initials_from is None:
             raise AttributeError(f"take_initials_from not defined on {self.__class__}")
-        return "".join(
-            s[0] if s else '' for s in re.split(r"[\W_]+", getattr(self, self.take_initials_from))).upper()
+        return create_initials(getattr(self, self.take_initials_from))
