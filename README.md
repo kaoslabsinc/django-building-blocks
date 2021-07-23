@@ -33,10 +33,11 @@ create your desired admin class. For example:
 
 @admin.register(ArchivableHasUUID)
 class ArchivableHasUUIDAdmin(
+    ArchivableAdmin,  # Inheritable admin to add common functionality. More on this later. 
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasUUIDAdminBlock.search_fields,
+        *HasUUIDAdminBlock.search_fields,  # AdminBlock to assist in shaping the admin
     )
     list_display = (
         *HasUUIDAdminBlock.list_display,
