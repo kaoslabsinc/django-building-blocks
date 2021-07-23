@@ -11,6 +11,8 @@ pip install django-building-blocks
 
 ## Classes provided
 
+Check the docstring under each class for their documentation.
+
 ### Mixin model classes
 
 - [`HasInitials`](building_blocks/models/mixins.py#L4)
