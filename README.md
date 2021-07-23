@@ -33,7 +33,6 @@ create your desired admin class. For example:
 
 @admin.register(ArchivableHasUUID)
 class ArchivableHasUUIDAdmin(
-    ArchivableAdmin,
     admin.ModelAdmin
 ):
     search_fields = (
