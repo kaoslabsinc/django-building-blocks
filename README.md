@@ -69,6 +69,18 @@ Available Admin Blocks:
 - [`PublishableAdminBlock`](building_blocks/admin/blocks.py#L35)
 - [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py#L45)
 
+### Inheritable Admin classes
+
+Unlike Admin Blocks the following classes are meant to be inherited by your admin class. The usually provide
+functionality such as common admin actions to your admin.
+
+- [`ArchivableAdmin`](building_blocks/admin/admin.py#L9)
+- [`PublishableAdmin`](building_blocks/admin/admin.py#L37)
+
+Please note that the majority of the above classes
+use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
+`admin:change` pages. To enable this functionality add `'django_object_actions'` to your `INSTALLED_APPS`.
+
 ## Development and Testing
 
 ### IDE Setup
