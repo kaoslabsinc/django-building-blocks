@@ -3,7 +3,7 @@ from django.contrib import admin
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
     HasInitialsAdminBlock
-from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample
+from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample
 
 
 @admin.register(HasUUIDExample)
