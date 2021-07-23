@@ -9,27 +9,65 @@ database models
 pip install django-building-blocks
 ```
 
-## Abstract model classes
+## Classes provided
 
-- `HasUUID`
-- `Archivable`
-- `Publishable`
+Check the docstring under each class for their documentation.
 
-## Mixin model classes
+### Mixin model classes
 
-- `HasInitials`
+- [`HasInitials`](building_blocks/models/mixins.py#L4)
 
-## Admin Block classes
+### Abstract model classes
 
-Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used
-to create your desired admin class. For an example check out `example/sample/admin.py:HasUUIDExampleAdmin`
+- [`HasUUID`](building_blocks/models/abstracts.py#L10)
+- [`Archivable`](building_blocks/models/abstracts.py#L25)
+- [`Publishable`](building_blocks/models/abstracts.py#L48)
+
+### Admin Block classes
+
+Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used to
+create your desired admin class. For example:
+
+```python
+# example/sample/admin.py
+
+@admin.register(ArchivableHasUUID)
+class ArchivableHasUUIDAdmin(
+    ArchivableAdmin,
+    admin.ModelAdmin
+):
+    search_fields = (
+        *HasUUIDAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasUUIDAdminBlock.list_display,
+        *ArchivableAdminBlock.list_display,
+    )
+    list_filter = (
+        *ArchivableAdminBlock.list_filter,
+    )
+
+    readonly_fields = (
+        *HasUUIDAdminBlock.readonly_fields,
+        *ArchivableAdminBlock.readonly_fields,
+    )
+    fieldsets = (
+        *HasUUIDAdminBlock.fieldsets,
+        *ArchivableAdminBlock.fieldsets,
+    )
+```
+
+As its name suggests, the model `ArchivableHasUUID` inherits from both `Archivable` and `HasUUID` and thus has fields
+form both. With admin blocks you can create `ArchivableHasUUIDAdmin` without mentioning individual fields from each
+class, adding to the conciseness of your code. It'll also make it hard to miss a field since the AdminBlock has the
+default and recommended fields for each admin setting.
 
 Available Admin Blocks:
-- `HasUUIDAdminBlock`
-- `ArchivableAdminBlock`
-- `PublishableAdminBlock`
-- `HasInitialsAdminBlock`
 
+- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py#L10)
+- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py#L25)
+- [`PublishableAdminBlock`](building_blocks/admin/blocks.py#L35)
+- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py#L45)
 
 ## Development and Testing
 

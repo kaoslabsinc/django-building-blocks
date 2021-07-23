@@ -8,6 +8,9 @@ from .querysets import ArchivableQueryset, PublishableQueryset
 
 
 class HasUUID(models.Model):
+    """
+    Add a unique UUID field to the model
+    """
     class Meta:
         abstract = True
 
@@ -23,6 +26,10 @@ class HasUUID(models.Model):
 
 
 class Archivable(models.Model):
+    """
+    Make the model be archivable, ie objects can be archived to go out of rotation without deleting them from the
+    database
+    """
     class Meta:
         abstract = True
 
@@ -46,6 +53,9 @@ class Archivable(models.Model):
 
 
 class Publishable(models.Model):
+    """
+    Make the model have 3 stages of publication. Draft, Published and Archived.
+    """
     class Meta:
         abstract = True
 

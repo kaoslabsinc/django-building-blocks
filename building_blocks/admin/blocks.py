@@ -22,7 +22,7 @@ class HasUUIDAdminBlock(AdminBlock):
     )
 
 
-class ArchivableAdminBlock(admin.ModelAdmin):
+class ArchivableAdminBlock(AdminBlock):
     list_display = ('archive_status',)
     list_filter = (ArchiveStatusFilter,)
 
@@ -32,7 +32,7 @@ class ArchivableAdminBlock(admin.ModelAdmin):
     )
 
 
-class PublishableAdminBlock(admin.ModelAdmin):
+class PublishableAdminBlock(AdminBlock):
     list_display = ('publishing_stage',)
     list_filter = ('publishing_stage',)
 
