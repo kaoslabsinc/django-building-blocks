@@ -40,12 +40,6 @@ class HasEmailExampleAdmin(admin.ModelAdmin):
 
 @admin.register(HasDescriptionExample, HasRequiredDescriptionExample)
 class HasDescriptionExampleAdmin(admin.ModelAdmin):
-    search_fields = (
-        *HasDescriptionAdminBlock.search_fields,
-    )
-    list_display = (
-        *HasDescriptionAdminBlock.list_display,
-    )
     fields = (
         *HasDescriptionAdminBlock.fields,
     )
