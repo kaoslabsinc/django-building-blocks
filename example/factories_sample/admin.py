@@ -1,7 +1,15 @@
 from django.contrib import admin
 
-from building_blocks.admin.blocks import HasNameAdminBlock, HasEmailAdminBlock
-from factories_sample.models import HasNameExample, HasOptionalNameExample, HasEmailExample, HasOptionalEmailExample
+from building_blocks.admin.blocks import (
+    HasNameAdminBlock,
+    HasEmailAdminBlock,
+    HasDescriptionAdminBlock,
+)
+from factories_sample.models import (
+    HasNameExample, HasOptionalNameExample,
+    HasEmailExample, HasOptionalEmailExample,
+    HasDescriptionExample, HasRequiredDescriptionExample,
+)
 
 
 @admin.register(HasNameExample, HasOptionalNameExample)
@@ -27,5 +35,18 @@ class HasEmailExampleAdmin(admin.ModelAdmin):
     )
     fields = (
         *HasEmailAdminBlock.fields,
+    )
+
+
+@admin.register(HasDescriptionExample, HasRequiredDescriptionExample)
+class HasDescriptionExampleAdmin(admin.ModelAdmin):
+    search_fields = (
+        *HasDescriptionAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasDescriptionAdminBlock.list_display,
+    )
+    fields = (
+        *HasDescriptionAdminBlock.fields,
     )
 
