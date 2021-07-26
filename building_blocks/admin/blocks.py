@@ -77,3 +77,10 @@ class HasIconAdminBlock(admin.ModelAdmin):
     fieldsets = (
         ("Media", {'fields': ('icon',)}),
     )
+
+
+class HasUserAdminBlock(admin.ModelAdmin):
+    search_fields = ('user__username',)
+    list_display = ('user',)
+
+    autocomplete_fields = ('user',)
