@@ -49,3 +49,31 @@ class HasInitialsAdminBlock(AdminBlock):
     fieldsets = (
         ("Misc.", {'fields': ('initials',)}),
     )
+
+
+class HasNameAdminBlock(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
+    fields = ('name',)
+
+
+class HasEmailAdminBlock(admin.ModelAdmin):
+    search_fields = ('email',)
+    list_display = ('email',)
+    fields = ('email',)
+
+
+class HasDescriptionAdminBlock(admin.ModelAdmin):
+    fields = ('description',)
+
+
+class HasCoverPhotoAdminBlock(admin.ModelAdmin):
+    fieldsets = (
+        ("Media", {'fields': ('cover_photo',)}),
+    )
+
+
+class HasIconAdminBlock(admin.ModelAdmin):
+    fieldsets = (
+        ("Media", {'fields': ('icon',)}),
+    )
