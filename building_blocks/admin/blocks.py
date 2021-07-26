@@ -65,3 +65,9 @@ class HasEmailAdminBlock(admin.ModelAdmin):
 
 class HasDescriptionAdminBlock(admin.ModelAdmin):
     fields = ('description',)
+
+
+class HasCoverPhotoAdminBlock(admin.ModelAdmin):
+    fieldsets = (
+        ("Media", {'fields': ('cover_photo',)}),
+    )

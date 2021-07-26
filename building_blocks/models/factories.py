@@ -44,3 +44,15 @@ class HasDescriptionFactory(AbstractModelFactory):
             description = models.TextField(blank=not required)
 
         return HasDescription
+
+
+class HasCoverPhotoFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(upload_to='', required=False):
+        class HasCoverPhoto(models.Model):
+            class Meta:
+                abstract = True
+
+            cover_photo = models.ImageField(upload_to=upload_to, blank=not required)
+
+        return HasCoverPhoto
