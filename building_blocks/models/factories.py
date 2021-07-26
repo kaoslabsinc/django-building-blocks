@@ -20,3 +20,15 @@ class HasNameFactory(AbstractModelFactory):
                 return self.name if self.name else super(HasName, self).__str__()
 
         return HasName
+
+
+class HasEmailFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(optional=False):
+        class HasEmail(models.Model):
+            class Meta:
+                abstract = True
+
+            email = models.EmailField(blank=optional)
+
+        return HasEmail
