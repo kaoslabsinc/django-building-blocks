@@ -49,3 +49,9 @@ class HasInitialsAdminBlock(AdminBlock):
     fieldsets = (
         ("Misc.", {'fields': ('initials',)}),
     )
+
+
+class HasNameAdminBlock(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
+    fields = ('name',)
