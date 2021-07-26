@@ -5,7 +5,7 @@ from factories_sample.models import HasNameExample, HasOptionalNameExample
 
 
 @admin.register(HasNameExample, HasOptionalNameExample)
-class HasUUIDExampleAdmin(admin.ModelAdmin):
+class HasNameExampleAdmin(admin.ModelAdmin):
     search_fields = (
         *HasNameAdminBlock.search_fields,
     )
