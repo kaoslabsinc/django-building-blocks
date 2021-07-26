@@ -71,3 +71,9 @@ class HasCoverPhotoAdminBlock(admin.ModelAdmin):
     fieldsets = (
         ("Media", {'fields': ('cover_photo',)}),
     )
+
+
+class HasIconAdminBlock(admin.ModelAdmin):
+    fieldsets = (
+        ("Media", {'fields': ('icon',)}),
+    )

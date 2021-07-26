@@ -56,3 +56,15 @@ class HasCoverPhotoFactory(AbstractModelFactory):
             cover_photo = models.ImageField(upload_to=upload_to, blank=not required)
 
         return HasCoverPhoto
+
+
+class HasIconFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(upload_to='', required=False):
+        class HasIcon(models.Model):
+            class Meta:
+                abstract = True
+
+            icon = models.ImageField(upload_to=upload_to, blank=not required)
+
+        return HasIcon
