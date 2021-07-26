@@ -5,12 +5,14 @@ from building_blocks.admin.blocks import (
     HasEmailAdminBlock,
     HasDescriptionAdminBlock,
     HasCoverPhotoAdminBlock,
+    HasIconAdminBlock,
 )
 from factories_sample.models import (
     HasNameExample, HasOptionalNameExample,
     HasEmailExample, HasOptionalEmailExample,
     HasDescriptionExample, HasRequiredDescriptionExample,
     HasCoverPhotoExample, HasRequiredCoverPhotoExample,
+    HasIconExample, HasRequiredIconExample,
 )
 
 
@@ -51,4 +53,11 @@ class HasDescriptionExampleAdmin(admin.ModelAdmin):
 class HasCoverPhotoExampleAdmin(admin.ModelAdmin):
     fieldsets = (
         *HasCoverPhotoAdminBlock.fieldsets,
+    )
+
+
+@admin.register(HasIconExample, HasRequiredIconExample)
+class HasIconExampleAdmin(admin.ModelAdmin):
+    fieldsets = (
+        *HasIconAdminBlock.fieldsets,
     )

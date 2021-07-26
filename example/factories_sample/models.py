@@ -1,7 +1,7 @@
 from django.db import models
 
 from building_blocks.models.factories import HasNameFactory, HasEmailFactory, HasDescriptionFactory, \
-    HasCoverPhotoFactory
+    HasCoverPhotoFactory, HasIconFactory
 
 
 class HasNameExample(
@@ -55,6 +55,20 @@ class HasCoverPhotoExample(
 
 class HasRequiredCoverPhotoExample(
     HasCoverPhotoFactory.as_abstract_model(required=True),
+    models.Model
+):
+    pass
+
+
+class HasIconExample(
+    HasIconFactory.as_abstract_model(),
+    models.Model
+):
+    pass
+
+
+class HasRequiredIconExample(
+    HasIconFactory.as_abstract_model(required=True),
     models.Model
 ):
     pass
