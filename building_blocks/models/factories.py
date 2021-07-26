@@ -32,3 +32,15 @@ class HasEmailFactory(AbstractModelFactory):
             email = models.EmailField(blank=optional)
 
         return HasEmail
+
+
+class HasDescriptionFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(required=False):
+        class HasDescription(models.Model):
+            class Meta:
+                abstract = True
+
+            description = models.TextField(blank=not required)
+
+        return HasDescription

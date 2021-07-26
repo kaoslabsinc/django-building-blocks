@@ -61,3 +61,7 @@ class HasEmailAdminBlock(admin.ModelAdmin):
     search_fields = ('email',)
     list_display = ('email',)
     fields = ('email',)
+
+
+class HasDescriptionAdminBlock(admin.ModelAdmin):
+    fields = ('description',)
