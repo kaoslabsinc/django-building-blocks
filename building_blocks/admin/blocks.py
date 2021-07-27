@@ -84,6 +84,7 @@ class HasUserAdminBlock(AdminBlock):
     list_display = ('user',)
 
     autocomplete_fields = ('user',)
+    fields = ('user',)
 
 
 class HasAutoSlugAdminBlock(AdminBlock):
