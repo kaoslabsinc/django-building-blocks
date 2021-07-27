@@ -1,4 +1,9 @@
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.text import slugify
+
+from .utils import generate_field_kwargs
 
 
 class AbstractModelFactory:
@@ -68,3 +73,74 @@ class HasIconFactory(AbstractModelFactory):
             icon = models.ImageField(upload_to=upload_to, blank=not required)
 
         return HasIcon
+
+
+User = get_user_model()
+
+
+class HasUserFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(related_name, one_to_one=False, optional=False):
+        user_field_cls = models.OneToOneField if one_to_one else models.ForeignKey
+
+        class HasUser(models.Model):
+            class Meta:
+                abstract = True
+
+            user = user_field_cls(User, on_delete=models.PROTECT,
+                                  related_name=related_name,
+                                  **generate_field_kwargs(optional_null=optional))
+
+        return HasUser
+
+
+class HasAutoCodeFactory(AbstractModelFactory):
+    @staticmethod
+    def generate_code(instance, auto_code_field, source_field):
+        generate_func = getattr(instance, 'generate_' + auto_code_field, None)
+        if generate_func:
+            return generate_func()
+        else:
+            return slugify(getattr(instance, source_field))
+
+    @staticmethod
+    def as_abstract_model(auto_code_field, source_field=None):
+        class HasAutoCode(models.Model):
+            class Meta:
+                abstract = True
+
+            def set_auto_fields(self):
+                super_call = getattr(super(HasAutoCode, self), 'set_auto_fields', None)
+                if super_call:
+                    super_call()
+                if not getattr(self, auto_code_field, None):
+                    code = HasAutoCodeFactory.generate_code(self, auto_code_field, source_field)
+                    if type(self)._default_manager.filter(**{auto_code_field: code}).exists():
+                        raise ValidationError(
+                            f"{type(self)._meta.verbose_name.capitalize()} with this {auto_code_field} already exists")
+                    setattr(self, auto_code_field, code)
+
+            def clean(self):
+                self.set_auto_fields()
+                super(HasAutoCode, self).clean()
+
+            def save(self, *args, **kwargs):
+                self.set_auto_fields()
+                super(HasAutoCode, self).save(*args, **kwargs)
+
+        return HasAutoCode
+
+
+class HasAutoSlugFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(source_field=None):
+        class HasAutoSlug(
+            HasAutoCodeFactory.as_abstract_model('slug', source_field),
+            models.Model
+        ):
+            class Meta:
+                abstract = True
+
+            slug = models.SlugField(max_length=255, unique=True, editable=False)
+
+        return HasAutoSlug

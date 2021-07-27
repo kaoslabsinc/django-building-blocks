@@ -51,29 +51,45 @@ class HasInitialsAdminBlock(AdminBlock):
     )
 
 
-class HasNameAdminBlock(admin.ModelAdmin):
+class HasNameAdminBlock(AdminBlock):
     search_fields = ('name',)
     list_display = ('name',)
     fields = ('name',)
 
 
-class HasEmailAdminBlock(admin.ModelAdmin):
+class HasEmailAdminBlock(AdminBlock):
     search_fields = ('email',)
     list_display = ('email',)
     fields = ('email',)
 
 
-class HasDescriptionAdminBlock(admin.ModelAdmin):
+class HasDescriptionAdminBlock(AdminBlock):
     fields = ('description',)
 
 
-class HasCoverPhotoAdminBlock(admin.ModelAdmin):
+class HasCoverPhotoAdminBlock(AdminBlock):
     fieldsets = (
         ("Media", {'fields': ('cover_photo',)}),
     )
 
 
-class HasIconAdminBlock(admin.ModelAdmin):
+class HasIconAdminBlock(AdminBlock):
     fieldsets = (
         ("Media", {'fields': ('icon',)}),
+    )
+
+
+class HasUserAdminBlock(AdminBlock):
+    search_fields = ('user__username',)
+    list_display = ('user',)
+
+    autocomplete_fields = ('user',)
+
+
+class HasAutoSlugAdminBlock(AdminBlock):
+    search_fields = ('slug',)
+    list_display = ('slug',)
+    readonly_fields = ('slug',)
+    fieldsets = (
+        ("Identifiers", {'fields': ('slug',)}),
     )

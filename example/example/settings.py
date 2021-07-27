@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'sample',
     'factories_sample',
+    'complex_factories_sample',
 ]
 
 MIDDLEWARE = [
