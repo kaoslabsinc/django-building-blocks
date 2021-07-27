@@ -2,7 +2,7 @@ import hashlib
 
 from django.db import models
 
-from building_blocks.models.factories import HasUserFactory, HasNameFactory, HasAutoCodeFactory
+from building_blocks.models.factories import HasUserFactory, HasNameFactory, HasAutoCodeFactory, HasAutoSlugFactory
 
 
 class HasUserExample(
@@ -42,3 +42,11 @@ class HasAutoCodeGenerateFunctionExample(
 
     def generate_code(self):
         return hashlib.md5(self.name.encode()).hexdigest()
+
+
+class HasAutoSlugExample(
+    HasNameFactory.as_abstract_model(),
+    HasAutoSlugFactory.as_abstract_model(source_field='name'),
+    models.Model
+):
+    pass
