@@ -56,7 +56,7 @@ class HasNameAdminBlock(AdminBlock):
     list_display = ('name',)
     fields = ('name',)
     fieldsets = (
-        (None, {'fields': fields})
+        (None, {'fields': fields}),
     )
 
 
@@ -65,14 +65,14 @@ class HasEmailAdminBlock(AdminBlock):
     list_display = ('email',)
     fields = ('email',)
     fieldsets = (
-        (None, {'fields': fields})
+        (None, {'fields': fields}),
     )
 
 
 class HasDescriptionAdminBlock(AdminBlock):
     fields = ('description',)
     fieldsets = (
-        (None, {'fields': fields})
+        (None, {'fields': fields}),
     )
 
 
@@ -95,7 +95,7 @@ class HasUserAdminBlock(AdminBlock):
     autocomplete_fields = ('user',)
     fields = ('user',)
     fieldsets = (
-        (None, {'fields': fields})
+        (None, {'fields': fields}),
     )
 
 
