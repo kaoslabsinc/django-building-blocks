@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
+from .mixins import HasAutoFields
 from .utils import generate_field_kwargs
 
 
@@ -110,28 +111,18 @@ class HasAutoCodeFactory(AbstractModelFactory):
 
     @staticmethod
     def as_abstract_model(auto_code_field, source_field=None):
-        class HasAutoCode(models.Model):
+        class HasAutoCode(HasAutoFields, models.Model):
             class Meta:
                 abstract = True
 
             def set_auto_fields(self):
-                super_call = getattr(super(HasAutoCode, self), 'set_auto_fields', None)
-                if super_call:
-                    super_call()
+                super(HasAutoCode, self).set_auto_fields()
                 if not getattr(self, auto_code_field, None):
                     code = HasAutoCodeFactory.generate_code(self, auto_code_field, source_field)
                     if type(self)._default_manager.filter(**{auto_code_field: code}).exists():
                         raise ValidationError(
                             f"{type(self)._meta.verbose_name.capitalize()} with this {auto_code_field} already exists")
                     setattr(self, auto_code_field, code)
-
-            def clean(self):
-                self.set_auto_fields()
-                super(HasAutoCode, self).clean()
-
-            def save(self, *args, **kwargs):
-                self.set_auto_fields()
-                super(HasAutoCode, self).save(*args, **kwargs)
 
         return HasAutoCode
 
