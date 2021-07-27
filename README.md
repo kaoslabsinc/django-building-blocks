@@ -119,7 +119,7 @@ Abstract model factories provided:
 - [`HasAutoSlugFactory`](building_blocks/models/factories.py)
 
 You can create your own abstract model factory by inheriting
-from `building_blocks.models.factories.AbstractModelFactory`. Check some of the implementations for an example. 
+from `building_blocks.models.factories.AbstractModelFactory`. Check some of the implementations for an example.
 
 ### Mixin model classes
 
