@@ -188,7 +188,8 @@ functionality such as common admin actions to your admin.
 
 Please note that the majority of the inheritable admins
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
-`admin:change` pages. To enable this functionality add `'django_object_actions'` to your `INSTALLED_APPS`.
+`admin:change` pages. To enable this functionality add `'django_object_actions'` to your `INSTALLED_APPS` so your
+project can find the templates from `django_object_actions` which are used in rendering the buttons for the actions.
 
 ## Development and Testing
 
