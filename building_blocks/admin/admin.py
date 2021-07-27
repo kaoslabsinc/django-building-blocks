@@ -72,6 +72,10 @@ class PublishableAdmin(DjangoObjectActions, admin.ModelAdmin):
 
 
 class HasUserAdmin(admin.ModelAdmin):
+    """
+    Limit access to objects who aren't 'owned' by the user (obj.user != request.user).
+    The user needs to be either the owner or have the `see_all` permission on the model.
+    """
     default_see_all_perm_codename = 'see_all'
 
     def has_see_all_permission(self, request):
