@@ -72,7 +72,9 @@ standard way. For example in the case of `Publishable`, you would probably like 
 in the `list_display`. Instead of having to remember to include both fields in all your admins, you can just include the
 Admin Block in the way showed and have the fields show up in the list table for all the inheritors of `Publishable`.
 
-## Abstract models and Abstract model factories
+## Details and classes provided
+
+Note: Check the docstring under each class for their documentation.
 
 ### Abstract models
 
@@ -91,13 +93,30 @@ and `StatusUpdate` would get updated with the new pipeline.
 
 `django-building-blocks` provides a number of such abstract models:
 
-- [`HasUUID`](building_blocks/models/abstracts.py#L10)
-- [`Archivable`](building_blocks/models/abstracts.py#L25)
-- [`Publishable`](building_blocks/models/abstracts.py#L48)
+- [`HasUUID`](building_blocks/models/abstracts.py)
+- [`Archivable`](building_blocks/models/abstracts.py)
+- [`Publishable`](building_blocks/models/abstracts.py)
 
-## Classes provided
+### Abstract model factories
 
-Check the docstring under each class for their documentation.
+Abstract model factories enable you to create abstract models on the fly. Abstract model factories enable you to modify
+the inherited fields dynamically from the same base class. For example, you might have a model that will have an `email`
+field. You can use `HasEmailFactory.as_abstract_model()` that returns an abstract model that can be inherited from. Now
+say you have another model that also has a email, but the email here is an optional field (`blank=None`). Instead of
+creating a whole new abstract model (like `HasOptionalEmail`), you can inherit
+from `HasEmailFactory.as_abstract_model(optional=True)` which will return an abstract model with the same `email` field,
+but this time the `email` field is optional.
+
+Abstract model factories provided:
+
+- [`HasNameFactory`](building_blocks/models/factories.py)
+- [`HasEmailFactory`](building_blocks/models/factories.py)
+- [`HasDescriptionFactory`](building_blocks/models/factories.py)
+- [`HasCoverPhotoFactory`](building_blocks/models/factories.py)
+- [`HasIconFactory`](building_blocks/models/factories.py)
+- [`HasUserFactory`](building_blocks/models/factories.py)
+- [`HasAutoCodeFactory`](building_blocks/models/factories.py)
+- [`HasAutoSlugFactory`](building_blocks/models/factories.py)
 
 ### Mixin model classes
 
