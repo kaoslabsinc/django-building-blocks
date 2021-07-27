@@ -12,6 +12,12 @@ class AbstractModelFactory:
     def as_abstract_model(**kwargs):
         raise NotImplementedError
 
+    @staticmethod
+    def _get_fk_params(one_to_one, optional, on_delete):
+        fk_field_cls = models.OneToOneField if one_to_one else models.ForeignKey
+        on_delete = on_delete or (models.PROTECT if not optional else models.SET_NULL)
+        return fk_field_cls, on_delete
+
 
 class HasNameFactory(AbstractModelFactory):
     @staticmethod
@@ -80,8 +86,7 @@ class HasUserFactory(AbstractModelFactory):
     @staticmethod
     def as_abstract_model(related_name=None, one_to_one=False, optional=False, on_delete=None):
         User = get_user_model()
-        user_field_cls = models.OneToOneField if one_to_one else models.ForeignKey
-        on_delete = on_delete or (models.PROTECT if not optional else models.SET_NULL)
+        user_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
 
         class HasUser(models.Model):
             class Meta:
