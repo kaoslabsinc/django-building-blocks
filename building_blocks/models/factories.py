@@ -77,16 +77,16 @@ class HasIconFactory(AbstractModelFactory):
 
 class HasUserFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(related_name, one_to_one=False, optional=False):
+    def as_abstract_model(related_name=None, one_to_one=False, optional=False, on_delete=None):
         User = get_user_model()
         user_field_cls = models.OneToOneField if one_to_one else models.ForeignKey
+        on_delete = on_delete or (models.PROTECT if not optional else models.SET_NULL)
 
         class HasUser(models.Model):
             class Meta:
                 abstract = True
 
-            user = user_field_cls(User, on_delete=models.PROTECT,
-                                  related_name=related_name,
+            user = user_field_cls(User, on_delete=on_delete, related_name=related_name,
                                   **generate_field_kwargs(optional_null=optional))
 
         return HasUser
