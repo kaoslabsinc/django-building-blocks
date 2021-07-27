@@ -1,6 +1,8 @@
+import hashlib
+
 from django.db import models
 
-from building_blocks.models.factories import HasUserFactory
+from building_blocks.models.factories import HasUserFactory, HasNameFactory, HasAutoCodeFactory
 
 
 class HasUserExample(
@@ -29,3 +31,14 @@ class HasOptionalOneToOneUserExample(
     models.Model
 ):
     pass
+
+
+class HasAutoCodeGenerateFunctionExample(
+    HasNameFactory.as_abstract_model(),
+    HasAutoCodeFactory.as_abstract_model('code'),
+    models.Model
+):
+    code = models.CharField(max_length=255)
+
+    def generate_code(self):
+        return hashlib.md5(self.name.encode()).hexdigest()

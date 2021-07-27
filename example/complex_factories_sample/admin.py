@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 from building_blocks.admin.blocks import (
-    HasUserAdminBlock,
+    HasUserAdminBlock, HasNameAdminBlock,
 )
 from complex_factories_sample.models import (
     HasUserExample, HasOptionalUserExample, HasOneToOneUserExample, HasOptionalOneToOneUserExample,
+    HasAutoCodeGenerateFunctionExample,
 )
 
 
@@ -18,4 +19,22 @@ class HasUserExampleAdmin(admin.ModelAdmin):
     )
     autocomplete_fields = (
         *HasUserAdminBlock.autocomplete_fields,
+    )
+
+
+@admin.register(HasAutoCodeGenerateFunctionExample)
+class HasAutoCodeGenerateFunctionExampleAdmin(admin.ModelAdmin):
+    search_fields = (
+        *HasNameAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasNameAdminBlock.list_display,
+        'code',
+    )
+    readonly_fields = (
+        'code',
+    )
+    fields = (
+        *HasNameAdminBlock.fields,
+        'code'
     )
