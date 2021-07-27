@@ -47,8 +47,8 @@ class WebPage(
 ```
 
 Note the similarity between the two models. Now instead of having to code the fields, associated properties and
-behaviors on each model individually, you can reuse them infinite times, and keep them standard across your projects (
-and all your projects).
+behaviors on each model individually, you can reuse them infinite times, and keep them standard across your project (and
+all your projects).
 
 The admin class for `BlogPost` would look something like this:
 
