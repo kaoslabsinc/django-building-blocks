@@ -18,6 +18,60 @@ post [Django Model Behaviors](https://blog.kevinastone.com/django-model-behavior
 to provide interfaces and mixins for Django admin classes, so you can add functionality to your admin pages really fast,
 without the need to Google solutions and look at Stackoverflow for answers.
 
+By using library you can create models in such a way to make their fields standard across your entire project and all
+your projects. For example:
+
+```python
+class BlogPost(
+    HasNameFactory.as_abstract_model(),
+    HasDescription,
+    HasHTMLBody,
+    Publishable,
+    models.Model
+):
+    pass
+```
+
+Note that we did not need to add anything to the body of the above model. The model is entirely composed of abstract
+models (and abstract model factories - more on this later). If you have another model:
+
+```python
+class WebPage(
+    HasNameFactory.as_abstract_model(),
+    HasAutoSlugFactory.as_abstract_model(),
+    HasHTMLBody,
+    Publishable,
+    models.Model
+):
+    pass
+```
+
+Note the similarity between the two models. Now instead of having to code the fields, associated properties and
+behaviors on each model individually, you can reuse them infinite times, and keep them standard across your projects (
+and all your projects).
+
+The admin class for `BlogPost` would look something like this:
+
+```python
+@admin.register(BlogPost)
+class BlogPostAdmin(
+    PublishableAdmin,
+    admin.ModelAdmin
+):
+    list_display = (
+        *HasNameAdminBlock.list_display,
+        *PublishableAdminBlock.list_display,
+        ...
+    )
+    ...
+```
+
+Notice how we have composed each element in the admin using a concept called Admin Blocks. Each of the abstract classes
+in this library, have an associated Admin Block class, that enables you to define admin for their inheritos in an
+standard way. For example in the case of `Publishable`, you would probably like to show the publication status and date
+in the `list_display`. Instead of having to remember to include both fields in all your admins, you can just include the
+Admin Block in the way showed and have the fields show up in the list table for all the inheritors of `Publishable`.
+
 ## Abstract models and Abstract model factories
 
 ### Abstract models
