@@ -18,8 +18,8 @@ post [Django Model Behaviors](https://blog.kevinastone.com/django-model-behavior
 to provide interfaces and mixins for Django admin classes, so you can add functionality to your admin pages really fast,
 without the need to Google solutions and look at Stackoverflow for answers.
 
-By using library you can create models in such a way to make their fields standard across your entire project and all
-your projects. For example:
+By using this library you can create models in such a way to make their fields standard across your entire project and
+all your projects. For example:
 
 ```python
 class BlogPost(
@@ -32,7 +32,7 @@ class BlogPost(
     pass
 ```
 
-Note that we did not need to add anything to the body of the above model. The model is entirely composed of abstract
+Note that we did not need to add anything to the body of the above model. This model is entirely composed of abstract
 models (and abstract model factories - more on this later). If you have another model:
 
 ```python
@@ -67,10 +67,11 @@ class BlogPostAdmin(
 ```
 
 Notice how we have composed each element in the admin using a concept called Admin Blocks. Each of the abstract classes
-in this library, have an associated Admin Block class, that enables you to define admin for their inheritos in an
+in this library, have an associated Admin Block class, that enables you to define admin for their inheritors in a
 standard way. For example in the case of `Publishable`, you would probably like to show the publication status and date
-in the `list_display`. Instead of having to remember to include both fields in all your admins, you can just include the
-Admin Block in the way showed and have the fields show up in the list table for all the inheritors of `Publishable`.
+in `list_display`. Instead of having to remember to include both fields in all your admins, you can just include the
+Admin Block in the way showed above and have the fields show up in the list table for all the inheritors
+of `Publishable`.
 
 ## Details and classes provided
 
@@ -78,12 +79,12 @@ Note: Check the docstring under each class for their documentation.
 
 ### Abstract models
 
-Kevin Stone's blog post [Django Model Behaviors](https://blog.kevinastone.com/django-model-behaviors) describes a design
-pattern for developing django models that makes them compositional. For example, your project might have the ability to
-post blog posts (`BlogPost`), and each post goes through 3 stages: Draft, Published, and Archived. In your project, your
-users might also have the ability to post shorter status updates (`StatusUpdate`), and you'd like those status updates
-to also go through a similar publishing pipeline. Furthermore, both `BlogPost` and `StatusUpdate` are timestamped with
-the date and time they are published.
+[Django Model Behaviors](https://blog.kevinastone.com/django-model-behaviors) describes a design pattern for developing
+django models that makes them compositional. For example, your project might have the ability to post blog
+posts (`BlogPost`), and each post goes through 3 stages: Draft, Published, and Archived. In your project, your users
+might also have the ability to post shorter status updates (`StatusUpdate`), and you'd like those status updates to also
+go through a similar publishing pipeline. Furthermore, both `BlogPost` and `StatusUpdate` are timestamped with the date
+and time they are published.
 
 As a seasoned developer, instead of coding the functionality on both models, you would create an abstract model, let's
 call it `Publishable`, and have both `BlogPost` and `StatusUpdate` inherit from it. Now you have abstracted away common
@@ -102,7 +103,7 @@ and `StatusUpdate` would get updated with the new pipeline.
 Abstract model factories enable you to create abstract models on the fly. Abstract model factories enable you to modify
 the inherited fields dynamically from the same base class. For example, you might have a model that will have an `email`
 field. You can use `HasEmailFactory.as_abstract_model()` that returns an abstract model that can be inherited from. Now
-say you have another model that also has a email, but the email here is an optional field (`blank=None`). Instead of
+say you have another model that also has a email, but the email here is an optional field (`blank=True`). Instead of
 creating a whole new abstract model (like `HasOptionalEmail`), you can inherit
 from `HasEmailFactory.as_abstract_model(optional=True)` which will return an abstract model with the same `email` field,
 but this time the `email` field is optional.
@@ -162,7 +163,7 @@ class ArchivableHasUUIDAdmin(
 As its name suggests, the model `ArchivableHasUUID` inherits from both `Archivable` and `HasUUID` and thus has fields
 form both. With admin blocks you can create `ArchivableHasUUIDAdmin` without mentioning individual fields from each
 class, adding to the conciseness of your code. It'll also make it hard to miss a field since the AdminBlock has the
-default and recommended fields for each admin setting.
+default and recommended fields for each admin field.
 
 Available Admin Blocks:
 
