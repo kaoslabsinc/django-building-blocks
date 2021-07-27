@@ -124,7 +124,8 @@ from `building_blocks.models.factories.AbstractModelFactory`. Check some of the 
 
 ### Mixin model classes
 
-- [`HasInitials`](building_blocks/models/mixins.py#L4)
+- [`HasInitials`](building_blocks/models/mixins.py)
+- [`HasAutoFields`](building_blocks/models/mixins.py)
 
 ### Admin Block classes
 
