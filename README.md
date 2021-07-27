@@ -163,18 +163,25 @@ default and recommended fields for each admin setting.
 
 Available Admin Blocks:
 
-- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py#L10)
-- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py#L25)
-- [`PublishableAdminBlock`](building_blocks/admin/blocks.py#L35)
-- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py#L45)
+- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py)
+- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py)
+- [`PublishableAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasNameAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasEmailAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasDescriptionAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasCoverPhotoAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasIconAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasUserAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasAutoSlugAdminBlock`](building_blocks/admin/blocks.py)
 
 ### Inheritable Admin classes
 
 Unlike Admin Blocks the following classes are meant to be inherited by your admin class. The usually provide
 functionality such as common admin actions to your admin.
 
-- [`ArchivableAdmin`](building_blocks/admin/admin.py#L9)
-- [`PublishableAdmin`](building_blocks/admin/admin.py#L37)
+- [`ArchivableAdmin`](building_blocks/admin/admin.py)
+- [`PublishableAdmin`](building_blocks/admin/admin.py)
 
 Please note that the majority of the above classes
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
