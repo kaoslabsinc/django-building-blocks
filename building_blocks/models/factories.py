@@ -95,6 +95,13 @@ class HasUserFactory(AbstractModelFactory):
 
 
 class HasAutoCodeFactory(AbstractModelFactory):
+    """
+    The child model has to define a field denoted by `auto_code_field`. This field will be autoset at the time of
+    creation of the model by either using the output from the generate function
+    (f`def generate_{auto_code_field}(self):`) or by `slugify`ing the field denoted by `source_field`. The code has to
+    be unique for the inherited model.
+    """
+
     @staticmethod
     def generate_code(instance, auto_code_field, source_field):
         generate_func = getattr(instance, 'generate_' + auto_code_field, None)
@@ -132,6 +139,11 @@ class HasAutoCodeFactory(AbstractModelFactory):
 
 
 class HasAutoSlugFactory(AbstractModelFactory):
+    """
+    The child model will automatically get assigned a slug, by either using the output of `def generate_slug(self)` or
+    by `slugify`ing the field denoted by `source_field`.
+    """
+
     @staticmethod
     def as_abstract_model(source_field=None):
         class HasAutoSlug(
