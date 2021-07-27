@@ -84,3 +84,12 @@ class HasUserAdminBlock(admin.ModelAdmin):
     list_display = ('user',)
 
     autocomplete_fields = ('user',)
+
+
+class HasAutoSlugAdminBlock(AdminBlock):
+    search_fields = ('slug',)
+    list_display = ('slug',)
+    readonly_fields = ('slug',)
+    fieldsets = (
+        ("Identifiers", {'fields': ('slug',)}),
+    )

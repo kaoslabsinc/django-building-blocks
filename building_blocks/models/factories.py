@@ -129,3 +129,18 @@ class HasAutoCodeFactory(AbstractModelFactory):
                 super(HasAutoCode, self).save(*args, **kwargs)
 
         return HasAutoCode
+
+
+class HasAutoSlugFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(source_field=None):
+        class HasAutoSlug(
+            HasAutoCodeFactory.as_abstract_model('slug', source_field),
+            models.Model
+        ):
+            class Meta:
+                abstract = True
+
+            slug = models.SlugField(max_length=255, unique=True, editable=False)
+
+        return HasAutoSlug
