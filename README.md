@@ -9,6 +9,38 @@ database models
 pip install django-building-blocks
 ```
 
+## Rationale
+
+`django-building-blocks` provides common design patterns and behaviours that repeat themselves during the development of
+django projects. The main aim of this package is to provide common interfaces for the development of django models. This
+portion of this library is inspired by Kevin Stone's excellent blog
+post [Django Model Behaviors](https://blog.kevinastone.com/django-model-behaviors). The secondary aim of this library is
+to provide interfaces and mixins for Django admin classes, so you can add functionality to your admin pages really fast,
+without the need to Google solutions and look at Stackoverflow for answers.
+
+## Abstract models and Abstract model factories
+
+### Abstract models
+
+Kevin Stone's blog post [Django Model Behaviors](https://blog.kevinastone.com/django-model-behaviors) describes a design
+pattern for developing django models that makes them compositional. For example, your project might have the ability to
+post blog posts (`BlogPost`), and each post goes through 3 stages: Draft, Published, and Archived. In your project, your
+users might also have the ability to post shorter status updates (`StatusUpdate`), and you'd like those status updates
+to also go through a similar publishing pipeline. Furthermore, both `BlogPost` and `StatusUpdate` are timestamped with
+the date and time they are published.
+
+As a seasoned developer, instead of coding the functionality on both models, you would create an abstract model, let's
+call it `Publishable`, and have both `BlogPost` and `StatusUpdate` inherit from it. Now you have abstracted away common
+functionality between your models, into the `Publishable` interface/abstract model. Not only this is DRY, but also if
+you like to make updates to how your publishing pipeline works, you can just update `Publishable` and both `BlogPost`
+and `StatusUpdate` would get updated with the new pipeline.
+
+`django-building-blocks` provides a number of such abstract models:
+
+- [`HasUUID`](building_blocks/models/abstracts.py#L10)
+- [`Archivable`](building_blocks/models/abstracts.py#L25)
+- [`Publishable`](building_blocks/models/abstracts.py#L48)
+
 ## Classes provided
 
 Check the docstring under each class for their documentation.
@@ -16,12 +48,6 @@ Check the docstring under each class for their documentation.
 ### Mixin model classes
 
 - [`HasInitials`](building_blocks/models/mixins.py#L4)
-
-### Abstract model classes
-
-- [`HasUUID`](building_blocks/models/abstracts.py#L10)
-- [`Archivable`](building_blocks/models/abstracts.py#L25)
-- [`Publishable`](building_blocks/models/abstracts.py#L48)
 
 ### Admin Block classes
 
