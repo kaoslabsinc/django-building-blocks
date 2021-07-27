@@ -55,16 +55,25 @@ class HasNameAdminBlock(AdminBlock):
     search_fields = ('name',)
     list_display = ('name',)
     fields = ('name',)
+    fieldsets = (
+        (None, {'fields': fields})
+    )
 
 
 class HasEmailAdminBlock(AdminBlock):
     search_fields = ('email',)
     list_display = ('email',)
     fields = ('email',)
+    fieldsets = (
+        (None, {'fields': fields})
+    )
 
 
 class HasDescriptionAdminBlock(AdminBlock):
     fields = ('description',)
+    fieldsets = (
+        (None, {'fields': fields})
+    )
 
 
 class HasCoverPhotoAdminBlock(AdminBlock):
@@ -85,6 +94,9 @@ class HasUserAdminBlock(AdminBlock):
 
     autocomplete_fields = ('user',)
     fields = ('user',)
+    fieldsets = (
+        (None, {'fields': fields})
+    )
 
 
 class HasAutoSlugAdminBlock(AdminBlock):
