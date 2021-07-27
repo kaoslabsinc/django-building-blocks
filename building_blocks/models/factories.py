@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.text import slugify
 
 from .utils import generate_field_kwargs
 
@@ -90,3 +92,40 @@ class HasUserFactory(AbstractModelFactory):
                                   **generate_field_kwargs(optional_null=optional))
 
         return HasUser
+
+
+class HasAutoCodeFactory(AbstractModelFactory):
+    @staticmethod
+    def generate_code(instance, auto_code_field, source_field):
+        generate_func = getattr(instance, 'generate_' + auto_code_field, None)
+        if generate_func:
+            return generate_func()
+        else:
+            return slugify(getattr(instance, source_field))
+
+    @staticmethod
+    def as_abstract_model(auto_code_field, source_field=None):
+        class HasAutoCode(models.Model):
+            class Meta:
+                abstract = True
+
+            def set_auto_fields(self):
+                super_call = getattr(super(HasAutoCode, self), 'set_auto_fields', None)
+                if super_call:
+                    super_call()
+                if not getattr(self, auto_code_field, None):
+                    code = HasAutoCodeFactory.generate_code(self, auto_code_field, source_field)
+                    if type(self)._default_manager.filter(**{auto_code_field: code}).exists():
+                        raise ValidationError(
+                            f"{type(self)._meta.verbose_name.capitalize()} with this {auto_code_field} already exists")
+                    setattr(self, auto_code_field, code)
+
+            def clean(self):
+                self.set_auto_fields()
+                super(HasAutoCode, self).clean()
+
+            def save(self, *args, **kwargs):
+                self.set_auto_fields()
+                super(HasAutoCode, self).save(*args, **kwargs)
+
+        return HasAutoCode
