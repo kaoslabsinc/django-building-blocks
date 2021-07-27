@@ -75,12 +75,10 @@ class HasIconFactory(AbstractModelFactory):
         return HasIcon
 
 
-User = get_user_model()
-
-
 class HasUserFactory(AbstractModelFactory):
     @staticmethod
     def as_abstract_model(related_name, one_to_one=False, optional=False):
+        User = get_user_model()
         user_field_cls = models.OneToOneField if one_to_one else models.ForeignKey
 
         class HasUser(models.Model):
