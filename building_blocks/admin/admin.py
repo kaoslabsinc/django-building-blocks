@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth import get_permission_codename
+from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
+from .mixins import CheckUserAdminMixin
 from ..models import Archivable, Publishable
 from ..models.enums import PublishingStage
 
@@ -71,7 +73,7 @@ class PublishableAdmin(DjangoObjectActions, admin.ModelAdmin):
         return change_actions
 
 
-class HasUserAdmin(admin.ModelAdmin):
+class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
     """
     Limit access to objects who aren't 'owned' by the user (obj.user != request.user).
     The user needs to be either the owner or have the `see_all` permission on the model.
@@ -83,28 +85,8 @@ class HasUserAdmin(admin.ModelAdmin):
         codename = get_permission_codename(self.default_see_all_perm_codename, opts)
         return request.user.has_perm("%s.%s" % (opts.app_label, codename))
 
-    def _has_permission_helper(self, request, obj=None):
-        if self.has_see_all_permission(request):
-            return True
+    def check_user_q(self, request):
+        return Q(user=request.user)
+
+    def check_user(self, request, obj=None):
         return obj and obj.user == request.user
-
-    def has_view_permission(self, request, obj=None):
-        return (
-            super(HasUserAdmin, self).has_view_permission(request, obj) and self._has_permission_helper(request, obj)
-        )
-
-    def has_change_permission(self, request, obj=None):
-        return (
-            super(HasUserAdmin, self).has_change_permission(request, obj) and self._has_permission_helper(request, obj)
-        )
-
-    def has_delete_permission(self, request, obj=None):
-        return (
-            super(HasUserAdmin, self).has_delete_permission(request, obj) and self._has_permission_helper(request, obj)
-        )
-
-    def get_queryset(self, request):
-        qs = super(HasUserAdmin, self).get_queryset(request)
-        if self.has_see_all_permission(request):
-            return qs
-        return qs.filter(user=request.user)
