@@ -50,3 +50,11 @@ class HasAutoSlugExample(
     models.Model
 ):
     pass
+
+
+class HasUserLimitedAccess(
+    HasUserFactory.as_abstract_model(related_name='+'),
+    models.Model
+):
+    class Meta:
+        permissions = [('see_all_hasuserlimitedaccess', "Can see all HasUserLimitedAccess")]

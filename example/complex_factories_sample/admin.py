@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from building_blocks.admin.admin import HasUserAdmin
 from building_blocks.admin.blocks import (
     HasUserAdminBlock, HasNameAdminBlock, HasAutoSlugAdminBlock,
 )
@@ -7,6 +8,7 @@ from complex_factories_sample.models import (
     HasUserExample, HasOptionalUserExample, HasOneToOneUserExample, HasOptionalOneToOneUserExample,
     HasAutoCodeGenerateFunctionExample,
     HasAutoSlugExample,
+    HasUserLimitedAccess,
 )
 
 
@@ -58,3 +60,11 @@ class HasAutoSlugExampleAdmin(admin.ModelAdmin):
         (None, {'fields': (*HasNameAdminBlock.fields,)}),
         *HasAutoSlugAdminBlock.fieldsets,
     )
+
+
+@admin.register(HasUserLimitedAccess)
+class HasUserLimitedAccessAdmin(
+    HasUserAdmin,
+    HasUserExampleAdmin
+):
+    pass

@@ -187,6 +187,7 @@ functionality such as common admin actions to your admin.
 
 - [`ArchivableAdmin`](building_blocks/admin/admin.py)
 - [`PublishableAdmin`](building_blocks/admin/admin.py)
+- [`HasUserAdmin`](building_blocks/admin/admin.py)
 
 Please note that the majority of the inheritable admins
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
