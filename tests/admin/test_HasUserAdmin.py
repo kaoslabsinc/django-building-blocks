@@ -6,10 +6,9 @@ from complex_factories_sample.models import HasUserLimitedAccess
 
 
 def test_HasUserAdmin(client, django_user_model):
-    password = "sss"
-    user_manager = django_user_model.objects.create(username='user_manager', password=password, is_staff=True)
-    user_owner = django_user_model.objects.create(username='user_owner', password=password, is_staff=True)
-    user_non_owner = django_user_model.objects.create(username='user_non_owner', password=password, is_staff=True)
+    user_manager = django_user_model.objects.create(username='user_manager', is_staff=True)
+    user_owner = django_user_model.objects.create(username='user_owner', is_staff=True)
+    user_non_owner = django_user_model.objects.create(username='user_non_owner', is_staff=True)
 
     opts = HasUserLimitedAccess._meta
     see_all_permission = Permission.objects.get(
