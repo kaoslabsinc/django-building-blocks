@@ -3,7 +3,7 @@ from django.contrib import admin
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
     HasInitialsAdminBlock
-from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample
+from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample
 
 
 @admin.register(HasUUIDExample)
@@ -89,3 +89,10 @@ class HasInitialsExampleAdmin(
         (None, {'fields': ('full_name',)}),
         *HasInitialsAdminBlock.fieldsets,
     )
+
+
+@admin.register(HasAutoFieldsExample)
+class HasAutoFieldsExampleAdmin(
+    admin.ModelAdmin
+):
+    readonly_fields = ('name_upper',)

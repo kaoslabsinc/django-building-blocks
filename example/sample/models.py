@@ -2,6 +2,7 @@ from django.db import models
 
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
+from building_blocks.models.mixins import HasAutoFields
 
 
 class HasUUIDExample(
@@ -34,3 +35,15 @@ class HasInitialsExample(
     take_initials_from = 'full_name'
 
     full_name = models.CharField(max_length=100)
+
+
+class HasAutoFieldsExample(
+    HasAutoFields,
+    models.Model
+):
+    name = models.CharField(max_length=100)
+    name_upper = models.CharField(max_length=100)
+
+    def set_auto_fields(self):
+        if not self.name_upper:
+            self.name_upper = self.name.upper()
