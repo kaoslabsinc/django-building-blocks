@@ -9,28 +9,25 @@ class CheckUserAdminMixin(BaseModelAdmin):
     def has_see_all_permission(self, request):
         raise NotImplementedError
 
-    def check_user(self, request, obj=None):
+    def check_user(self, request, obj):
         raise NotImplementedError
 
     def check_user_q(self, request):
         raise NotImplementedError
 
     def has_view_permission(self, request, obj=None):
-        return (
-            super(CheckUserAdminMixin, self).has_view_permission(request, obj)
-            and (self.check_user(request, obj) or self.has_see_all_permission(request))
+        return super(CheckUserAdminMixin, self).has_view_permission(request, obj) and (
+            obj is None or self.has_see_all_permission(request) or self.check_user(request, obj)
         )
 
     def has_change_permission(self, request, obj=None):
-        return (
-            super(CheckUserAdminMixin, self).has_change_permission(request, obj)
-            and (self.check_user(request, obj) or self.has_see_all_permission(request))
+        return super(CheckUserAdminMixin, self).has_change_permission(request, obj) and (
+            obj is None or self.has_see_all_permission(request) or self.check_user(request, obj)
         )
 
     def has_delete_permission(self, request, obj=None):
-        return (
-            super(CheckUserAdminMixin, self).has_delete_permission(request, obj)
-            and (self.check_user(request, obj) or self.has_see_all_permission(request))
+        return super(CheckUserAdminMixin, self).has_delete_permission(request, obj) and (
+            obj is None or self.has_see_all_permission(request) or self.check_user(request, obj)
         )
 
     def get_queryset(self, request):

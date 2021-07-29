@@ -83,10 +83,10 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
     def has_see_all_permission(self, request):
         opts = self.opts
         codename = get_permission_codename(self.default_see_all_perm_codename, opts)
-        return request.user.has_perm("%s.%s" % (opts.app_label, codename))
+        return request.user.has_perm(f'{opts.app_label}.{codename}')
 
     def check_user_q(self, request):
         return Q(user=request.user)
 
-    def check_user(self, request, obj=None):
-        return obj and obj.user == request.user
+    def check_user(self, request, obj):
+        return obj.user == request.user
