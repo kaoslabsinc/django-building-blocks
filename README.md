@@ -94,9 +94,13 @@ and `StatusUpdate` would get updated with the new pipeline.
 
 `django-building-blocks` provides a number of such abstract models:
 
-- [`HasUUID`](building_blocks/models/abstracts.py)
-- [`Archivable`](building_blocks/models/abstracts.py)
-- [`Publishable`](building_blocks/models/abstracts.py)
+```python
+from building_blocks.models.abstracts import (
+    HasUUID,
+    Archivable,
+    Publishable,
+)
+```
 
 ### Abstract model factories
 
@@ -110,22 +114,30 @@ but this time the `email` field is optional.
 
 Abstract model factories provided:
 
-- [`HasNameFactory`](building_blocks/models/factories.py)
-- [`HasEmailFactory`](building_blocks/models/factories.py)
-- [`HasDescriptionFactory`](building_blocks/models/factories.py)
-- [`HasCoverPhotoFactory`](building_blocks/models/factories.py)
-- [`HasIconFactory`](building_blocks/models/factories.py)
-- [`HasUserFactory`](building_blocks/models/factories.py)
-- [`HasAutoCodeFactory`](building_blocks/models/factories.py)
-- [`HasAutoSlugFactory`](building_blocks/models/factories.py)
+```python
+from building_blocks.models.factories import (
+    HasNameFactory,
+    HasEmailFactory,
+    HasDescriptionFactory,
+    HasCoverPhotoFactory,
+    HasIconFactory,
+    HasUserFactory,
+    HasAutoCodeFactory,
+    HasAutoSlugFactory,
+)
+```
 
 You can create your own abstract model factory by inheriting
 from `building_blocks.models.factories.AbstractModelFactory`. Check some of the implementations for an example.
 
 ### Mixin model classes
 
-- [`HasInitials`](building_blocks/models/mixins.py)
-- [`HasAutoFields`](building_blocks/models/mixins.py)
+```python
+from building_blocks.models.mixins import (
+    HasInitials,
+    HasAutoFields,
+)
+```
 
 ### Admin Block classes
 
@@ -168,26 +180,34 @@ default and recommended fields for each admin field.
 
 Available Admin Blocks:
 
-- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py)
-- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py)
-- [`PublishableAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasNameAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasEmailAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasDescriptionAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasCoverPhotoAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasIconAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasUserAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasAutoSlugAdminBlock`](building_blocks/admin/blocks.py)
+```python
+from building_blocks.admin.blocks import (
+    HasUUIDAdminBlock,
+    ArchivableAdminBlock,
+    PublishableAdminBlock,
+    HasInitialsAdminBlock,
+    HasNameAdminBlock,
+    HasEmailAdminBlock,
+    HasDescriptionAdminBlock,
+    HasCoverPhotoAdminBlock,
+    HasIconAdminBlock,
+    HasUserAdminBlock,
+    HasAutoSlugAdminBlock,
+)
+```
 
 ### Inheritable Admin classes
 
 Unlike Admin Blocks the following classes are meant to be inherited by your admin class. The usually provide
 functionality such as common admin actions to your admin.
 
-- [`ArchivableAdmin`](building_blocks/admin/admin.py)
-- [`PublishableAdmin`](building_blocks/admin/admin.py)
-- [`HasUserAdmin`](building_blocks/admin/admin.py)
+```python
+from building_blocks.admin.admin import (
+    ArchivableAdmin,
+    PublishableAdmin,
+    HasUserAdmin,
+)
+```
 
 Please note that the majority of the inheritable admins
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
