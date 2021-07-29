@@ -22,16 +22,23 @@ def test_HasUserAdmin(client, django_user_model):
     user_non_owner.user_permissions.add(view_permission)
 
     obj = HasUserLimitedAccess.objects.create(user=user_owner)
-    admin_url = reverse(f'admin:{opts.app_label}_{opts.model_name}_change', args=[obj.id])
+    admin_url_changelist = reverse(f'admin:{opts.app_label}_{opts.model_name}_changelist')
+    admin_url_change = reverse(f'admin:{opts.app_label}_{opts.model_name}_change', args=[obj.id])
 
     client.force_login(user_manager)
-    response = client.get(admin_url)
+    response = client.get(admin_url_changelist)
+    assert response.status_code == 200
+    response = client.get(admin_url_change)
     assert response.status_code == 200
 
     client.force_login(user_owner)
-    response = client.get(admin_url)
+    response = client.get(admin_url_changelist)
+    assert response.status_code == 200
+    response = client.get(admin_url_change)
     assert response.status_code == 200
 
     client.force_login(user_non_owner)
-    response = client.get(admin_url)
-    assert response.status_code == 403
+    response = client.get(admin_url_changelist)
+    assert response.status_code == 200
+    response = client.get(admin_url_change)
+    assert response.status_code == 302
