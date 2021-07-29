@@ -49,3 +49,60 @@ class HasInitialsAdminBlock(AdminBlock):
     fieldsets = (
         ("Misc.", {'fields': ('initials',)}),
     )
+
+
+class HasNameAdminBlock(AdminBlock):
+    search_fields = ('name',)
+    list_display = ('name',)
+    fields = ('name',)
+    fieldsets = (
+        (None, {'fields': fields}),
+    )
+
+
+class HasEmailAdminBlock(AdminBlock):
+    search_fields = ('email',)
+    list_display = ('email',)
+    fields = ('email',)
+    fieldsets = (
+        (None, {'fields': fields}),
+    )
+
+
+class HasDescriptionAdminBlock(AdminBlock):
+    fields = ('description',)
+    fieldsets = (
+        (None, {'fields': fields}),
+    )
+
+
+class HasCoverPhotoAdminBlock(AdminBlock):
+    fieldsets = (
+        ("Media", {'fields': ('cover_photo',)}),
+    )
+
+
+class HasIconAdminBlock(AdminBlock):
+    fieldsets = (
+        ("Media", {'fields': ('icon',)}),
+    )
+
+
+class HasUserAdminBlock(AdminBlock):
+    search_fields = ('user__username',)
+    list_display = ('user',)
+
+    autocomplete_fields = ('user',)
+    fields = ('user',)
+    fieldsets = (
+        (None, {'fields': fields}),
+    )
+
+
+class HasAutoSlugAdminBlock(AdminBlock):
+    search_fields = ('slug',)
+    list_display = ('slug',)
+    readonly_fields = ('slug',)
+    fieldsets = (
+        ("Identifiers", {'fields': ('slug',)}),
+    )

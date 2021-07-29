@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django_object_actions',
 
     'sample',
+    'factories_sample',
+    'complex_factories_sample',
 ]
 
 MIDDLEWARE = [

@@ -45,9 +45,11 @@ class Archivable(models.Model):
 
     def archive(self):
         self.archived_at = now()
+        return self
 
     def restore(self):
         self.archived_at = None
+        return self
 
     objects = ArchivableQueryset.as_manager()
 
@@ -70,19 +72,23 @@ class Publishable(models.Model):
         assert self.publishing_stage == PublishingStage.draft, "Can only publish items in draft"
         self.publishing_stage = PublishingStage.published
         self.publishing_stage_changed_at = now()
+        return self
 
     def unpublish(self):
         assert self.publishing_stage == PublishingStage.published, "Can only unpublish items that are already published"
         self.publishing_stage = PublishingStage.draft
         self.publishing_stage_changed_at = now()
+        return self
 
     def archive(self):
         self.publishing_stage = PublishingStage.archived
         self.publishing_stage_changed_at = now()
+        return self
 
     def restore(self):
         assert self.publishing_stage == PublishingStage.archived, "Can only restore items in archive"
         self.publishing_stage = PublishingStage.draft
         self.publishing_stage_changed_at = now()
+        return self
 
     objects = PublishableQueryset.as_manager()
