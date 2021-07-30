@@ -6,7 +6,7 @@ from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock
 from building_blocks.admin.inlines import AddInlineMixin, ListInlineMixin
 from building_blocks.admin.utils import json_field_pp, render_anchor, render_img
 from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
-    TimeStampedExample, AdminUtilsExample, ContainerItem, Container
+    TimeStampedExample, AdminUtilsExample, ContainerItem, Container, LowerCaseCharFieldExample
 
 
 @admin.register(HasUUIDExample)
@@ -151,3 +151,6 @@ class ContainerItemListInline(ListInlineMixin, ContainerItemInline):
 @admin.register(Container)
 class ContainerAdmin(admin.ModelAdmin):
     inlines = (ContainerItemListInline, ContainerItemAddInline)
+
+
+admin.site.register(LowerCaseCharFieldExample)

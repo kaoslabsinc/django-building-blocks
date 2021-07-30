@@ -228,6 +228,12 @@ Make fields that are usually required in a model form, be not required. Used in 
 the fields that aren't required are auto set. Also used in conjunction with `EditReadonlyAdminMixin` to allow manual
 setting of a field upon creation.
 
+## Fields
+
+- [`CaseInsensitiveFieldMixin`](building_blocks/fields.py)
+- [`ToLowerCaseFieldMixin`](building_blocks/fields.py)
+- [`LowerCaseCharField`](building_blocks/fields.py)
+
 ## Development and Testing
 
 ### IDE Setup
