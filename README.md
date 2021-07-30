@@ -201,6 +201,14 @@ project can find the templates from `django_object_actions` which are used in re
 - [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
 - [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
 
+## Forms
+
+### `UnrequiredFieldsForm` and `unrequire_form`
+
+Make fields that are usually required in a model form, be not required. Used in conjunction with `HasAutoFields`, since
+the fields that aren't required are auto set. Also used in conjuction with `EditReadonlyAdminMixin` to allow manual
+setting of a field upon creation.
+
 ## Development and Testing
 
 ### IDE Setup
