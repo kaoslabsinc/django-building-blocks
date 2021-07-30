@@ -199,6 +199,7 @@ project can find the templates from `django_object_actions` which are used in re
 
 - [`CheckUserAdminMixin`](building_blocks/admin/mixins.py)
 - [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
+- [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
 
 ## Development and Testing
 
