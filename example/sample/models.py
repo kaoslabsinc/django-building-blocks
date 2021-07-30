@@ -1,5 +1,6 @@
 from django.db import models
 
+from building_blocks.fields import LowerCaseCharField
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
 from building_blocks.models.factories import HasNameFactory, HasEmailFactory
@@ -85,3 +86,7 @@ class ContainerItem(
     models.Model
 ):
     container = models.ForeignKey(Container, on_delete=models.PROTECT)
+
+
+class LowerCaseCharFieldExample(models.Model):
+    lc_field = LowerCaseCharField(max_length=100)
