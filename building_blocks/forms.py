@@ -4,14 +4,14 @@ from django.db.models.base import ModelBase
 from django.forms import modelform_factory
 
 
-class UnrequiredFieldsForm(forms.Form):
+class UnrequiredFieldsFormMixin(forms.Form):
     """
     Make fields denoted by `unrequired_fields` be not required on the form`
     """
     unrequired_fields = ()
 
     def __init__(self, *args, **kwargs):
-        super(UnrequiredFieldsForm, self).__init__(*args, **kwargs)
+        super(UnrequiredFieldsFormMixin, self).__init__(*args, **kwargs)
         for field in self.unrequired_fields:
             if field in self.fields:
                 self.fields[field].required = False
@@ -32,7 +32,7 @@ def unrequire_form(form_or_model: forms.Form or models.Model, unrequired_fields)
     else:
         form = form_or_model
 
-    class UnrequiredModelForm(UnrequiredFieldsForm, form):
+    class UnrequiredModelForm(UnrequiredFieldsFormMixin, form):
         unrequired_fields = _unreq_fields
 
     return UnrequiredModelForm
