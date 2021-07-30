@@ -4,6 +4,8 @@ from building_blocks.admin.admin import HasUserAdmin
 from building_blocks.admin.blocks import (
     HasUserAdminBlock, HasNameAdminBlock, HasAutoSlugAdminBlock,
 )
+from building_blocks.admin.mixins import EditReadonlyAdminMixin
+from building_blocks.forms import unrequire_form
 from complex_factories_sample.models import (
     HasUserExample, HasOptionalUserExample, HasOneToOneUserExample, HasOptionalOneToOneUserExample,
     HasAutoCodeGenerateFunctionExample,
@@ -26,7 +28,10 @@ class HasUserExampleAdmin(admin.ModelAdmin):
 
 
 @admin.register(HasAutoCodeGenerateFunctionExample)
-class HasAutoCodeGenerateFunctionExampleAdmin(admin.ModelAdmin):
+class HasAutoCodeGenerateFunctionExampleAdmin(
+    EditReadonlyAdminMixin,
+    admin.ModelAdmin
+):
     search_fields = (
         *HasNameAdminBlock.search_fields,
     )
@@ -34,7 +39,8 @@ class HasAutoCodeGenerateFunctionExampleAdmin(admin.ModelAdmin):
         *HasNameAdminBlock.list_display,
         'code',
     )
-    readonly_fields = (
+    form = unrequire_form(HasAutoCodeGenerateFunctionExample, ('code',))
+    edit_readonly_fields = (
         'code',
     )
     fields = (
