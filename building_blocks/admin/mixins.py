@@ -38,6 +38,9 @@ class CheckUserAdminMixin(BaseModelAdmin):
 
 
 class EditReadonlyAdminMixin(BaseModelAdmin):
+    """
+    Fields defined in edit_readonly_fields are editable upon creation, but after that they become readonly
+    """
     edit_readonly_fields = ()
 
     def get_edit_readonly_fields(self, request, obj=None):

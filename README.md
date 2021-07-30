@@ -195,6 +195,11 @@ use [django-object-actions](https://github.com/crccheck/django-object-actions) t
 `admin:change` pages. To enable this functionality add `'django_object_actions'` to your `INSTALLED_APPS` so your
 project can find the templates from `django_object_actions` which are used in rendering the buttons for the actions.
 
+### Mixin Admin classes
+
+- [`CheckUserAdminMixin`](building_blocks/admin/mixins.py)
+- [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
+
 ## Development and Testing
 
 ### IDE Setup
