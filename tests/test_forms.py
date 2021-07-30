@@ -14,8 +14,8 @@ def test_unrequire_form():
     assert my_form.is_valid()
 
     NewMyForm = unrequire_form(MyForm, ('name',))
-    new_my_form = NewMyForm()
-    assert my_form.is_valid()
+    new_my_form = NewMyForm(data={})
+    assert new_my_form.is_valid()
 
     new_my_form = NewMyForm(data={'name': "Name"})
-    assert my_form.is_valid()
+    assert new_my_form.is_valid()
