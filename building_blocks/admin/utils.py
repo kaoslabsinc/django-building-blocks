@@ -22,7 +22,7 @@ def render_attrs(attrs):
 
 
 def render_element(tag, children=None, attrs=None):
-    attrs = attrs or None
+    attrs = attrs or {}
     if children is None:
         return format_html(
             """<{} {}>""",
