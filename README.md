@@ -203,7 +203,7 @@ project can find the templates from `django_object_actions` which are used in re
 
 ### Admin inline mixins
 
-When you need some fields on an inline admin to be readonly only for editing (equivalant of `EditReadonlyAdminMixin`),
+When you need some fields on an inline admin to be readonly only for editing (equivalent of `EditReadonlyAdminMixin`),
 you have to split the interface into two inlines, one for adding which doesn't show any objects, and one for listing
 them, which has the readonly fields defined. The following classes facilitate this design pattern:
 
@@ -225,7 +225,7 @@ They are used in conjunction with `@admin.display` to render html such as anchor
 ### `UnrequiredFieldsForm` and `unrequire_form`
 
 Make fields that are usually required in a model form, be not required. Used in conjunction with `HasAutoFields`, since
-the fields that aren't required are auto set. Also used in conjuction with `EditReadonlyAdminMixin` to allow manual
+the fields that aren't required are auto set. Also used in conjunction with `EditReadonlyAdminMixin` to allow manual
 setting of a field upon creation.
 
 ## Development and Testing
