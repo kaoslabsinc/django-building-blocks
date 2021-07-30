@@ -147,6 +147,6 @@ class HasAutoSlugFactory(AbstractModelFactory):
             class Meta:
                 abstract = True
 
-            slug = models.SlugField(max_length=255, unique=True, editable=False)
+            slug = models.SlugField(max_length=255, unique=True)
 
         return HasAutoSlug
