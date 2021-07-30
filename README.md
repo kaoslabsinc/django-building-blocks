@@ -201,9 +201,20 @@ project can find the templates from `django_object_actions` which are used in re
 - [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
 - [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
 
+### Admin inline mixins
+
+When you need some fields on an inline admin to be readonly only for editing (equivalant of `EditReadonlyAdminMixin`),
+you have to split the interface into two inlines, one for adding which doesn't show any objects, and one for listing
+them, which has the readonly fields defined. The following classes facilitate this design pattern:
+
+- [`AddInlineMixin`](building_blocks/admin/inlines.py)
+- [`ListInlineMixin`](building_blocks/admin/inlines.py)
+- [`ReadOnlyInlineMixin`](building_blocks/admin/inlines.py)
+
 ## HTML render utilities
 
 They are used in conjunction with `@admin.display` to render html such as anchor tags, or images on the admin.
+
 - [`json_field_pp`](building_blocks/admin/utils.py)
 - [`render_element`](building_blocks/admin/utils.py)
 - [`render_img`](building_blocks/admin/utils.py)
