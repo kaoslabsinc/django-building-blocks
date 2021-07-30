@@ -201,6 +201,14 @@ project can find the templates from `django_object_actions` which are used in re
 - [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
 - [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
 
+## HTML render utilities
+
+They are used in conjunction with `@admin.display` to render html such as anchor tags, or images on the admin.
+- [`json_field_pp`](building_blocks/admin/utils.py)
+- [`render_element`](building_blocks/admin/utils.py)
+- [`render_img`](building_blocks/admin/utils.py)
+- [`render_anchor`](building_blocks/admin/utils.py)
+
 ## Forms
 
 ### `UnrequiredFieldsForm` and `unrequire_form`
