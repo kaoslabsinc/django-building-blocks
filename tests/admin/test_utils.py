@@ -1,4 +1,10 @@
-from building_blocks.admin.utils import render_element
+from building_blocks.admin.utils import render_element, json_field_pp
+
+
+def test_json_field_pp_unsafe():
+    d = {'field': "<script>malicious_code()</script>"}
+    html = json_field_pp(d)
+    assert '&lt;script&gt;' in html
 
 
 def test_render_element():
