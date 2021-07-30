@@ -179,6 +179,7 @@ Available Admin Blocks:
 - [`HasIconAdminBlock`](building_blocks/admin/blocks.py)
 - [`HasUserAdminBlock`](building_blocks/admin/blocks.py)
 - [`HasAutoSlugAdminBlock`](building_blocks/admin/blocks.py)
+- [`TimeStampedModelAdminBlock`](building_blocks/admin/blocks.py)
 
 ### Inheritable Admin classes
 
