@@ -35,3 +35,33 @@ class CheckUserAdminMixin(BaseModelAdmin):
         if self.has_see_all_permission(request):
             return qs
         return qs.filter(self.check_user_q(request))
+
+
+class EditReadonlyAdminMixin(BaseModelAdmin):
+    """
+    Fields defined in edit_readonly_fields are editable upon creation, but after that they become readonly
+    """
+    edit_readonly_fields = ()
+
+    def get_edit_readonly_fields(self, request, obj=None):
+        return self.edit_readonly_fields
+
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = super().get_readonly_fields(request, obj)
+        if obj:  # editing an existing object
+            return self.get_edit_readonly_fields(request, obj) + readonly_fields
+        return readonly_fields
+
+
+class HasAutoSlugAdminMixin(EditReadonlyAdminMixin):
+    slug_source = None
+
+    def get_edit_readonly_fields(self, request, obj=None):
+        return super().get_edit_readonly_fields(request, obj) + ('slug',)
+
+    def get_prepopulated_fields(self, request, obj=None):
+        assert self.slug_source
+        prepopulated_fields = super().get_prepopulated_fields(request, obj)
+        if obj:  # editing an existing object
+            return prepopulated_fields
+        return {**prepopulated_fields, 'slug': (self.slug_source,)}

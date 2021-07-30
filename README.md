@@ -179,6 +179,7 @@ Available Admin Blocks:
 - [`HasIconAdminBlock`](building_blocks/admin/blocks.py)
 - [`HasUserAdminBlock`](building_blocks/admin/blocks.py)
 - [`HasAutoSlugAdminBlock`](building_blocks/admin/blocks.py)
+- [`TimeStampedModelAdminBlock`](building_blocks/admin/blocks.py)
 
 ### Inheritable Admin classes
 
@@ -193,6 +194,39 @@ Please note that the majority of the inheritable admins
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
 `admin:change` pages. To enable this functionality add `'django_object_actions'` to your `INSTALLED_APPS` so your
 project can find the templates from `django_object_actions` which are used in rendering the buttons for the actions.
+
+### Mixin Admin classes
+
+- [`CheckUserAdminMixin`](building_blocks/admin/mixins.py)
+- [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
+- [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
+
+### Admin inline mixins
+
+When you need some fields on an inline admin to be readonly only for editing (equivalent of `EditReadonlyAdminMixin`),
+you have to split the interface into two inlines, one for adding which doesn't show any objects, and one for listing
+them, which has the readonly fields defined. The following classes facilitate this design pattern:
+
+- [`AddInlineMixin`](building_blocks/admin/inlines.py)
+- [`ListInlineMixin`](building_blocks/admin/inlines.py)
+- [`ReadOnlyInlineMixin`](building_blocks/admin/inlines.py)
+
+## HTML render utilities
+
+They are used in conjunction with `@admin.display` to render html such as anchor tags, or images on the admin.
+
+- [`json_field_pp`](building_blocks/admin/utils.py)
+- [`render_element`](building_blocks/admin/utils.py)
+- [`render_img`](building_blocks/admin/utils.py)
+- [`render_anchor`](building_blocks/admin/utils.py)
+
+## Forms
+
+### `UnrequiredFieldsForm` and `unrequire_form`
+
+Make fields that are usually required in a model form, be not required. Used in conjunction with `HasAutoFields`, since
+the fields that aren't required are auto set. Also used in conjunction with `EditReadonlyAdminMixin` to allow manual
+setting of a field upon creation.
 
 ## Development and Testing
 

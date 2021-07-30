@@ -106,3 +106,14 @@ class HasAutoSlugAdminBlock(AdminBlock):
     fieldsets = (
         ("Identifiers", {'fields': ('slug',)}),
     )
+
+
+class TimeStampedModelAdminBlock(admin.ModelAdmin):
+    list_filter = ('created',)
+    list_filter_extra = ('modified',)
+    list_display = ('created',)
+    list_display_extra = ('modified',)
+    readonly_fields = ('created', 'modified')
+    fieldsets = (
+        ("Timestamps", {'fields': ('created', 'modified')}),
+    )
