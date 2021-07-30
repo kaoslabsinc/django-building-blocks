@@ -54,3 +54,18 @@ class TimeStampedExample(
 ):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+
+
+def default_json():
+    return {
+        'field': 'value',
+        'field2': 'value2',
+    }
+
+
+class AdminUtilsExample(
+    models.Model
+):
+    json = models.JSONField(default=default_json)
+    url = models.URLField()
+    image_url = models.URLField()

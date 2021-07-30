@@ -3,8 +3,9 @@ from django.contrib import admin
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
     HasInitialsAdminBlock, TimeStampedModelAdminBlock
+from building_blocks.admin.utils import json_field_pp, render_anchor, render_img
 from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
-    TimeStampedExample
+    TimeStampedExample, AdminUtilsExample
 
 
 @admin.register(HasUUIDExample)
@@ -111,3 +112,22 @@ class TimeStampedExampleAdmin(
     )
     readonly_fields = (*TimeStampedModelAdminBlock.readonly_fields,)
     fieldsets = (*TimeStampedModelAdminBlock.fieldsets,)
+
+
+@admin.register(AdminUtilsExample)
+class AdminUtilsExampleAdmin(
+    admin.ModelAdmin
+):
+    readonly_fields = ('json_pp', 'url_anchor', 'img')
+
+    @admin.display
+    def json_pp(self, obj: AdminUtilsExample):
+        return json_field_pp(obj.json)
+
+    @admin.display
+    def url_anchor(self, obj: AdminUtilsExample):
+        return render_anchor(obj.url, "Click me!")
+
+    @admin.display
+    def img(self, obj: AdminUtilsExample):
+        return render_img(obj.image_url)
