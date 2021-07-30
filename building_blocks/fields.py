@@ -19,6 +19,10 @@ class CaseInsensitiveFieldMixin:
 
 
 class ToLowerCaseFieldMixin:
+    """
+    Always save a field as lowercase
+    """
+
     def to_python(self, value):
         return super(ToLowerCaseFieldMixin, self).to_python(value).lower()
 
