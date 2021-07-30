@@ -47,3 +47,10 @@ class HasAutoFieldsExample(
     def set_auto_fields(self):
         if not self.name_upper:
             self.name_upper = self.name.upper()
+
+
+class TimeStampedExample(
+    models.Model
+):
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)

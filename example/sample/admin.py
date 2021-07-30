@@ -2,8 +2,9 @@ from django.contrib import admin
 
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
-    HasInitialsAdminBlock
-from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample
+    HasInitialsAdminBlock, TimeStampedModelAdminBlock
+from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
+    TimeStampedExample
 
 
 @admin.register(HasUUIDExample)
@@ -96,3 +97,17 @@ class HasAutoFieldsExampleAdmin(
     admin.ModelAdmin
 ):
     readonly_fields = ('name_upper',)
+
+
+@admin.register(TimeStampedExample)
+class TimeStampedExampleAdmin(
+    admin.ModelAdmin
+):
+    list_filter = (
+        *TimeStampedModelAdminBlock.list_filter, *TimeStampedModelAdminBlock.list_filter_extra
+    )
+    list_display = (
+        *TimeStampedModelAdminBlock.list_display, *TimeStampedModelAdminBlock.list_display_extra
+    )
+    readonly_fields = (*TimeStampedModelAdminBlock.readonly_fields,)
+    fieldsets = (*TimeStampedModelAdminBlock.fieldsets,)
