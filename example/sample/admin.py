@@ -3,9 +3,10 @@ from django.contrib import admin
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
     HasInitialsAdminBlock, TimeStampedModelAdminBlock
+from building_blocks.admin.inlines import AddInlineMixin, ListInlineMixin
 from building_blocks.admin.utils import json_field_pp, render_anchor, render_img
 from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
-    TimeStampedExample, AdminUtilsExample
+    TimeStampedExample, AdminUtilsExample, ContainerItem, Container
 
 
 @admin.register(HasUUIDExample)
@@ -131,3 +132,22 @@ class AdminUtilsExampleAdmin(
     @admin.display
     def img(self, obj: AdminUtilsExample):
         return render_img(obj.image_url)
+
+
+class ContainerItemInline(admin.TabularInline):
+    model = ContainerItem
+    extra = 0
+
+
+class ContainerItemAddInline(AddInlineMixin, ContainerItemInline):
+    pass
+
+
+class ContainerItemListInline(ListInlineMixin, ContainerItemInline):
+    readonly_fields = ('name',)
+    fields = ('name', 'email')
+
+
+@admin.register(Container)
+class ContainerAdmin(admin.ModelAdmin):
+    inlines = (ContainerItemListInline, ContainerItemAddInline)

@@ -2,6 +2,7 @@ from django.db import models
 
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
+from building_blocks.models.factories import HasNameFactory, HasEmailFactory
 from building_blocks.models.mixins import HasAutoFields
 
 
@@ -69,3 +70,18 @@ class AdminUtilsExample(
     json = models.JSONField(default=default_json)
     url = models.URLField()
     image_url = models.URLField()
+
+
+class Container(
+    HasNameFactory.as_abstract_model(),
+    models.Model
+):
+    pass
+
+
+class ContainerItem(
+    HasNameFactory.as_abstract_model(),
+    HasEmailFactory.as_abstract_model(optional=True),
+    models.Model
+):
+    container = models.ForeignKey(Container, on_delete=models.PROTECT)
