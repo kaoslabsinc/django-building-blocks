@@ -101,10 +101,11 @@ class HasUserAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     )
 
 
-class HasAutoSlugAdminBlock(AdminBlock):
+class HasAutoSlugAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     search_fields = ('slug',)
     list_display = ('slug',)
     readonly_fields = ('slug',)
+    edit_readonly_fields = ('slug',)
     fieldsets = (
         ("Identifiers", {'fields': ('slug',)}),
     )
