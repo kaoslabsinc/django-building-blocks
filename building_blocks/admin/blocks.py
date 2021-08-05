@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .filters import ArchiveStatusFilter
+from .mixins import EditReadonlyAdminMixin
 
 
 class AdminBlock(admin.ModelAdmin):
@@ -88,10 +89,11 @@ class HasIconAdminBlock(AdminBlock):
     )
 
 
-class HasUserAdminBlock(AdminBlock):
+class HasUserAdminBlock(EditReadonlyAdminMixin, AdminBlock):
     search_fields = ('user__username',)
     list_display = ('user',)
 
+    edit_readonly_fields = ('user',)
     autocomplete_fields = ('user',)
     fields = ('user',)
     fieldsets = (
