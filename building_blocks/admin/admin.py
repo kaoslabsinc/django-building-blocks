@@ -31,7 +31,7 @@ class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
         change_actions = super().get_change_actions(request, object_id, form_url)
         if change_actions:
             change_actions = list(change_actions)
-            if self.__obj.is_active:
+            if self._get_change_action_object().is_active:
                 change_actions.remove('restore')
             else:
                 change_actions.remove('archive')
@@ -66,7 +66,7 @@ class PublishableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
         change_actions = super().get_change_actions(request, object_id, form_url)
         if change_actions:
             change_actions = list(change_actions)
-            obj: Publishable = self.__obj
+            obj: Publishable = self._get_change_action_object()
             if obj.publishing_stage != PublishingStage.archived:
                 change_actions.remove('restore')
             if obj.publishing_stage != PublishingStage.published:

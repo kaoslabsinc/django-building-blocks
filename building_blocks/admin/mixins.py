@@ -86,3 +86,6 @@ class DjangoObjectActionsPermissionsMixin(DjangoObjectActions):
             return ()
         else:
             return super(DjangoObjectActionsPermissionsMixin, self).get_change_actions(request, object_id, form_url)
+
+    def _get_change_action_object(self):
+        return self.__obj
