@@ -42,22 +42,22 @@ class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
 class PublishableAdmin(DjangoObjectActions, admin.ModelAdmin):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
 
-    @admin.action
+    @admin.action(permissions=['change'])
     def publish(self, request, obj: Publishable):
         obj.publish()
         obj.save()
 
-    @admin.action
+    @admin.action(permissions=['change'])
     def unpublish(self, request, obj: Publishable):
         obj.unpublish()
         obj.save()
 
-    @admin.action
+    @admin.action(permissions=['change'])
     def archive(self, request, obj: Publishable):
         obj.archive()
         obj.save()
 
-    @admin.action
+    @admin.action(permissions=['change'])
     def restore(self, request, obj: Publishable):
         obj.restore()
         obj.save()
