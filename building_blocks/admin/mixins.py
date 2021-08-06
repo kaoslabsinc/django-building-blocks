@@ -1,4 +1,5 @@
 from django.contrib.admin.options import BaseModelAdmin
+from django_object_actions import DjangoObjectActions
 
 
 class CheckUserAdminMixin(BaseModelAdmin):
@@ -70,3 +71,21 @@ class HasAutoSlugAdminMixin(EditReadonlyAdminMixin):
         if obj:  # editing an existing object
             return prepopulated_fields
         return {**prepopulated_fields, 'slug': (self.slug_source,)}
+
+
+class DjangoObjectActionsPermissionsMixin(DjangoObjectActions):
+    """
+    Built on DjangoObjectActions Admin, it checks if the user has change permissions on the object in order to show the
+    change actions
+    """
+
+    def get_change_actions(self, request, object_id, form_url):
+        obj = self.model.objects.get(pk=object_id)
+        self.__obj = obj
+        if not self.has_change_permission(request, obj):
+            return ()
+        else:
+            return super(DjangoObjectActionsPermissionsMixin, self).get_change_actions(request, object_id, form_url)
+
+    def _get_change_action_object(self):
+        return self.__obj

@@ -2,14 +2,14 @@ from django.contrib import admin
 from django.contrib.auth import get_permission_codename
 from django.db.models import Q
 from django.utils.timezone import now
-from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
+from django_object_actions import takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin
 from ..models import Archivable, Publishable
 from ..models.enums import PublishingStage
 
 
-class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
+class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
     actions = ('archive', 'restore')
     change_actions = ('archive', 'restore')
 
@@ -18,57 +18,63 @@ class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
         return obj.archive_status.capitalize()
 
     @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
     def archive(self, request, queryset):
         queryset.update(archived_at=now())
 
     @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
     def restore(self, request, queryset):
         queryset.update(archived_at=None)
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
-        change_actions = list(change_actions)
-        obj: Archivable = self.model.objects.get(pk=object_id)
-        if obj.is_active:
-            change_actions.remove('restore')
-        else:
-            change_actions.remove('archive')
+        if change_actions:
+            change_actions = list(change_actions)
+            if self._get_change_action_object().is_active:
+                change_actions.remove('restore')
+            else:
+                change_actions.remove('archive')
 
         return change_actions
 
 
-class PublishableAdmin(DjangoObjectActions, admin.ModelAdmin):
+class PublishableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
 
+    @admin.action(permissions=['change'])
     def publish(self, request, obj: Publishable):
         obj.publish()
         obj.save()
 
+    @admin.action(permissions=['change'])
     def unpublish(self, request, obj: Publishable):
         obj.unpublish()
         obj.save()
 
+    @admin.action(permissions=['change'])
     def archive(self, request, obj: Publishable):
         obj.archive()
         obj.save()
 
+    @admin.action(permissions=['change'])
     def restore(self, request, obj: Publishable):
         obj.restore()
         obj.save()
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
-        change_actions = list(change_actions)
-        obj: Publishable = self.model.objects.get(pk=object_id)
-
-        if obj.publishing_stage != PublishingStage.archived:
-            change_actions.remove('restore')
-        if obj.publishing_stage != PublishingStage.published:
-            change_actions.remove('unpublish')
-        if obj.publishing_stage != PublishingStage.draft:
-            change_actions.remove('publish')
-        if obj.publishing_stage == PublishingStage.archived:
-            change_actions.remove('archive')
+        if change_actions:
+            change_actions = list(change_actions)
+            obj: Publishable = self._get_change_action_object()
+            if obj.publishing_stage != PublishingStage.archived:
+                change_actions.remove('restore')
+            if obj.publishing_stage != PublishingStage.published:
+                change_actions.remove('unpublish')
+            if obj.publishing_stage != PublishingStage.draft:
+                change_actions.remove('publish')
+            if obj.publishing_stage == PublishingStage.archived:
+                change_actions.remove('archive')
 
         return change_actions
 
