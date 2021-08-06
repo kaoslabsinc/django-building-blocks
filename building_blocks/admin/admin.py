@@ -17,20 +17,23 @@ class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
     def archive_status(self, obj: Archivable):
         return obj.archive_status.capitalize()
 
-    @admin.action
     @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
     def archive(self, request, queryset):
         queryset.update(archived_at=now())
 
-    @admin.action
     @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
     def restore(self, request, queryset):
         queryset.update(archived_at=None)
 
     def get_change_actions(self, request, object_id, form_url):
+        obj: Archivable = self.model.objects.get(pk=object_id)
+        if not self.has_change_permission(request, obj):
+            return ()
+
         change_actions = super().get_change_actions(request, object_id, form_url)
         change_actions = list(change_actions)
-        obj: Archivable = self.model.objects.get(pk=object_id)
         if obj.is_active:
             change_actions.remove('restore')
         else:
