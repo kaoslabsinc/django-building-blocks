@@ -4,12 +4,12 @@ from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin
 from ..models import Archivable, Publishable
 from ..models.enums import PublishingStage
 
 
-class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
+class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
     actions = ('archive', 'restore')
     change_actions = ('archive', 'restore')
 
@@ -28,16 +28,13 @@ class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
         queryset.update(archived_at=None)
 
     def get_change_actions(self, request, object_id, form_url):
-        obj: Archivable = self.model.objects.get(pk=object_id)
-        if not self.has_change_permission(request, obj):
-            return ()
-
         change_actions = super().get_change_actions(request, object_id, form_url)
-        change_actions = list(change_actions)
-        if obj.is_active:
-            change_actions.remove('restore')
-        else:
-            change_actions.remove('archive')
+        if change_actions:
+            change_actions = list(change_actions)
+            if self.__obj.is_active:
+                change_actions.remove('restore')
+            else:
+                change_actions.remove('archive')
 
         return change_actions
 
