@@ -17,10 +17,12 @@ class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
     def archive_status(self, obj: Archivable):
         return obj.archive_status.capitalize()
 
+    @admin.action
     @takes_instance_or_queryset
     def archive(self, request, queryset):
         queryset.update(archived_at=now())
 
+    @admin.action
     @takes_instance_or_queryset
     def restore(self, request, queryset):
         queryset.update(archived_at=None)
@@ -40,18 +42,22 @@ class ArchivableAdmin(DjangoObjectActions, admin.ModelAdmin):
 class PublishableAdmin(DjangoObjectActions, admin.ModelAdmin):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
 
+    @admin.action
     def publish(self, request, obj: Publishable):
         obj.publish()
         obj.save()
 
+    @admin.action
     def unpublish(self, request, obj: Publishable):
         obj.unpublish()
         obj.save()
 
+    @admin.action
     def archive(self, request, obj: Publishable):
         obj.archive()
         obj.save()
 
+    @admin.action
     def restore(self, request, obj: Publishable):
         obj.restore()
         obj.save()
