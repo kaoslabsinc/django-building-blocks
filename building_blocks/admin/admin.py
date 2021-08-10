@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth import get_permission_codename
 from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
@@ -84,12 +83,6 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
     Limit access to objects who aren't 'owned' by the user (obj.user != request.user).
     The user needs to be either the owner or have the `see_all` permission on the model.
     """
-    default_see_all_perm = 'see_all'
-
-    def has_see_all_permission(self, request):
-        opts = self.opts
-        codename = get_permission_codename(self.default_see_all_perm, opts)
-        return request.user.has_perm(f'{opts.app_label}.{codename}')
 
     def check_user_q(self, request):
         return Q(user=request.user)
