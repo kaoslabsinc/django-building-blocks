@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
@@ -85,14 +85,13 @@ class HasIconFactory(AbstractModelFactory):
 class HasUserFactory(AbstractModelFactory):
     @staticmethod
     def as_abstract_model(related_name=None, one_to_one=False, optional=False, on_delete=None):
-        User = get_user_model()
         user_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
 
         class HasUser(models.Model):
             class Meta:
                 abstract = True
 
-            user = user_field_cls(User, on_delete=on_delete, related_name=related_name,
+            user = user_field_cls(settings.AUTH_USER_MODEL, on_delete=on_delete, related_name=related_name,
                                   **generate_field_kwargs(optional_null=optional))
 
         return HasUser
