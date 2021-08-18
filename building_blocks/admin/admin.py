@@ -3,14 +3,19 @@ from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin
 from ..models import Archivable, Publishable
 from ..models.enums import PublishingStage
 
 
-class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
+class ArchivableAdmin(
+    AreYouSureActionsAdminMixin,
+    DjangoObjectActionsPermissionsMixin,
+    admin.ModelAdmin
+):
     actions = ('archive', 'restore')
     change_actions = ('archive', 'restore')
+    are_you_sure_actions = ('archive', 'restore')
 
     @admin.display(ordering='archived_at')
     def archive_status(self, obj: Archivable):
@@ -38,8 +43,13 @@ class ArchivableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
         return change_actions
 
 
-class PublishableAdmin(DjangoObjectActionsPermissionsMixin, admin.ModelAdmin):
+class PublishableAdmin(
+    AreYouSureActionsAdminMixin,
+    DjangoObjectActionsPermissionsMixin,
+    admin.ModelAdmin
+):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
+    are_you_sure_actions = ('publish', 'unpublish', 'archive', 'restore')
 
     @admin.action(permissions=['change'])
     def publish(self, request, obj: Publishable):
