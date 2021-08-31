@@ -14,7 +14,7 @@ class HasUUID(models.Model):
     class Meta:
         abstract = True
 
-    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(verbose_name="UUID", unique=True, default=uuid.uuid4, editable=False)
 
     @property
     def uuid_str(self):
