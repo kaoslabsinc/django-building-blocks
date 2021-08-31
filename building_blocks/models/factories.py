@@ -149,3 +149,15 @@ class HasAutoSlugFactory(AbstractModelFactory):
             slug = models.SlugField(max_length=255, unique=True)
 
         return HasAutoSlug
+
+
+class HasAvatarFactory(AbstractModelFactory):
+    @staticmethod
+    def as_abstract_model(upload_to='', required=False):
+        class HasAvatar(models.Model):
+            class Meta:
+                abstract = True
+
+            avatar = models.ImageField(upload_to=upload_to, blank=not required)
+
+        return HasAvatar

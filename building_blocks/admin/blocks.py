@@ -120,3 +120,9 @@ class TimeStampedModelAdminBlock(admin.ModelAdmin):
     fieldsets = (
         ("Timestamps", {'fields': ('created', 'modified')}),
     )
+
+
+class HasAvatarAdminBlock(AdminBlock):
+    fieldsets = (
+        ("Media", {'fields': ('avatar',)}),
+    )
