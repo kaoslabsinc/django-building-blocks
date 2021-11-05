@@ -54,15 +54,24 @@ class Archivable(models.Model):
     objects = ArchivableQueryset.as_manager()
 
 
-class Publishable(models.Model):
+class Publishable(Archivable, models.Model):
     """
     Make the model have 3 stages of publication. Draft, Published and Archived.
     """
     class Meta:
         abstract = True
 
-    publishing_stage = models.CharField(max_length=30, choices=PublishingStage.choices, default=PublishingStage.draft)
-    publishing_stage_changed_at = models.DateTimeField(null=True, blank=True)
+    published_at = models.DateTimeField(null=True, blank=True)
+
+    @property
+    def publishing_stage(self):
+        if self.archived_at is None:
+            if not self.published_at:
+                return PublishingStage.draft
+            else:
+                return PublishingStage.published
+        else:
+            return PublishingStage.archived
 
     @property
     def is_active(self):
@@ -70,25 +79,18 @@ class Publishable(models.Model):
 
     def publish(self):
         assert self.publishing_stage == PublishingStage.draft, "Can only publish items in draft"
-        self.publishing_stage = PublishingStage.published
-        self.publishing_stage_changed_at = now()
+        self.published_at = now()
         return self
 
     def unpublish(self):
         assert self.publishing_stage == PublishingStage.published, "Can only unpublish items that are already published"
-        self.publishing_stage = PublishingStage.draft
-        self.publishing_stage_changed_at = now()
+        self.published_at = None
         return self
 
-    def archive(self):
-        self.publishing_stage = PublishingStage.archived
-        self.publishing_stage_changed_at = now()
-        return self
-
-    def restore(self):
+    def restore(self, to_draft=True):
         assert self.publishing_stage == PublishingStage.archived, "Can only restore items in archive"
-        self.publishing_stage = PublishingStage.draft
-        self.publishing_stage_changed_at = now()
-        return self
+        if to_draft:
+            self.published_at = None  # to set it to draft
+        return super(Publishable, self).restore()
 
     objects = PublishableQueryset.as_manager()

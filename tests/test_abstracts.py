@@ -46,20 +46,18 @@ def test_Publishable_publish(freezer):
     publishable = PublishableHasUUID()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage_changed_at is None
+    assert publishable.published_at is None
 
     publishable.publish()
 
     assert publishable.is_active
     assert publishable.publishing_stage == PublishingStage.published
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.published_at == now()
 
 
 def test_Publishable_unpublish(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.publish()
 
     assert publishable.is_active
 
@@ -67,14 +65,12 @@ def test_Publishable_unpublish(freezer):
 
     assert not publishable.is_active
     assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.published_at is None
 
 
 def test_Publishable_archive(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.publish()
 
     assert publishable.is_active
 
@@ -82,14 +78,12 @@ def test_Publishable_archive(freezer):
 
     assert not publishable.is_active
     assert publishable.publishing_stage == PublishingStage.archived
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.published_at == now()
 
 
 def test_Publishable_restore(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.archive()
 
     assert not publishable.is_active
 
@@ -97,22 +91,15 @@ def test_Publishable_restore(freezer):
 
     assert not publishable.is_active
     assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.published_at is None
 
 
 def test_Publishable_assertions():
-    draft = PublishableHasUUID(
-        publishing_stage=PublishingStage.draft,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    published = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    archived = PublishableHasUUID(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    draft = PublishableHasUUID()
+    published = PublishableHasUUID()
+    published.publish()
+    archived = PublishableHasUUID()
+    archived.archive()
 
     # publish()
     with pytest.raises(AssertionError):
