@@ -62,6 +62,7 @@ class Publishable(Archivable, models.Model):
         abstract = True
 
     published_at = models.DateTimeField(null=True, blank=True)
+    first_published_at = models.DateTimeField(null=True, blank=True)
 
     @property
     def publishing_stage(self):
@@ -79,7 +80,10 @@ class Publishable(Archivable, models.Model):
 
     def publish(self):
         assert self.publishing_stage == PublishingStage.draft, "Can only publish items in draft"
-        self.published_at = now()
+        right_now = now()
+        if not self.first_published_at:
+            self.first_published_at = right_now
+        self.published_at = right_now
         return self
 
     def unpublish(self):

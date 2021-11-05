@@ -118,3 +118,37 @@ def test_Publishable_assertions():
         draft.restore()
     with pytest.raises(AssertionError):
         published.restore()
+
+
+def test_Publishable_first_published_at(db):
+    publishable = PublishableHasUUID.objects.create()
+    publishable.publish().save()
+    assert publishable.first_published_at
+    first_published_at = publishable.first_published_at
+
+    publishable.unpublish().save()
+    publishable.refresh_from_db()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.publish().save()
+    publishable.refresh_from_db()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+    assert publishable.published_at != first_published_at
+
+    publishable.archive().save()
+    publishable.refresh_from_db()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.restore().save()
+    publishable.refresh_from_db()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.publish().save()
+    publishable.refresh_from_db()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+    assert publishable.published_at != first_published_at
