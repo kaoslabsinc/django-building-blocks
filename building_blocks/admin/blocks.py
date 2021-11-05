@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .filters import ArchiveStatusFilter
+from .filters import ArchiveStatusFilter, PublishingStageFilter
 from .mixins import EditReadonlyAdminMixin
 
 
@@ -40,10 +40,10 @@ class ArchivableAdminBlock(AdminBlock):
 
 class PublishableAdminBlock(AdminBlock):
     list_display = ('publishing_stage',)
-    list_filter = ('publishing_stage',)
+    list_filter = (PublishingStageFilter,)
 
-    readonly_fields = ('publishing_stage', 'publishing_stage_changed_at',)
-    fields = ('publishing_stage', 'publishing_stage_changed_at',)
+    readonly_fields = ('publishing_stage', 'published_at', 'first_published_at',)
+    fields = ('publishing_stage', 'published_at', 'first_published_at',)
     fieldsets = (
         ("Publishing", {'fields': fields}),
     )

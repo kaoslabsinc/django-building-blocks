@@ -14,14 +14,12 @@ class ArchivableQueryset(models.QuerySet):
         return self.filter(~ArchivableQueryset._Q_IS_ACTIVE)
 
 
-class PublishableQueryset(models.QuerySet):
+class PublishableQueryset(ArchivableQueryset):
     def draft(self):
-        return self.filter(publishing_stage=PublishingStage.draft)
+        return ArchivableQueryset.active(self).filter(published_at__isnull=True)
 
     def published(self):
-        return self.filter(publishing_stage=PublishingStage.published)
+        return ArchivableQueryset.active(self).filter(published_at__isnull=False)
 
-    active = published
-
-    def archived(self):
-        return self.filter(publishing_stage=PublishingStage.archived)
+    def active(self):
+        return self.published()

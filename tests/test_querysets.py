@@ -23,18 +23,11 @@ def test_ArchivableQueryset():
 
 
 def test_PublishableQueryset():
-    draft = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.draft,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    published = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    archived = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    draft = PublishableHasUUID.objects.create()
+    published = PublishableHasUUID.objects.create()
+    published.publish().save()
+    archived = PublishableHasUUID.objects.create()
+    archived.archive().save()
 
     # draft()
     assert draft in PublishableHasUUID.objects.draft()
