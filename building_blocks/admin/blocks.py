@@ -40,7 +40,7 @@ class ArchivableAdminBlock(AdminBlock):
 
 class PublishableAdminBlock(AdminBlock):
     list_display = ('publishing_stage',)
-    list_filter = (PublishingStageFilter,)  # TODO
+    list_filter = (PublishingStageFilter,)
 
     readonly_fields = ('publishing_stage', 'published_at', 'first_published_at',)
     fields = ('publishing_stage', 'published_at', 'first_published_at',)
