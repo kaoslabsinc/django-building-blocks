@@ -42,8 +42,8 @@ class PublishableAdminBlock(AdminBlock):
     list_display = ('publishing_stage',)
     list_filter = (PublishingStageFilter,)  # TODO
 
-    readonly_fields = ('publishing_stage', 'published_at',)
-    fields = ('publishing_stage', 'published_at',)
+    readonly_fields = ('publishing_stage', 'published_at', 'first_published_at',)
+    fields = ('publishing_stage', 'published_at', 'first_published_at',)
     fieldsets = (
         ("Publishing", {'fields': fields}),
     )
