@@ -4,8 +4,8 @@ from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
 
 from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin
-from ..models import Archivable, Publishable
-from ..models.enums import PublishingStage
+from ..models import Publishable
+from ..models.enums import ArchiveStatus, PublishingStatus
 
 
 class ArchivableAdmin(
@@ -14,22 +14,18 @@ class ArchivableAdmin(
     admin.ModelAdmin
 ):
     actions = ('archive', 'restore')
-    change_actions = ('archive', 'restore')
-    are_you_sure_actions = ('archive', 'restore')
-
-    @admin.display(ordering='archived_at')
-    def archive_status(self, obj: Archivable):
-        return obj.archive_status.capitalize()
+    change_actions = actions
+    are_you_sure_actions = actions
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def archive(self, request, queryset):
-        queryset.update(archived_at=now())
+        queryset.update(status=ArchiveStatus.archived)
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def restore(self, request, queryset):
-        queryset.update(archived_at=None)
+        queryset.update(status=ArchiveStatus.active)
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
@@ -48,41 +44,48 @@ class PublishableAdmin(
     DjangoObjectActionsPermissionsMixin,
     admin.ModelAdmin
 ):
-    change_actions = ('publish', 'unpublish', 'archive', 'restore')
-    are_you_sure_actions = ('publish', 'unpublish', 'archive', 'restore')
+    actions = ('publish', 'unpublish', 'archive', 'restore')
+    change_actions = actions
+    are_you_sure_actions = actions
 
+    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def publish(self, request, obj: Publishable):
-        obj.publish()
-        obj.save()
+    def publish(self, request, queryset):
+        queryset.filter(first_published_at__isnull=True).update(
+            status=PublishingStatus.published,
+            first_published_at=now()
+        )
+        queryset.filter(first_published_at__isnull=False).update(
+            status=PublishingStatus.published,
+        )
 
+    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def unpublish(self, request, obj: Publishable):
-        obj.unpublish()
-        obj.save()
+    def unpublish(self, request, queryset):
+        queryset.update(status=PublishingStatus.draft)
 
+    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def archive(self, request, obj: Publishable):
-        obj.archive()
-        obj.save()
+    def archive(self, request, queryset):
+        queryset.update(status=PublishingStatus.archived)
 
+    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def restore(self, request, obj: Publishable):
-        obj.restore()
-        obj.save()
+    def restore(self, request, queryset):
+        queryset.update(status=PublishingStatus.draft)
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
         if change_actions:
             change_actions = list(change_actions)
             obj: Publishable = self._get_change_action_object()
-            if obj.publishing_stage != PublishingStage.archived:
+            if obj.status != PublishingStatus.archived:
                 change_actions.remove('restore')
-            if obj.publishing_stage != PublishingStage.published:
+            if obj.status != PublishingStatus.published:
                 change_actions.remove('unpublish')
-            if obj.publishing_stage != PublishingStage.draft:
+            if obj.status != PublishingStatus.draft:
                 change_actions.remove('publish')
-            if obj.publishing_stage == PublishingStage.archived:
+            if obj.status == PublishingStatus.archived:
                 change_actions.remove('archive')
 
         return change_actions
