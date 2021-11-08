@@ -1,10 +1,9 @@
-import datetime as dt
 import uuid
 
 import pytest
-from django.utils.timezone import now
+from django_fsm import TransitionNotAllowed
 
-from building_blocks.models.enums import PublishingStage
+from building_blocks.models.enums import PublishingStatus
 from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
 
 
@@ -22,37 +21,36 @@ def test_Archivable_archive():
     archivable = ArchivableHasUUID()
 
     assert archivable.is_active
-    assert archivable.archive_status == 'active'
+    assert archivable.status == 'active'
 
     archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.archive_status == 'archived'
+    assert archivable.status == 'archived'
 
 
 def test_Archivable_restore():
-    archivable = ArchivableHasUUID(archived_at=now())
+    archivable = ArchivableHasUUID()
+    archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.archive_status == 'archived'
+    assert archivable.status == 'archived'
 
     archivable.restore()
 
     assert archivable.is_active
-    assert archivable.archive_status == 'active'
+    assert archivable.status == 'active'
 
 
 def test_Publishable_publish(freezer):
     publishable = PublishableHasUUID()
 
     assert not publishable.is_active
-    assert publishable.published_at is None
 
     publishable.publish()
 
     assert publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.published
-    assert publishable.published_at == now()
+    assert publishable.status == PublishingStatus.published
 
 
 def test_Publishable_unpublish(freezer):
@@ -64,8 +62,7 @@ def test_Publishable_unpublish(freezer):
     publishable.unpublish()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.published_at is None
+    assert publishable.status == PublishingStatus.draft
 
 
 def test_Publishable_archive(freezer):
@@ -77,8 +74,7 @@ def test_Publishable_archive(freezer):
     publishable.archive()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.archived
-    assert publishable.published_at == now()
+    assert publishable.status == PublishingStatus.archived
 
 
 def test_Publishable_restore(freezer):
@@ -90,8 +86,7 @@ def test_Publishable_restore(freezer):
     publishable.restore()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.published_at is None
+    assert publishable.status == PublishingStatus.draft
 
 
 def test_Publishable_assertions():
@@ -102,53 +97,52 @@ def test_Publishable_assertions():
     archived.archive()
 
     # publish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         published.publish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         archived.publish()
 
     # unpublish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         draft.unpublish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         archived.unpublish()
 
     # restore()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         draft.restore()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         published.restore()
 
 
 def test_Publishable_first_published_at(db):
     publishable = PublishableHasUUID.objects.create()
-    publishable.publish().save()
+    publishable.publish()
+    publishable.save()
     assert publishable.first_published_at
     first_published_at = publishable.first_published_at
 
-    publishable.unpublish().save()
-    publishable.refresh_from_db()
+    publishable.unpublish()
+    publishable.save()
     assert publishable.first_published_at
     assert publishable.first_published_at == first_published_at
 
-    publishable.publish().save()
-    publishable.refresh_from_db()
-    assert publishable.first_published_at
-    assert publishable.first_published_at == first_published_at
-    assert publishable.published_at != first_published_at
-
-    publishable.archive().save()
-    publishable.refresh_from_db()
+    publishable.publish()
+    publishable.save()
     assert publishable.first_published_at
     assert publishable.first_published_at == first_published_at
 
-    publishable.restore().save()
-    publishable.refresh_from_db()
+    publishable.archive()
+    publishable.save()
     assert publishable.first_published_at
     assert publishable.first_published_at == first_published_at
 
-    publishable.publish().save()
-    publishable.refresh_from_db()
+    publishable.restore()
+    publishable.save()
     assert publishable.first_published_at
     assert publishable.first_published_at == first_published_at
-    assert publishable.published_at != first_published_at
+
+    publishable.publish()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
