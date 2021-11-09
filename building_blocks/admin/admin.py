@@ -104,7 +104,7 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
         return Q(user=request.user)
 
 
-class NameSlugAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
+class NameSlugModelAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
     slug_source = 'name'
 
     search_fields = (
@@ -121,5 +121,5 @@ class NameSlugAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
     )
 
 
-class NameSlugAdmin(NameSlugAdminMixin, admin.ModelAdmin):
+class NameSlugModelAdmin(NameSlugModelAdminMixin, admin.ModelAdmin):
     pass
