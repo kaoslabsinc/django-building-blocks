@@ -91,5 +91,5 @@ class Orderable(models.Model):
     order = models.PositiveIntegerField(default=DEFAULT_ORDER)
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('order', 'id')
         abstract = True

@@ -152,8 +152,11 @@ def test_Publishable_first_published_at(db):
 def test_Orderable(db):
     obj1 = OrderedStuff.objects.create(name="asd")
     obj2 = OrderedStuff.objects.create(name="asd2")
-
     assert obj1.order == obj2.order == Orderable.DEFAULT_ORDER
+
+    qs = OrderedStuff.objects.all()
+    assert qs.first() == obj1
+    assert qs.last() == obj2
 
     obj2.order = 1
     obj2.save()
