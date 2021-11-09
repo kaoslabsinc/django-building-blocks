@@ -98,4 +98,5 @@ class OrderedStuff(
     Orderable,
     models.Model
 ):
-    pass
+    class Meta(Orderable.Meta):
+        pass
