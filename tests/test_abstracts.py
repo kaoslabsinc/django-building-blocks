@@ -3,8 +3,9 @@ import uuid
 import pytest
 from django_fsm import TransitionNotAllowed
 
+from building_blocks.models.abstracts import Orderable
 from building_blocks.models.enums import PublishingStatus
-from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
+from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, OrderedStuff
 
 
 def test_HasUUID():
@@ -146,3 +147,15 @@ def test_Publishable_first_published_at(db):
     publishable.save()
     assert publishable.first_published_at
     assert publishable.first_published_at == first_published_at
+
+
+def test_Orderable(db):
+    obj1 = OrderedStuff.objects.create(name="asd", order=1)
+    obj2 = OrderedStuff.objects.create(name="asd2")
+
+    assert obj1.order == 1
+    assert obj2.order == Orderable.DEFAULT_ORDER
+
+    qs = OrderedStuff.objects.all()
+    assert qs.first() == obj1
+    assert qs.last() == obj2
