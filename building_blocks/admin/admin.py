@@ -3,7 +3,9 @@ from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin
+from .blocks import HasNameAdminBlock, HasAutoSlugAdminBlock
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, \
+    HasAutoSlugAdminMixin
 from ..models import Publishable
 from ..models.enums import ArchiveStatus, PublishingStatus
 
@@ -99,3 +101,20 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
 
     def check_user_q(self, request):
         return Q(user=request.user)
+
+
+class NameSlugAdmin(HasAutoSlugAdminMixin, admin.ModelAdmin):
+    slug_source = 'name'
+
+    search_fields = (
+        *HasNameAdminBlock.search_fields,
+        *HasAutoSlugAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasNameAdminBlock.list_display,
+        *HasAutoSlugAdminBlock.list_display,
+    )
+    fieldsets = (
+        (None, {'fields': HasNameAdminBlock.fields}),
+        *HasAutoSlugAdminBlock.fieldsets,
+    )
