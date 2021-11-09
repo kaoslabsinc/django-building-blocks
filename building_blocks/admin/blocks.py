@@ -122,3 +122,13 @@ class HasAvatarAdminBlock(AdminBlock):
     fieldsets = (
         ("Media", {'fields': fields}),
     )
+
+
+class OrderableAdminBlock(AdminBlock):
+    ordering = ('order',)
+    list_display = ('order',)
+    list_editable = ('order',)
+    fields = ('order',)
+    fieldsets = (
+        ("View", {'fields': fields}),
+    )

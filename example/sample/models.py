@@ -3,6 +3,7 @@ from django.db import models
 from building_blocks.fields import LowerCaseCharField
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
+from building_blocks.models.abstracts import Orderable
 from building_blocks.models.factories import HasNameFactory, HasEmailFactory
 from building_blocks.models.mixins import HasAutoFields
 
@@ -90,3 +91,12 @@ class ContainerItem(
 
 class LowerCaseCharFieldExample(models.Model):
     lc_field = LowerCaseCharField(max_length=100)
+
+
+class OrderedStuff(
+    HasNameFactory.as_abstract_model(),
+    Orderable,
+    models.Model
+):
+    class Meta(Orderable.Meta):
+        pass
