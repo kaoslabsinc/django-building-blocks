@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
 from django.db.models import Q
 from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
@@ -103,7 +104,7 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
         return Q(user=request.user)
 
 
-class NameSlugAdmin(HasAutoSlugAdminMixin, admin.ModelAdmin):
+class NameSlugAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
     slug_source = 'name'
 
     search_fields = (
@@ -118,3 +119,7 @@ class NameSlugAdmin(HasAutoSlugAdminMixin, admin.ModelAdmin):
         (None, {'fields': HasNameAdminBlock.fields}),
         *HasAutoSlugAdminBlock.fieldsets,
     )
+
+
+class NameSlugAdmin(NameSlugAdminMixin, admin.ModelAdmin):
+    pass
