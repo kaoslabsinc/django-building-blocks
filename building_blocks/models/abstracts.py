@@ -84,3 +84,12 @@ class Publishable(Archivable, models.Model):
         return PublishingStatus.draft if to_draft else PublishingStatus.published
 
     objects = PublishableQueryset.as_manager()
+
+
+class Orderable(models.Model):
+    DEFAULT_ORDER = 99999
+    order = models.PositiveIntegerField(default=DEFAULT_ORDER)
+
+    class Meta:
+        ordering = ('order',)
+        abstract = True

@@ -2,11 +2,11 @@ from django.contrib import admin
 
 from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
 from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
-    HasInitialsAdminBlock, TimeStampedModelAdminBlock
+    HasInitialsAdminBlock, TimeStampedModelAdminBlock, OrderableAdminBlock, HasNameAdminBlock
 from building_blocks.admin.inlines import AddInlineMixin, ListInlineMixin
 from building_blocks.admin.utils import json_field_pp, render_anchor, render_img
 from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
-    TimeStampedExample, AdminUtilsExample, ContainerItem, Container, LowerCaseCharFieldExample
+    TimeStampedExample, AdminUtilsExample, ContainerItem, Container, LowerCaseCharFieldExample, OrderedStuff
 
 
 @admin.register(HasUUIDExample)
@@ -154,3 +154,14 @@ class ContainerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(LowerCaseCharFieldExample)
+
+
+@admin.register(OrderedStuff)
+class OrderedStuffAdmin(admin.ModelAdmin):
+    ordering = OrderableAdminBlock.ordering
+    list_display = (*HasNameAdminBlock.list_display, *OrderableAdminBlock.list_display)
+    list_editable = OrderableAdminBlock.list_editable
+    fieldsets = (
+        (None, {'fields': HasNameAdminBlock.fields}),
+        *OrderableAdminBlock.fieldsets,
+    )
