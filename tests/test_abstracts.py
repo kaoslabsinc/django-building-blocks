@@ -1,11 +1,11 @@
-import datetime as dt
 import uuid
 
 import pytest
-from django.utils.timezone import now
+from django_fsm import TransitionNotAllowed
 
-from building_blocks.models.enums import PublishingStage
-from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID
+from building_blocks.models.abstracts import Orderable
+from building_blocks.models.enums import PublishingStatus
+from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, OrderedStuff
 
 
 def test_HasUUID():
@@ -22,112 +22,144 @@ def test_Archivable_archive():
     archivable = ArchivableHasUUID()
 
     assert archivable.is_active
-    assert archivable.archive_status == 'active'
+    assert archivable.status == 'active'
 
     archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.archive_status == 'archived'
+    assert archivable.status == 'archived'
 
 
 def test_Archivable_restore():
-    archivable = ArchivableHasUUID(archived_at=now())
+    archivable = ArchivableHasUUID()
+    archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.archive_status == 'archived'
+    assert archivable.status == 'archived'
 
     archivable.restore()
 
     assert archivable.is_active
-    assert archivable.archive_status == 'active'
+    assert archivable.status == 'active'
 
 
 def test_Publishable_publish(freezer):
     publishable = PublishableHasUUID()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage_changed_at is None
 
     publishable.publish()
 
     assert publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.published
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.status == PublishingStatus.published
 
 
 def test_Publishable_unpublish(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.publish()
 
     assert publishable.is_active
 
     publishable.unpublish()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.status == PublishingStatus.draft
 
 
 def test_Publishable_archive(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.publish()
 
     assert publishable.is_active
 
     publishable.archive()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.archived
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.status == PublishingStatus.archived
 
 
 def test_Publishable_restore(freezer):
-    publishable = PublishableHasUUID(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    publishable = PublishableHasUUID()
+    publishable.archive()
 
     assert not publishable.is_active
 
     publishable.restore()
 
     assert not publishable.is_active
-    assert publishable.publishing_stage == PublishingStage.draft
-    assert publishable.publishing_stage_changed_at == now()
+    assert publishable.status == PublishingStatus.draft
 
 
 def test_Publishable_assertions():
-    draft = PublishableHasUUID(
-        publishing_stage=PublishingStage.draft,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    published = PublishableHasUUID(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    archived = PublishableHasUUID(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    draft = PublishableHasUUID()
+    published = PublishableHasUUID()
+    published.publish()
+    archived = PublishableHasUUID()
+    archived.archive()
 
     # publish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         published.publish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         archived.publish()
 
     # unpublish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         draft.unpublish()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         archived.unpublish()
 
     # restore()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         draft.restore()
-    with pytest.raises(AssertionError):
+    with pytest.raises(TransitionNotAllowed):
         published.restore()
+
+
+def test_Publishable_first_published_at(db):
+    publishable = PublishableHasUUID.objects.create()
+    publishable.publish()
+    publishable.save()
+    assert publishable.first_published_at
+    first_published_at = publishable.first_published_at
+
+    publishable.unpublish()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.publish()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.archive()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.restore()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+    publishable.publish()
+    publishable.save()
+    assert publishable.first_published_at
+    assert publishable.first_published_at == first_published_at
+
+
+def test_Orderable(db):
+    obj1 = OrderedStuff.objects.create(name="asd")
+    obj2 = OrderedStuff.objects.create(name="asd2")
+    assert obj1.order == obj2.order == Orderable.DEFAULT_ORDER
+
+    qs = OrderedStuff.objects.all()
+    assert qs.first() == obj1
+    assert qs.last() == obj2
+
+    obj2.order = 1
+    obj2.save()
+    qs = OrderedStuff.objects.all()
+    assert qs.first() == obj2
+    assert qs.last() == obj1

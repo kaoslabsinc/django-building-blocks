@@ -17,5 +17,11 @@ class QuerysetChoiceFilter(admin.SimpleListFilter):
 
 class ArchiveStatusFilter(QuerysetChoiceFilter):
     title = "Archive status"
-    parameter_name = 'archive_status'
+    parameter_name = 'status'
     queryset_filters = ('active', 'archived')
+
+
+class PublishingStatusFilter(QuerysetChoiceFilter):
+    title = "Publishing status"
+    parameter_name = 'status'
+    queryset_filters = ('draft', 'published', 'archived')

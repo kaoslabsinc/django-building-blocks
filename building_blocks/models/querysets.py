@@ -1,27 +1,22 @@
 from django.db import models
-from django.db.models import Q
 
-from .enums import PublishingStage
+from .enums import ArchiveStatus, PublishingStatus
 
 
 class ArchivableQueryset(models.QuerySet):
-    _Q_IS_ACTIVE = Q(archived_at__isnull=True)
-
     def active(self):
-        return self.filter(ArchivableQueryset._Q_IS_ACTIVE)
+        return self.filter(status=ArchiveStatus.active)
 
     def archived(self):
-        return self.filter(~ArchivableQueryset._Q_IS_ACTIVE)
+        return self.filter(status=ArchiveStatus.archived)
 
 
-class PublishableQueryset(models.QuerySet):
+class PublishableQueryset(ArchivableQueryset):
     def draft(self):
-        return self.filter(publishing_stage=PublishingStage.draft)
+        return self.filter(status=PublishingStatus.draft)
 
     def published(self):
-        return self.filter(publishing_stage=PublishingStage.published)
+        return self.filter(status=PublishingStatus.published)
 
-    active = published
-
-    def archived(self):
-        return self.filter(publishing_stage=PublishingStage.archived)
+    def active(self):
+        return self.published()

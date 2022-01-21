@@ -1,11 +1,13 @@
 from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
 from django.db.models import Q
-from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin
-from ..models import Archivable, Publishable
-from ..models.enums import PublishingStage
+from .blocks import HasNameAdminBlock, HasAutoSlugAdminBlock
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, \
+    HasAutoSlugAdminMixin
+from ..models import Publishable
+from ..models.enums import ArchiveStatus, PublishingStatus
 
 
 class ArchivableAdmin(
@@ -14,22 +16,18 @@ class ArchivableAdmin(
     admin.ModelAdmin
 ):
     actions = ('archive', 'restore')
-    change_actions = ('archive', 'restore')
-    are_you_sure_actions = ('archive', 'restore')
-
-    @admin.display(ordering='archived_at')
-    def archive_status(self, obj: Archivable):
-        return obj.archive_status.capitalize()
+    change_actions = actions
+    are_you_sure_actions = actions
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def archive(self, request, queryset):
-        queryset.update(archived_at=now())
+        queryset.update(status=ArchiveStatus.archived)
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def restore(self, request, queryset):
-        queryset.update(archived_at=None)
+        queryset.update(status=ArchiveStatus.active)
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
@@ -49,7 +47,7 @@ class PublishableAdmin(
     admin.ModelAdmin
 ):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
-    are_you_sure_actions = ('publish', 'unpublish', 'archive', 'restore')
+    are_you_sure_actions = change_actions
 
     @admin.action(permissions=['change'])
     def publish(self, request, obj: Publishable):
@@ -76,13 +74,13 @@ class PublishableAdmin(
         if change_actions:
             change_actions = list(change_actions)
             obj: Publishable = self._get_change_action_object()
-            if obj.publishing_stage != PublishingStage.archived:
+            if obj.status != PublishingStatus.archived:
                 change_actions.remove('restore')
-            if obj.publishing_stage != PublishingStage.published:
+            if obj.status != PublishingStatus.published:
                 change_actions.remove('unpublish')
-            if obj.publishing_stage != PublishingStage.draft:
+            if obj.status != PublishingStatus.draft:
                 change_actions.remove('publish')
-            if obj.publishing_stage == PublishingStage.archived:
+            if obj.status == PublishingStatus.archived:
                 change_actions.remove('archive')
 
         return change_actions
@@ -96,3 +94,24 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
 
     def check_user_q(self, request):
         return Q(user=request.user)
+
+
+class NameSlugModelAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
+    slug_source = 'name'
+
+    search_fields = (
+        *HasNameAdminBlock.search_fields,
+        *HasAutoSlugAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasNameAdminBlock.list_display,
+        *HasAutoSlugAdminBlock.list_display,
+    )
+    fieldsets = (
+        (None, {'fields': HasNameAdminBlock.fields}),
+        *HasAutoSlugAdminBlock.fieldsets,
+    )
+
+
+class NameSlugModelAdmin(NameSlugModelAdminMixin, admin.ModelAdmin):
+    pass

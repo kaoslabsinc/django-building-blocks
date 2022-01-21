@@ -21,12 +21,12 @@ class AbstractModelFactory:
 
 class HasNameFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(optional=False):
+    def as_abstract_model(optional=False, **kwargs):
         class HasName(models.Model):
             class Meta:
                 abstract = True
 
-            name = models.CharField(max_length=255, blank=optional)
+            name = models.CharField(max_length=255, blank=optional, **kwargs)
 
             def __str__(self):
                 return self.name if self.name else super(HasName, self).__str__()
@@ -36,55 +36,55 @@ class HasNameFactory(AbstractModelFactory):
 
 class HasEmailFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(optional=False):
+    def as_abstract_model(optional=False, **kwargs):
         class HasEmail(models.Model):
             class Meta:
                 abstract = True
 
-            email = models.EmailField(blank=optional)
+            email = models.EmailField(blank=optional, **kwargs)
 
         return HasEmail
 
 
 class HasDescriptionFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(required=False):
+    def as_abstract_model(required=False, **kwargs):
         class HasDescription(models.Model):
             class Meta:
                 abstract = True
 
-            description = models.TextField(blank=not required)
+            description = models.TextField(blank=not required, **kwargs)
 
         return HasDescription
 
 
 class HasCoverPhotoFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(upload_to='', required=False):
+    def as_abstract_model(upload_to='', required=False, **kwargs):
         class HasCoverPhoto(models.Model):
             class Meta:
                 abstract = True
 
-            cover_photo = models.ImageField(upload_to=upload_to, blank=not required)
+            cover_photo = models.ImageField(upload_to=upload_to, blank=not required, **kwargs)
 
         return HasCoverPhoto
 
 
 class HasIconFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(upload_to='', required=False):
+    def as_abstract_model(upload_to='', required=False, **kwargs):
         class HasIcon(models.Model):
             class Meta:
                 abstract = True
 
-            icon = models.ImageField(upload_to=upload_to, blank=not required)
+            icon = models.ImageField(upload_to=upload_to, blank=not required, **kwargs)
 
         return HasIcon
 
 
 class HasUserFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(related_name=None, one_to_one=False, optional=False, on_delete=None):
+    def as_abstract_model(related_name=None, one_to_one=False, optional=False, on_delete=None, **kwargs):
         user_field_cls, on_delete = AbstractModelFactory._get_fk_params(one_to_one, optional, on_delete)
 
         class HasUser(models.Model):
@@ -92,7 +92,7 @@ class HasUserFactory(AbstractModelFactory):
                 abstract = True
 
             user = user_field_cls(settings.AUTH_USER_MODEL, on_delete=on_delete, related_name=related_name,
-                                  **generate_field_kwargs(optional_null=optional))
+                                  **generate_field_kwargs(optional_null=optional), **kwargs)
 
         return HasUser
 
@@ -138,7 +138,7 @@ class HasAutoSlugFactory(AbstractModelFactory):
     """
 
     @staticmethod
-    def as_abstract_model(source_field=None):
+    def as_abstract_model(source_field=None, **kwargs):
         class HasAutoSlug(
             HasAutoCodeFactory.as_abstract_model('slug', source_field),
             models.Model
@@ -146,18 +146,18 @@ class HasAutoSlugFactory(AbstractModelFactory):
             class Meta:
                 abstract = True
 
-            slug = models.SlugField(max_length=255, unique=True)
+            slug = models.SlugField(max_length=255, unique=True, **kwargs)
 
         return HasAutoSlug
 
 
 class HasAvatarFactory(AbstractModelFactory):
     @staticmethod
-    def as_abstract_model(upload_to='', required=False):
+    def as_abstract_model(upload_to='', required=False, **kwargs):
         class HasAvatar(models.Model):
             class Meta:
                 abstract = True
 
-            avatar = models.ImageField(upload_to=upload_to, blank=not required)
+            avatar = models.ImageField(upload_to=upload_to, blank=not required, **kwargs)
 
         return HasAvatar

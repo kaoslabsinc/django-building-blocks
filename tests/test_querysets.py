@@ -1,9 +1,5 @@
-import datetime as dt
-
 import pytest
-from django.utils.timezone import now
 
-from building_blocks.models.enums import PublishingStage
 from sample.models import ArchivableHasUUID, PublishableHasUUID
 
 pytestmark = pytest.mark.django_db
@@ -11,7 +7,9 @@ pytestmark = pytest.mark.django_db
 
 def test_ArchivableQueryset():
     active = ArchivableHasUUID.objects.create()
-    archived = ArchivableHasUUID.objects.create(archived_at=now())
+    archived = ArchivableHasUUID.objects.create()
+    archived.archive()
+    archived.save()
 
     # active()
     assert active in ArchivableHasUUID.objects.active()
@@ -23,18 +21,13 @@ def test_ArchivableQueryset():
 
 
 def test_PublishableQueryset():
-    draft = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.draft,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    published = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.published,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
-    archived = PublishableHasUUID.objects.create(
-        publishing_stage=PublishingStage.archived,
-        publishing_stage_changed_at=now() - dt.timedelta(hours=1)
-    )
+    draft = PublishableHasUUID.objects.create()
+    published = PublishableHasUUID.objects.create()
+    published.publish()
+    published.save()
+    archived = PublishableHasUUID.objects.create()
+    archived.archive()
+    archived.save()
 
     # draft()
     assert draft in PublishableHasUUID.objects.draft()

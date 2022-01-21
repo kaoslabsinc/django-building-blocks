@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from .filters import ArchiveStatusFilter
 from .mixins import EditReadonlyAdminMixin
 
 
@@ -28,22 +27,19 @@ class HasUUIDAdminBlock(AdminBlock):
 
 
 class ArchivableAdminBlock(AdminBlock):
-    list_display = ('archive_status',)
-    list_filter = (ArchiveStatusFilter,)
+    list_display = ('status',)
+    list_filter = ('status',)
 
-    readonly_fields = ('archive_status', 'archived_at', 'is_active')
-    fields = ('archive_status', 'archived_at',)
+    readonly_fields = ('status', 'is_active')
+    fields = ('status',)
     fieldsets = (
         ("Management", {'fields': fields}),
     )
 
 
-class PublishableAdminBlock(AdminBlock):
-    list_display = ('publishing_stage',)
-    list_filter = ('publishing_stage',)
-
-    readonly_fields = ('publishing_stage', 'publishing_stage_changed_at',)
-    fields = ('publishing_stage', 'publishing_stage_changed_at',)
+class PublishableAdminBlock(ArchivableAdminBlock):
+    readonly_fields = (*ArchivableAdminBlock.readonly_fields, 'first_published_at',)
+    fields = (*ArchivableAdminBlock.fields, 'first_published_at',)
     fieldsets = (
         ("Publishing", {'fields': fields}),
     )
@@ -125,4 +121,14 @@ class HasAvatarAdminBlock(AdminBlock):
     fields = ('avatar',)
     fieldsets = (
         ("Media", {'fields': fields}),
+    )
+
+
+class OrderableAdminBlock(AdminBlock):
+    ordering = ('order',)
+    list_display = ('order',)
+    list_editable = ('order',)
+    fields = ('order',)
+    fieldsets = (
+        ("View", {'fields': fields}),
     )
