@@ -51,6 +51,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        # For Archivable model
         migrations.AddField(
             model_name='archivablehasuuid',
             name='status1',
@@ -66,6 +67,7 @@ class Migration(migrations.Migration):
             old_name='status1',
             new_name='status',
         ),
+        # For Publishable model
         migrations.AddField(
             model_name='publishablehasuuid',
             name='status1',
