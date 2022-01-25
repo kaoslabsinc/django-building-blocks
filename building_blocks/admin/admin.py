@@ -114,6 +114,8 @@ class PublishableAdmin(
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
     are_you_sure_actions = change_actions
 
+    list_filter = ('status',)
+
     readonly_fields = (*ArchivableAdmin.readonly_fields, 'first_published_at',)
     fields = (*ArchivableAdmin.fields, 'first_published_at',)
     fieldsets = (
