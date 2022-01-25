@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 from django.utils.timezone import now
-from django_fsm import FSMField, transition, RETURN_VALUE
+from django_fsm import transition, RETURN_VALUE, FSMIntegerField
 
 from .enums import ArchiveStatus, PublishingStatus
 from .querysets import ArchivableQueryset, PublishableQueryset
@@ -36,7 +36,7 @@ class Archivable(models.Model):
     class Meta:
         abstract = True
 
-    status = FSMField(choices=ArchiveStatus.choices, default=ArchiveStatus.active)
+    status = FSMIntegerField(choices=ArchiveStatus.choices, default=ArchiveStatus.active)
 
     @property
     def is_active(self):
@@ -61,7 +61,7 @@ class Publishable(Archivable, models.Model):
     class Meta:
         abstract = True
 
-    status = FSMField(choices=PublishingStatus.choices, default=PublishingStatus.draft)
+    status = FSMIntegerField(choices=PublishingStatus.choices, default=PublishingStatus.draft)
     first_published_at = models.DateTimeField(null=True, blank=True)
 
     @property
