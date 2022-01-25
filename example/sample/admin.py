@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin, HasUUIDAdmin, HasInitialsAdmin, \
+from building_blocks.admin import ArchivableAdmin, PublishableAdmin, HasUUIDAdmin, HasInitialsAdmin, \
     TimeStampedModelAdmin, OrderableAdmin, HasNameAdmin
 from building_blocks.admin.inlines import AddInlineMixin, ListInlineMixin
 from building_blocks.admin.utils import json_field_pp, render_anchor, render_img

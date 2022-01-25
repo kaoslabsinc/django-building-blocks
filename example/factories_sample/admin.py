@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from building_blocks.admin.admin import HasNameAdmin, HasEmailAdmin, HasDescriptionAdmin, HasCoverPhotoAdmin, \
+from building_blocks.admin import HasNameAdmin, HasEmailAdmin, HasDescriptionAdmin, HasCoverPhotoAdmin, \
     HasIconAdmin, HasAvatarAdmin
 from factories_sample.models import (
     HasNameExample, HasOptionalNameExample,

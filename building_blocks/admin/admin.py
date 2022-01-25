@@ -3,8 +3,6 @@ from django_object_actions import takes_instance_or_queryset
 
 from .mixins import DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, EditReadonlyAdminMixin, \
     PrepopulateSlugAdminMixin
-
-EditReadonlyAdminMixin
 from ..models import Publishable
 from ..models.enums import ArchiveStatus, PublishingStatus
 
@@ -223,3 +221,22 @@ class OrderableAdmin(admin.ModelAdmin):
     fieldsets = (
         ("View", {'fields': fields}),
     )
+
+
+__all__ = [
+    'HasUUIDAdmin',
+    'HasInitialsAdmin',
+    'HasNameAdmin',
+    'HasEmailAdmin',
+    'HasDescriptionAdmin',
+    'HasCoverPhotoAdmin',
+    'HasIconAdmin',
+    'ArchivableAdmin',
+    'PublishableAdmin',
+    'HasUserAdmin',
+    'HasAutoSlugAdmin',
+    'NameSlugModelAdmin',
+    'TimeStampedModelAdmin',
+    'HasAvatarAdmin',
+    'OrderableAdmin',
+]

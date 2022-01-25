@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from building_blocks.admin.admin import HasUserAdmin, HasAutoSlugAdmin, HasNameAdmin
+from building_blocks.admin import HasUserAdmin, HasAutoSlugAdmin, HasNameAdmin
 from building_blocks.admin.mixins import EditReadonlyAdminMixin, PrepopulateSlugAdminMixin
 from building_blocks.forms import unrequire_form
 from complex_factories_sample.models import (
