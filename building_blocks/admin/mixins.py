@@ -1,28 +1,5 @@
 from django.contrib.admin.options import BaseModelAdmin
-from django.contrib.auth import get_permission_codename
 from django_object_actions import DjangoObjectActions
-
-
-class CheckUserAdminMixin(BaseModelAdmin):
-    """
-    Limit access to objects who don't pass the check denoted by has_see_all_permission() or the queryset filtered by
-    check_user_q()
-    """
-    default_see_all_perm = 'see_all'
-
-    def has_see_all_permission(self, request):
-        opts = self.opts
-        codename = get_permission_codename(self.default_see_all_perm, opts)
-        return request.user.has_perm(f'{opts.app_label}.{codename}')
-
-    def check_user_q(self, request):
-        raise NotImplementedError
-
-    def get_queryset(self, request):
-        qs = super(CheckUserAdminMixin, self).get_queryset(request)
-        if self.has_see_all_permission(request):
-            return qs
-        return qs.filter(self.check_user_q(request))
 
 
 class EditReadonlyAdminMixin(BaseModelAdmin):
@@ -41,16 +18,8 @@ class EditReadonlyAdminMixin(BaseModelAdmin):
         return readonly_fields
 
 
-class HasAutoSlugAdminMixin(EditReadonlyAdminMixin):
+class PrepopulateSlugAdminMixin(EditReadonlyAdminMixin):
     slug_source = None
-
-    def get_edit_readonly_fields(self, request, obj=None):
-        from .blocks import HasAutoSlugAdminBlock
-
-        return (
-            *super().get_edit_readonly_fields(request, obj),
-            *HasAutoSlugAdminBlock.edit_readonly_fields
-        )
 
     def get_prepopulated_fields(self, request, obj=None):
         assert self.slug_source
