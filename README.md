@@ -98,6 +98,10 @@ and `StatusUpdate` would get updated with the new pipeline.
 - [`Archivable`](building_blocks/models/abstracts.py)
 - [`Publishable`](building_blocks/models/abstracts.py)
 
+Note: if you're coming from v0.0.x, take a look at this [`migration file`](example/sample/migrations/0014_int_status.py)
+to help you with writing migrations for your `Archivable` or `Publishable` models, as in v0.1.0 they have switched to
+use an integer status field.
+
 ### Abstract model factories
 
 Abstract model factories enable you to create abstract models on the fly. Abstract model factories enable you to modify
