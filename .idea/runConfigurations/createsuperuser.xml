@@ -7,7 +7,7 @@
       <env name="PYTHONUNBUFFERED" value="1" />
       <env name="DJANGO_SETTINGS_MODULE" value="example.settings" />
       <env name="DJANGO_SUPERUSER_USERNAME" value="admin" />
-      <env name="DJANGO_SUPERUSER_EMAIL" value="djangoadmin@keyvanm.com" />
+      <env name="DJANGO_SUPERUSER_EMAIL" value="info@example.com" />
       <env name="DJANGO_SUPERUSER_PASSWORD" value="1234" />
     </envs>
     <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
