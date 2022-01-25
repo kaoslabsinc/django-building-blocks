@@ -1,9 +1,11 @@
 from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
 from django.db.models import Q
-from django.utils.timezone import now
 from django_object_actions import takes_instance_or_queryset
 
-from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin
+from .blocks import HasNameAdminBlock, HasAutoSlugAdminBlock
+from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, \
+    HasAutoSlugAdminMixin
 from ..models import Publishable
 from ..models.enums import ArchiveStatus, PublishingStatus
 
@@ -44,35 +46,28 @@ class PublishableAdmin(
     DjangoObjectActionsPermissionsMixin,
     admin.ModelAdmin
 ):
-    actions = ('publish', 'unpublish', 'archive', 'restore')
-    change_actions = actions
-    are_you_sure_actions = actions
+    change_actions = ('publish', 'unpublish', 'archive', 'restore')
+    are_you_sure_actions = change_actions
 
-    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def publish(self, request, queryset):
-        queryset.filter(first_published_at__isnull=True).update(
-            status=PublishingStatus.published,
-            first_published_at=now()
-        )
-        queryset.filter(first_published_at__isnull=False).update(
-            status=PublishingStatus.published,
-        )
+    def publish(self, request, obj: Publishable):
+        obj.publish()
+        obj.save()
 
-    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def unpublish(self, request, queryset):
-        queryset.update(status=PublishingStatus.draft)
+    def unpublish(self, request, obj: Publishable):
+        obj.unpublish()
+        obj.save()
 
-    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def archive(self, request, queryset):
-        queryset.update(status=PublishingStatus.archived)
+    def archive(self, request, obj: Publishable):
+        obj.archive()
+        obj.save()
 
-    @takes_instance_or_queryset
     @admin.action(permissions=['change'])
-    def restore(self, request, queryset):
-        queryset.update(status=PublishingStatus.draft)
+    def restore(self, request, obj: Publishable):
+        obj.restore()
+        obj.save()
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
@@ -99,3 +94,24 @@ class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
 
     def check_user_q(self, request):
         return Q(user=request.user)
+
+
+class NameSlugModelAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
+    slug_source = 'name'
+
+    search_fields = (
+        *HasNameAdminBlock.search_fields,
+        *HasAutoSlugAdminBlock.search_fields,
+    )
+    list_display = (
+        *HasNameAdminBlock.list_display,
+        *HasAutoSlugAdminBlock.list_display,
+    )
+    fieldsets = (
+        (None, {'fields': HasNameAdminBlock.fields}),
+        *HasAutoSlugAdminBlock.fieldsets,
+    )
+
+
+class NameSlugModelAdmin(NameSlugModelAdminMixin, admin.ModelAdmin):
+    pass
