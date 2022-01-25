@@ -1,13 +1,71 @@
 from django.contrib import admin
-from django.contrib.admin.options import BaseModelAdmin
-from django.db.models import Q
 from django_object_actions import takes_instance_or_queryset
 
-from .blocks import HasNameAdminBlock, HasAutoSlugAdminBlock
-from .mixins import CheckUserAdminMixin, DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, \
-    HasAutoSlugAdminMixin
+from .mixins import DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, EditReadonlyAdminMixin, \
+    PrepopulateSlugAdminMixin
+
+EditReadonlyAdminMixin
 from ..models import Publishable
 from ..models.enums import ArchiveStatus, PublishingStatus
+
+
+class HasUUIDAdmin(admin.ModelAdmin):
+    search_fields = ('uuid',)
+    list_display = ('uuid',)
+    list_display_shortcode = ('shortcode',)
+    list_display_verbose = list_display + list_display_shortcode
+
+    readonly_fields = ('uuid', 'shortcode',)
+    fields = ('uuid',)
+    fieldsets = (
+        ("Identifiers", {'fields': fields}),
+    )
+    fieldsets_shortcode = (
+        ("Identifiers", {'fields': ('shortcode',)}),
+    )
+    fieldsets_all = (
+        ("Identifiers", {'fields': (*fields, 'shortcode',)}),
+    )
+
+
+class HasInitialsAdmin(admin.ModelAdmin):
+    list_display = ('initials',)
+
+    readonly_fields = ('initials',)
+    fields = ('initials',)
+    fieldsets = (
+        ("Misc.", {'fields': fields}),
+    )
+
+
+class HasNameAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+    list_display = ('name',)
+    fields = ('name',)
+
+
+class HasEmailAdmin(admin.ModelAdmin):
+    search_fields = ('email',)
+    list_display = ('email',)
+    fields = ('email',)
+
+
+class HasDescriptionAdmin(admin.ModelAdmin):
+    fields = ('description',)
+
+
+class HasCoverPhotoAdmin(admin.ModelAdmin):
+    fields = ('cover_photo',)
+    fieldsets = (
+        ("Media", {'fields': fields}),
+    )
+
+
+class HasIconAdmin(admin.ModelAdmin):
+    fields = ('icon',)
+    fieldsets = (
+        ("Media", {'fields': fields}),
+    )
 
 
 class ArchivableAdmin(
@@ -18,6 +76,15 @@ class ArchivableAdmin(
     actions = ('archive', 'restore')
     change_actions = actions
     are_you_sure_actions = actions
+
+    list_display = ('status',)
+    list_filter = ('status',)
+
+    readonly_fields = ('status', 'is_active')
+    fields = ('status',)
+    fieldsets = (
+        ("Management", {'fields': fields}),
+    )
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
@@ -48,6 +115,12 @@ class PublishableAdmin(
 ):
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
     are_you_sure_actions = change_actions
+
+    readonly_fields = (*ArchivableAdmin.readonly_fields, 'first_published_at',)
+    fields = (*ArchivableAdmin.fields, 'first_published_at',)
+    fieldsets = (
+        ("Publishing", {'fields': fields}),
+    )
 
     @admin.action(permissions=['change'])
     def publish(self, request, obj: Publishable):
@@ -86,32 +159,67 @@ class PublishableAdmin(
         return change_actions
 
 
-class HasUserAdmin(CheckUserAdminMixin, admin.ModelAdmin):
-    """
-    Limit access to objects who aren't 'owned' by the user (obj.user != request.user).
-    The user needs to be either the owner or have the `see_all` permission on the model.
-    """
+class HasUserAdmin(admin.ModelAdmin):
+    search_fields = ('user__username',)
+    list_display = ('user',)
 
-    def check_user_q(self, request):
-        return Q(user=request.user)
+    edit_readonly_fields = ('user',)
+    autocomplete_fields = ('user',)
+    fields = ('user',)
 
 
-class NameSlugModelAdminMixin(HasAutoSlugAdminMixin, BaseModelAdmin):
+class HasAutoSlugAdmin(EditReadonlyAdminMixin, admin.ModelAdmin):
+    search_fields = ('slug',)
+    list_display = ('slug',)
+    readonly_fields = ('slug',)
+    edit_readonly_fields = ('slug',)
+    fields = ('slug',)
+    fieldsets = (
+        ("Identifiers", {'fields': fields}),
+    )
+
+
+class NameSlugModelAdmin(PrepopulateSlugAdminMixin, admin.ModelAdmin):
     slug_source = 'name'
 
     search_fields = (
-        *HasNameAdminBlock.search_fields,
-        *HasAutoSlugAdminBlock.search_fields,
+        *HasNameAdmin.search_fields,
+        *HasAutoSlugAdmin.search_fields,
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
-        *HasAutoSlugAdminBlock.list_display,
+        *HasNameAdmin.list_display,
+        *HasAutoSlugAdmin.list_display,
     )
     fieldsets = (
-        (None, {'fields': HasNameAdminBlock.fields}),
-        *HasAutoSlugAdminBlock.fieldsets,
+        (None, {'fields': HasNameAdmin.fields}),
+        *HasAutoSlugAdmin.fieldsets,
     )
 
 
-class NameSlugModelAdmin(NameSlugModelAdminMixin, admin.ModelAdmin):
-    pass
+class TimeStampedModelAdmin(admin.ModelAdmin):
+    list_filter = ('created',)
+    list_filter_extra = ('modified',)
+    list_display = ('created',)
+    list_display_extra = ('modified',)
+    readonly_fields = ('created', 'modified')
+    fields = ('created', 'modified')
+    fieldsets = (
+        ("Timestamps", {'fields': fields}),
+    )
+
+
+class HasAvatarAdmin(admin.ModelAdmin):
+    fields = ('avatar',)
+    fieldsets = (
+        ("Media", {'fields': fields}),
+    )
+
+
+class OrderableAdmin(admin.ModelAdmin):
+    ordering = ('order',)
+    list_display = ('order',)
+    list_editable = ('order',)
+    fields = ('order',)
+    fieldsets = (
+        ("View", {'fields': fields}),
+    )

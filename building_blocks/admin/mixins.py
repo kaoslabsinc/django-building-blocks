@@ -41,16 +41,8 @@ class EditReadonlyAdminMixin(BaseModelAdmin):
         return readonly_fields
 
 
-class HasAutoSlugAdminMixin(EditReadonlyAdminMixin):
+class PrepopulateSlugAdminMixin(EditReadonlyAdminMixin):
     slug_source = None
-
-    def get_edit_readonly_fields(self, request, obj=None):
-        from .blocks import HasAutoSlugAdminBlock
-
-        return (
-            *super().get_edit_readonly_fields(request, obj),
-            *HasAutoSlugAdminBlock.edit_readonly_fields
-        )
 
     def get_prepopulated_fields(self, request, obj=None):
         assert self.slug_source
