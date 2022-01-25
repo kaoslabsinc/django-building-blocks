@@ -45,6 +45,7 @@ class ArchivableHasUUIDAdmin(
         *HasUUIDAdmin.readonly_fields,
         *ArchivableAdmin.readonly_fields,
     )
+    fields = None
     fieldsets = (
         *HasUUIDAdmin.fieldsets,
         *ArchivableAdmin.fieldsets,
@@ -71,6 +72,7 @@ class PublishableHasUUIDAdmin(
         *HasUUIDAdmin.readonly_fields,
         *PublishableAdmin.readonly_fields,
     )
+    fields = None
     fieldsets = (
         *HasUUIDAdmin.fieldsets,
         *PublishableAdmin.fieldsets,
