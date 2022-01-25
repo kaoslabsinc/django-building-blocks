@@ -4,7 +4,7 @@ import pytest
 from django_fsm import TransitionNotAllowed
 
 from building_blocks.models.abstracts import Orderable
-from building_blocks.models.enums import PublishingStatus
+from building_blocks.models.enums import PublishingStatus, ArchiveStatus
 from sample.models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, OrderedStuff
 
 
@@ -22,12 +22,12 @@ def test_Archivable_archive():
     archivable = ArchivableHasUUID()
 
     assert archivable.is_active
-    assert archivable.status == 'active'
+    assert archivable.status == ArchiveStatus.active
 
     archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.status == 'archived'
+    assert archivable.status == ArchiveStatus.archived
 
 
 def test_Archivable_restore():
@@ -35,12 +35,12 @@ def test_Archivable_restore():
     archivable.archive()
 
     assert not archivable.is_active
-    assert archivable.status == 'archived'
+    assert archivable.status == ArchiveStatus.archived
 
     archivable.restore()
 
     assert archivable.is_active
-    assert archivable.status == 'active'
+    assert archivable.status == ArchiveStatus.active
 
 
 def test_Publishable_publish(freezer):
