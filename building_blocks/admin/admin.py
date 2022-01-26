@@ -114,6 +114,8 @@ class PublishableAdmin(
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
     are_you_sure_actions = change_actions
 
+    list_filter = ('status',)
+
     readonly_fields = (*ArchivableAdmin.readonly_fields, 'first_published_at',)
     fields = (*ArchivableAdmin.fields, 'first_published_at',)
     fieldsets = (
@@ -223,6 +225,14 @@ class OrderableAdmin(admin.ModelAdmin):
     )
 
 
+class WithOpenDisplayAdmin(admin.ModelAdmin):
+    list_display = ('open_display',)
+
+    @admin.display(description="open")
+    def open_display(self, obj):
+        return "Open"
+
+
 __all__ = [
     'HasUUIDAdmin',
     'HasInitialsAdmin',
@@ -239,4 +249,5 @@ __all__ = [
     'TimeStampedModelAdmin',
     'HasAvatarAdmin',
     'OrderableAdmin',
+    'WithOpenDisplayAdmin',
 ]
