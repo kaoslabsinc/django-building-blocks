@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset
 
 from .filters import ArchiveStatusFilter, PublishingStatusFilter
@@ -67,7 +68,7 @@ class HasIconAdmin(admin.ModelAdmin):
     )
 
 
-class HasStatusAdmin(admin.ModelAdmin):
+class HasStatusAdmin(BaseModelAdmin):
     list_display = ('get_status_display',)
     readonly_fields = ('get_status_display',)
     fields = ('get_status_display',)
