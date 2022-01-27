@@ -59,3 +59,12 @@ class AreYouSureActionsAdminMixin(DjangoObjectActions):
             are_you_sure_prompt = self.are_you_sure_prompt_f.format(tool=tool, label=label)
             tool.__dict__.setdefault('attrs', {})
             tool.__dict__['attrs'].setdefault('onclick', f"""return confirm("{are_you_sure_prompt}");""")
+
+
+class WithOpenDisplayAdminMixin:
+    list_display = ('open_display',)
+
+    @admin.display(description="open")
+    def open_display(self, obj):
+        return "Open"
+

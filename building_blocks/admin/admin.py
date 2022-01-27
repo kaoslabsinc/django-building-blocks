@@ -238,14 +238,6 @@ class OrderableAdmin(admin.ModelAdmin):
     )
 
 
-class WithOpenDisplayAdmin(admin.ModelAdmin):
-    list_display = ('open_display',)
-
-    @admin.display(description="open")
-    def open_display(self, obj):
-        return "Open"
-
-
 __all__ = [
     'HasUUIDAdmin',
     'HasInitialsAdmin',
@@ -262,5 +254,4 @@ __all__ = [
     'TimeStampedModelAdmin',
     'HasAvatarAdmin',
     'OrderableAdmin',
-    'WithOpenDisplayAdmin',
 ]
