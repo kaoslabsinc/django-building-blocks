@@ -88,3 +88,32 @@ class WithLinkDisplayAdminMixin:
     def link_display(self, obj):
         return render_anchor(self.get_link_url(obj), self.get_link_content(obj))
 
+
+class ExcludeFromNonSuperusersMixin:
+    exclude_from_non_superusers = ()
+
+    def get_exclude_from_non_superusers(self, request, obj=None):
+        return self.exclude_from_non_superusers
+
+    def get_exclude(self, request, obj=None):
+        exclude = super(ExcludeFromNonSuperusersMixin, self).get_exclude(request, obj) or ()
+        if request.user.is_superuser:
+            return exclude
+        return (
+            *exclude,
+            *self.get_exclude_from_non_superusers(request, obj),
+        )
+
+
+class ExcludeFromFieldsetsMixin:
+    def get_fieldsets(self, request, obj=None):
+        exclude = self.get_exclude(request, obj)
+        fieldsets = super().get_fieldsets(request, obj) or ()
+        return [
+            (fieldset_name,
+             {
+                 **fieldset_dict,
+                 'fields': [field for field in fieldset_dict['fields'] if field not in exclude]
+             })
+            for fieldset_name, fieldset_dict in fieldsets
+        ]
