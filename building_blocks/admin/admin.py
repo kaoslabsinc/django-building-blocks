@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django_object_actions import takes_instance_or_queryset
 
+from .filters import ArchiveStatusFilter, PublishingStatusFilter
 from .mixins import DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, EditReadonlyAdminMixin, \
     PrepopulateSlugAdminMixin
 from ..models import Publishable
@@ -66,7 +67,14 @@ class HasIconAdmin(admin.ModelAdmin):
     )
 
 
+class HasStatusAdmin(admin.ModelAdmin):
+    list_display = ('get_status_display',)
+    readonly_fields = ('get_status_display',)
+    fields = ('get_status_display',)
+
+
 class ArchivableAdmin(
+    HasStatusAdmin,
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     admin.ModelAdmin
@@ -75,11 +83,10 @@ class ArchivableAdmin(
     change_actions = actions
     are_you_sure_actions = actions
 
-    list_display = ('status',)
-    list_filter = ('status',)
+    list_filter = (ArchiveStatusFilter,)
 
-    readonly_fields = ('status', 'is_active')
-    fields = ('status',)
+    readonly_fields = (*HasStatusAdmin.readonly_fields, 'is_active')
+    fields = HasStatusAdmin.fields
     fieldsets = (
         ("Management", {'fields': fields}),
     )
@@ -87,12 +94,12 @@ class ArchivableAdmin(
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def archive(self, request, queryset):
-        queryset.update(status=ArchiveStatus.archived)
+        queryset.update(_status=ArchiveStatus.archived)
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def restore(self, request, queryset):
-        queryset.update(status=ArchiveStatus.active)
+        queryset.update(_status=ArchiveStatus.active)
 
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
@@ -107,6 +114,7 @@ class ArchivableAdmin(
 
 
 class PublishableAdmin(
+    HasStatusAdmin,
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     admin.ModelAdmin
@@ -114,7 +122,7 @@ class PublishableAdmin(
     change_actions = ('publish', 'unpublish', 'archive', 'restore')
     are_you_sure_actions = change_actions
 
-    list_filter = ('status',)
+    list_filter = (PublishingStatusFilter,)
 
     readonly_fields = (*ArchivableAdmin.readonly_fields, 'first_published_at',)
     fields = (*ArchivableAdmin.fields, 'first_published_at',)
