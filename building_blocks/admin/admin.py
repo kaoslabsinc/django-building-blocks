@@ -72,6 +72,10 @@ class HasStatusAdmin(admin.ModelAdmin):
     readonly_fields = ('get_status_display',)
     fields = ('get_status_display',)
 
+    @admin.display(ordering='-status')
+    def self_status(self, obj):
+        return obj._status
+
 
 class ArchivableAdmin(
     HasStatusAdmin,
