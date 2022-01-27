@@ -1,5 +1,8 @@
+from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import DjangoObjectActions
+
+from building_blocks.admin.utils import render_anchor
 
 
 class EditReadonlyAdminMixin(BaseModelAdmin):
@@ -67,4 +70,21 @@ class WithOpenDisplayAdminMixin:
     @admin.display(description="open")
     def open_display(self, obj):
         return "Open"
+
+
+class WithLinkDisplayAdminMixin:
+    link_field = None
+    link_content = "🔗 Link"
+    list_display = ('link_display',)
+
+    def get_link_url(self, obj):
+        if self.link_field:
+            return getattr(obj, self.link_field)
+
+    def get_link_content(self, obj):
+        return self.link_content
+
+    @admin.display(description="link")
+    def link_display(self, obj):
+        return render_anchor(self.get_link_url(obj), self.get_link_content(obj))
 
