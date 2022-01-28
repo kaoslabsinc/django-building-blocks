@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django_fsm import transition, RETURN_VALUE, FSMIntegerField
 
 from .enums import ArchiveStatus, PublishingStatus
+from .factories import HasNameFactory, HasAutoSlugFactory
 from .querysets import ArchivableQuerySet, PublishableQuerySet
 
 
@@ -109,4 +110,13 @@ class Orderable(models.Model):
 
     class Meta:
         ordering = ('order', 'id')
+        abstract = True
+
+
+class NameSlugModel(
+    HasNameFactory.as_abstract_model(),
+    HasAutoSlugFactory.as_abstract_model('name'),
+    models.Model
+):
+    class Meta:
         abstract = True
