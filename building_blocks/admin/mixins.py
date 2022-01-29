@@ -1,5 +1,8 @@
+from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import DjangoObjectActions
+
+from building_blocks.admin.utils import render_anchor
 
 
 class EditReadonlyAdminMixin(BaseModelAdmin):
@@ -59,3 +62,62 @@ class AreYouSureActionsAdminMixin(DjangoObjectActions):
             are_you_sure_prompt = self.are_you_sure_prompt_f.format(tool=tool, label=label)
             tool.__dict__.setdefault('attrs', {})
             tool.__dict__['attrs'].setdefault('onclick', f"""return confirm("{are_you_sure_prompt}");""")
+
+
+class WithOpenDisplayAdminMixin:
+    list_display = ('open_display',)
+
+    @admin.display(description="open")
+    def open_display(self, obj):
+        return "Open"
+
+
+class WithLinkDisplayAdminMixin:
+    link_field = None
+    link_content = "🔗 Link"
+    list_display = ('link_display',)
+    readonly_fields = ('link_display',)
+    fields = ('link_display',)
+
+    def get_link_url(self, obj):
+        if self.link_field:
+            return getattr(obj, self.link_field)
+
+    def get_link_content(self, obj):
+        if self.link_content is None:
+            return self.get_link_url(obj)
+        return self.link_content
+
+    @admin.display(description="link")
+    def link_display(self, obj):
+        return render_anchor(self.get_link_url(obj), self.get_link_content(obj))
+
+
+class ExcludeFromNonSuperusersMixin:
+    exclude_from_non_superusers = ()
+
+    def get_exclude_from_non_superusers(self, request, obj=None):
+        return self.exclude_from_non_superusers
+
+    def get_exclude(self, request, obj=None):
+        exclude = super(ExcludeFromNonSuperusersMixin, self).get_exclude(request, obj) or ()
+        if request.user.is_superuser:
+            return exclude
+        return (
+            *exclude,
+            *self.get_exclude_from_non_superusers(request, obj),
+        )
+
+
+class ExcludeFromFieldsetsMixin:
+    def get_fieldsets(self, request, obj=None):
+        exclude = self.get_exclude(request, obj)
+        fieldsets = super().get_fieldsets(request, obj) or ()
+        return [
+            (fieldset_name,
+             {
+                 **fieldset_dict,
+                 'fields': [field for field in fieldset_dict['fields'] if field not in exclude]
+             })
+            for fieldset_name, fieldset_dict in fieldsets
+        ]
