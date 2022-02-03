@@ -7,7 +7,7 @@ from django_fsm import transition, RETURN_VALUE, FSMIntegerField
 
 from .enums import ArchiveStatus, PublishingStatus
 from .factories import HasNameFactory, HasAutoSlugFactory
-from .querysets import ArchivableQuerySet, PublishableQuerySet
+from .querysets import ArchivableQuerySet, PublishableQuerySet, NameSlugModelQuerySet
 
 
 class HasStatus(models.Model):
@@ -120,3 +120,5 @@ class NameSlugModel(
 ):
     class Meta:
         abstract = True
+
+    objects = NameSlugModelQuerySet.as_manager()
