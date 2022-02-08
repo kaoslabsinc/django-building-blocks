@@ -4,7 +4,7 @@ from building_blocks.models.fields import LowerCaseCharField
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
 from building_blocks.models.abstracts import Orderable
-from building_blocks.models.factories import HasNameFactory, HasEmailFactory
+from building_blocks.factories import HasNameFactory, HasEmailFactory
 from building_blocks.models.mixins import HasAutoFields
 
 
