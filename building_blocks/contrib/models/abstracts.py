@@ -1,6 +1,6 @@
 from django.db import models
 
-from building_blocks.models.factories import HasNameFactory, HasAutoSlugFactory
+from building_blocks.factories import HasNameFactory, HasAutoSlugFactory
 from .querysets import NameSlugModelQuerySet
 
 
