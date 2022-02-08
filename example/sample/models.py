@@ -1,6 +1,6 @@
 from django.db import models
 
-from building_blocks.fields import LowerCaseCharField
+from building_blocks.models.fields import LowerCaseCharField
 from building_blocks.models import HasInitials
 from building_blocks.models import HasUUID, Archivable, Publishable
 from building_blocks.models.abstracts import Orderable

@@ -3,6 +3,8 @@
 import building_blocks.fields
 from django.db import migrations, models
 
+import building_blocks.models.fields
+
 
 class Migration(migrations.Migration):
 
@@ -15,7 +17,7 @@ class Migration(migrations.Migration):
             name='LowerCaseCharFieldExample',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('lc_field', building_blocks.fields.LowerCaseCharField(max_length=100)),
+                ('lc_field', building_blocks.models.fields.LowerCaseCharField(max_length=100)),
             ],
         ),
     ]
