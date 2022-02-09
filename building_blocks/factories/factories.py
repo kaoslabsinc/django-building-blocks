@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 
-from .mixins import HasAutoFields
+from building_blocks.models.mixins import HasAutoFields
 from .utils import generate_field_kwargs
 
 
@@ -161,3 +161,17 @@ class HasAvatarFactory(AbstractModelFactory):
             avatar = models.ImageField(upload_to=upload_to, blank=not required, **kwargs)
 
         return HasAvatar
+
+
+__all__ = [
+    'AbstractModelFactory',
+    'HasNameFactory',
+    'HasEmailFactory',
+    'HasDescriptionFactory',
+    'HasCoverPhotoFactory',
+    'HasIconFactory',
+    'HasUserFactory',
+    'HasAutoCodeFactory',
+    'HasAutoSlugFactory',
+    'HasAvatarFactory',
+]

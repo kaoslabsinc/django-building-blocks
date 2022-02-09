@@ -3,8 +3,7 @@ from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset
 
 from .filters import ArchiveStatusFilter, PublishingStatusFilter
-from .mixins import DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, EditReadonlyAdminMixin, \
-    PrepopulateSlugAdminMixin
+from .mixins import DjangoObjectActionsPermissionsMixin, AreYouSureActionsAdminMixin, EditReadonlyAdminMixin
 from ..models import Publishable
 from ..models.enums import ArchiveStatus, PublishingStatus
 
@@ -192,23 +191,6 @@ class HasAutoSlugAdmin(EditReadonlyAdminMixin, admin.ModelAdmin):
     )
 
 
-class NameSlugModelAdmin(PrepopulateSlugAdminMixin, admin.ModelAdmin):
-    slug_source = 'name'
-
-    search_fields = (
-        *HasNameAdmin.search_fields,
-        *HasAutoSlugAdmin.search_fields,
-    )
-    list_display = (
-        *HasNameAdmin.list_display,
-        *HasAutoSlugAdmin.list_display,
-    )
-    fieldsets = (
-        (None, {'fields': HasNameAdmin.fields}),
-        *HasAutoSlugAdmin.fieldsets,
-    )
-
-
 class TimeStampedModelAdmin(admin.ModelAdmin):
     list_filter = ('created',)
     list_filter_extra = ('modified',)
@@ -250,7 +232,6 @@ __all__ = [
     'PublishableAdmin',
     'HasUserAdmin',
     'HasAutoSlugAdmin',
-    'NameSlugModelAdmin',
     'TimeStampedModelAdmin',
     'HasAvatarAdmin',
     'OrderableAdmin',
