@@ -2,7 +2,7 @@ import hashlib
 
 from django.db import models
 
-from building_blocks.models.factories import HasUserFactory, HasNameFactory, HasAutoCodeFactory, HasAutoSlugFactory
+from building_blocks.factories import HasUserFactory, HasNameFactory, HasAutoCodeFactory, HasAutoSlugFactory
 
 
 class HasUserExample(

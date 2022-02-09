@@ -1,6 +1,6 @@
 from django.db import models
 
-from building_blocks.models.factories import HasNameFactory, HasEmailFactory, HasDescriptionFactory, \
+from building_blocks.factories import HasNameFactory, HasEmailFactory, HasDescriptionFactory, \
     HasCoverPhotoFactory, HasIconFactory, HasAvatarFactory
 
 
