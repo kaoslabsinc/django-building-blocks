@@ -6,11 +6,13 @@ from django.utils.timezone import now
 from django_fsm import transition, RETURN_VALUE, FSMIntegerField
 
 from .enums import ArchiveStatus, PublishingStatus
-from .querysets import ArchivableQuerySet, PublishableQuerySet
+from .querysets import ArchivableQuerySet, PublishableQuerySet, HasStatusQuerySet
 
 
 class HasStatus(models.Model):
     _status = FSMIntegerField()
+
+    objects = HasStatusQuerySet.as_manager()
 
     @property
     @admin.display(ordering='_status')
