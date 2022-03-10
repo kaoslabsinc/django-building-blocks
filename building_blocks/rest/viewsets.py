@@ -2,6 +2,10 @@ from django.db import models
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import GenericAPIView
 
+__all__ = [
+    'QSFiltersViewSetMixin',
+]
+
 
 class QSFiltersViewSetMixin(GenericAPIView):
 
