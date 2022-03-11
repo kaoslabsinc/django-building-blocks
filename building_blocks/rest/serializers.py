@@ -34,7 +34,7 @@ class WritableNestedModelSerializerMixin(serializers.HyperlinkedModelSerializer)
     create_if_not_exists = False
 
     def __init__(self, *args, **kwargs):
-        self.lookup_field = kwargs.pop('lookup_field', self.lookup_field) or getattr(self.Meta, 'lookup_field')
+        self.lookup_field = kwargs.pop('lookup_field', self.lookup_field) or getattr(self.Meta, 'lookup_field', None)
         self.create_if_not_exists = kwargs.pop('create_if_not_exists', self.create_if_not_exists)
         super().__init__(*args, **kwargs)
 
