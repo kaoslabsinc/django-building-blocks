@@ -1,28 +1,8 @@
+from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
-from django.contrib.auth import get_permission_codename
 from django_object_actions import DjangoObjectActions
 
-
-class CheckUserAdminMixin(BaseModelAdmin):
-    """
-    Limit access to objects who don't pass the check denoted by has_see_all_permission() or the queryset filtered by
-    check_user_q()
-    """
-    default_see_all_perm = 'see_all'
-
-    def has_see_all_permission(self, request):
-        opts = self.opts
-        codename = get_permission_codename(self.default_see_all_perm, opts)
-        return request.user.has_perm(f'{opts.app_label}.{codename}')
-
-    def check_user_q(self, request):
-        raise NotImplementedError
-
-    def get_queryset(self, request):
-        qs = super(CheckUserAdminMixin, self).get_queryset(request)
-        if self.has_see_all_permission(request):
-            return qs
-        return qs.filter(self.check_user_q(request))
+from building_blocks.admin.utils import render_anchor
 
 
 class EditReadonlyAdminMixin(BaseModelAdmin):
@@ -41,16 +21,8 @@ class EditReadonlyAdminMixin(BaseModelAdmin):
         return readonly_fields
 
 
-class HasAutoSlugAdminMixin(EditReadonlyAdminMixin):
+class PrepopulateSlugAdminMixin(EditReadonlyAdminMixin):
     slug_source = None
-
-    def get_edit_readonly_fields(self, request, obj=None):
-        from .blocks import HasAutoSlugAdminBlock
-
-        return (
-            *super().get_edit_readonly_fields(request, obj),
-            *HasAutoSlugAdminBlock.edit_readonly_fields
-        )
 
     def get_prepopulated_fields(self, request, obj=None):
         assert self.slug_source
@@ -90,3 +62,62 @@ class AreYouSureActionsAdminMixin(DjangoObjectActions):
             are_you_sure_prompt = self.are_you_sure_prompt_f.format(tool=tool, label=label)
             tool.__dict__.setdefault('attrs', {})
             tool.__dict__['attrs'].setdefault('onclick', f"""return confirm("{are_you_sure_prompt}");""")
+
+
+class WithOpenDisplayAdminMixin:
+    list_display = ('open_display',)
+
+    @admin.display(description="open")
+    def open_display(self, obj):
+        return "Open"
+
+
+class WithLinkDisplayAdminMixin:
+    link_field = None
+    link_content = "🔗 Link"
+    list_display = ('link_display',)
+    readonly_fields = ('link_display',)
+    fields = ('link_display',)
+
+    def get_link_url(self, obj):
+        if self.link_field:
+            return getattr(obj, self.link_field)
+
+    def get_link_content(self, obj):
+        if self.link_content is None:
+            return self.get_link_url(obj)
+        return self.link_content
+
+    @admin.display(description="link")
+    def link_display(self, obj):
+        return render_anchor(self.get_link_url(obj), self.get_link_content(obj))
+
+
+class ExcludeFromNonSuperusersMixin:
+    exclude_from_non_superusers = ()
+
+    def get_exclude_from_non_superusers(self, request, obj=None):
+        return self.exclude_from_non_superusers
+
+    def get_exclude(self, request, obj=None):
+        exclude = super(ExcludeFromNonSuperusersMixin, self).get_exclude(request, obj) or ()
+        if request.user.is_superuser:
+            return exclude
+        return (
+            *exclude,
+            *self.get_exclude_from_non_superusers(request, obj),
+        )
+
+
+class ExcludeFromFieldsetsMixin:
+    def get_fieldsets(self, request, obj=None):
+        exclude = self.get_exclude(request, obj)
+        fieldsets = super().get_fieldsets(request, obj) or ()
+        return [
+            (fieldset_name,
+             {
+                 **fieldset_dict,
+                 'fields': [field for field in fieldset_dict['fields'] if field not in exclude]
+             })
+            for fieldset_name, fieldset_dict in fieldsets
+        ]

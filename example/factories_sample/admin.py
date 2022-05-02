@@ -1,12 +1,7 @@
 from django.contrib import admin
 
-from building_blocks.admin.blocks import (
-    HasNameAdminBlock,
-    HasEmailAdminBlock,
-    HasDescriptionAdminBlock,
-    HasCoverPhotoAdminBlock,
-    HasIconAdminBlock, HasAvatarAdminBlock,
-)
+from building_blocks.admin import HasNameAdmin, HasEmailAdmin, HasDescriptionAdmin, HasCoverPhotoAdmin, \
+    HasIconAdmin, HasAvatarAdmin
 from factories_sample.models import (
     HasNameExample, HasOptionalNameExample,
     HasEmailExample, HasOptionalEmailExample,
@@ -19,52 +14,52 @@ from factories_sample.models import (
 @admin.register(HasNameExample, HasOptionalNameExample)
 class HasNameExampleAdmin(admin.ModelAdmin):
     search_fields = (
-        *HasNameAdminBlock.search_fields,
+        *HasNameAdmin.search_fields,
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
+        *HasNameAdmin.list_display,
     )
     fields = (
-        *HasNameAdminBlock.fields,
+        *HasNameAdmin.fields,
     )
 
 
 @admin.register(HasEmailExample, HasOptionalEmailExample)
 class HasEmailExampleAdmin(admin.ModelAdmin):
     search_fields = (
-        *HasEmailAdminBlock.search_fields,
+        *HasEmailAdmin.search_fields,
     )
     list_display = (
-        *HasEmailAdminBlock.list_display,
+        *HasEmailAdmin.list_display,
     )
     fields = (
-        *HasEmailAdminBlock.fields,
+        *HasEmailAdmin.fields,
     )
 
 
 @admin.register(HasDescriptionExample, HasRequiredDescriptionExample)
 class HasDescriptionExampleAdmin(admin.ModelAdmin):
     fields = (
-        *HasDescriptionAdminBlock.fields,
+        *HasDescriptionAdmin.fields,
     )
 
 
 @admin.register(HasCoverPhotoExample, HasRequiredCoverPhotoExample)
 class HasCoverPhotoExampleAdmin(admin.ModelAdmin):
     fieldsets = (
-        *HasCoverPhotoAdminBlock.fieldsets,
+        *HasCoverPhotoAdmin.fieldsets,
     )
 
 
 @admin.register(HasIconExample, HasRequiredIconExample)
 class HasIconExampleAdmin(admin.ModelAdmin):
     fieldsets = (
-        *HasIconAdminBlock.fieldsets,
+        *HasIconAdmin.fieldsets,
     )
 
 
 @admin.register(HasAvatarExample)
 class HasAvatarExampleAdmin(admin.ModelAdmin):
     fieldsets = (
-        *HasAvatarAdminBlock.fieldsets,
+        *HasAvatarAdmin.fieldsets,
     )

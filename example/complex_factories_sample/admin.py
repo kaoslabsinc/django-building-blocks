@@ -1,10 +1,7 @@
 from django.contrib import admin
 
-from building_blocks.admin.admin import HasUserAdmin
-from building_blocks.admin.blocks import (
-    HasUserAdminBlock, HasNameAdminBlock, HasAutoSlugAdminBlock,
-)
-from building_blocks.admin.mixins import EditReadonlyAdminMixin, HasAutoSlugAdminMixin
+from building_blocks.admin import HasUserAdmin, HasAutoSlugAdmin, HasNameAdmin
+from building_blocks.admin.mixins import EditReadonlyAdminMixin, PrepopulateSlugAdminMixin
 from building_blocks.forms import unrequire_form
 from complex_factories_sample.models import (
     HasUserExample, HasOptionalUserExample, HasOneToOneUserExample, HasOptionalOneToOneUserExample,
@@ -17,13 +14,13 @@ from complex_factories_sample.models import (
 @admin.register(HasUserExample, HasOptionalUserExample, HasOneToOneUserExample, HasOptionalOneToOneUserExample)
 class HasUserExampleAdmin(admin.ModelAdmin):
     search_fields = (
-        *HasUserAdminBlock.search_fields,
+        *HasUserAdmin.search_fields,
     )
     list_display = (
-        *HasUserAdminBlock.list_display,
+        *HasUserAdmin.list_display,
     )
     autocomplete_fields = (
-        *HasUserAdminBlock.autocomplete_fields,
+        *HasUserAdmin.autocomplete_fields,
     )
 
 
@@ -33,10 +30,10 @@ class HasAutoCodeGenerateFunctionExampleAdmin(
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasNameAdminBlock.search_fields,
+        *HasNameAdmin.search_fields,
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
+        *HasNameAdmin.list_display,
         'code',
     )
     form = unrequire_form(HasAutoCodeGenerateFunctionExample, ('code',))
@@ -44,30 +41,30 @@ class HasAutoCodeGenerateFunctionExampleAdmin(
         'code',
     )
     fields = (
-        *HasNameAdminBlock.fields,
+        *HasNameAdmin.fields,
         'code'
     )
 
 
 @admin.register(HasAutoSlugExample)
 class HasAutoSlugExampleAdmin(
-    HasAutoSlugAdminMixin,
+    PrepopulateSlugAdminMixin,
     admin.ModelAdmin
 ):
     slug_source = 'name'
     form = unrequire_form(HasAutoSlugExample, ('slug',))
 
     search_fields = (
-        *HasNameAdminBlock.search_fields,
-        *HasAutoSlugAdminBlock.search_fields,
+        *HasNameAdmin.search_fields,
+        *HasAutoSlugAdmin.search_fields,
     )
     list_display = (
-        *HasNameAdminBlock.list_display,
-        *HasAutoSlugAdminBlock.list_display,
+        *HasNameAdmin.list_display,
+        *HasAutoSlugAdmin.list_display,
     )
     fieldsets = (
-        (None, {'fields': (*HasNameAdminBlock.fields,)}),
-        *HasAutoSlugAdminBlock.fieldsets,
+        (None, {'fields': (*HasNameAdmin.fields,)}),
+        *HasAutoSlugAdmin.fieldsets,
     )
 
 

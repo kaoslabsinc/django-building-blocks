@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from building_blocks.admin.admin import ArchivableAdmin, PublishableAdmin
-from building_blocks.admin.blocks import HasUUIDAdminBlock, ArchivableAdminBlock, PublishableAdminBlock, \
-    HasInitialsAdminBlock, TimeStampedModelAdminBlock, OrderableAdminBlock, HasNameAdminBlock
+from building_blocks.admin import ArchivableAdmin, PublishableAdmin, HasUUIDAdmin, HasInitialsAdmin, \
+    TimeStampedModelAdmin, OrderableAdmin, HasNameAdmin
 from building_blocks.admin.inlines import AddInlineMixin, ListInlineMixin
 from building_blocks.admin.utils import json_field_pp, render_anchor, render_img
 from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasInitialsExample, HasAutoFieldsExample, \
@@ -12,17 +11,17 @@ from .models import HasUUIDExample, ArchivableHasUUID, PublishableHasUUID, HasIn
 @admin.register(HasUUIDExample)
 class HasUUIDExampleAdmin(admin.ModelAdmin):
     search_fields = (
-        *HasUUIDAdminBlock.search_fields,
+        *HasUUIDAdmin.search_fields,
     )
     list_display = (
-        *HasUUIDAdminBlock.list_display,
+        *HasUUIDAdmin.list_display,
     )
 
     readonly_fields = (
-        *HasUUIDAdminBlock.readonly_fields,
+        *HasUUIDAdmin.readonly_fields,
     )
     fieldsets = (
-        *HasUUIDAdminBlock.fieldsets,
+        *HasUUIDAdmin.fieldsets,
     )
 
 
@@ -32,23 +31,24 @@ class ArchivableHasUUIDAdmin(
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasUUIDAdminBlock.search_fields,
+        *HasUUIDAdmin.search_fields,
     )
     list_display = (
-        *HasUUIDAdminBlock.list_display,
-        *ArchivableAdminBlock.list_display,
+        *HasUUIDAdmin.list_display,
+        *ArchivableAdmin.list_display,
     )
     list_filter = (
-        *ArchivableAdminBlock.list_filter,
+        *ArchivableAdmin.list_filter,
     )
 
     readonly_fields = (
-        *HasUUIDAdminBlock.readonly_fields,
-        *ArchivableAdminBlock.readonly_fields,
+        *HasUUIDAdmin.readonly_fields,
+        *ArchivableAdmin.readonly_fields,
     )
+    fields = None
     fieldsets = (
-        *HasUUIDAdminBlock.fieldsets,
-        *ArchivableAdminBlock.fieldsets,
+        *HasUUIDAdmin.fieldsets,
+        *ArchivableAdmin.fieldsets,
     )
 
 
@@ -58,23 +58,24 @@ class PublishableHasUUIDAdmin(
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasUUIDAdminBlock.search_fields,
+        *HasUUIDAdmin.search_fields,
     )
     list_display = (
-        *HasUUIDAdminBlock.list_display,
-        *PublishableAdminBlock.list_display,
+        *HasUUIDAdmin.list_display,
+        *PublishableAdmin.list_display,
     )
     list_filter = (
-        *PublishableAdminBlock.list_filter,
+        *PublishableAdmin.list_filter,
     )
 
     readonly_fields = (
-        *HasUUIDAdminBlock.readonly_fields,
-        *PublishableAdminBlock.readonly_fields,
+        *HasUUIDAdmin.readonly_fields,
+        *PublishableAdmin.readonly_fields,
     )
+    fields = None
     fieldsets = (
-        *HasUUIDAdminBlock.fieldsets,
-        *PublishableAdminBlock.fieldsets,
+        *HasUUIDAdmin.fieldsets,
+        *PublishableAdmin.fieldsets,
     )
 
 
@@ -84,13 +85,13 @@ class HasInitialsExampleAdmin(
 ):
     list_display = (
         'full_name',
-        *HasInitialsAdminBlock.list_display
+        *HasInitialsAdmin.list_display
     )
 
-    readonly_fields = HasInitialsAdminBlock.readonly_fields
+    readonly_fields = HasInitialsAdmin.readonly_fields
     fieldsets = (
         (None, {'fields': ('full_name',)}),
-        *HasInitialsAdminBlock.fieldsets,
+        *HasInitialsAdmin.fieldsets,
     )
 
 
@@ -106,13 +107,13 @@ class TimeStampedExampleAdmin(
     admin.ModelAdmin
 ):
     list_filter = (
-        *TimeStampedModelAdminBlock.list_filter, *TimeStampedModelAdminBlock.list_filter_extra
+        *TimeStampedModelAdmin.list_filter, *TimeStampedModelAdmin.list_filter_extra
     )
     list_display = (
-        *TimeStampedModelAdminBlock.list_display, *TimeStampedModelAdminBlock.list_display_extra
+        *TimeStampedModelAdmin.list_display, *TimeStampedModelAdmin.list_display_extra
     )
-    readonly_fields = (*TimeStampedModelAdminBlock.readonly_fields,)
-    fieldsets = (*TimeStampedModelAdminBlock.fieldsets,)
+    readonly_fields = (*TimeStampedModelAdmin.readonly_fields,)
+    fieldsets = (*TimeStampedModelAdmin.fieldsets,)
 
 
 @admin.register(AdminUtilsExample)
@@ -158,10 +159,10 @@ admin.site.register(LowerCaseCharFieldExample)
 
 @admin.register(OrderedStuff)
 class OrderedStuffAdmin(admin.ModelAdmin):
-    ordering = OrderableAdminBlock.ordering
-    list_display = (*HasNameAdminBlock.list_display, *OrderableAdminBlock.list_display)
-    list_editable = OrderableAdminBlock.list_editable
+    ordering = OrderableAdmin.ordering
+    list_display = (*HasNameAdmin.list_display, *OrderableAdmin.list_display)
+    list_editable = OrderableAdmin.list_editable
     fieldsets = (
-        (None, {'fields': HasNameAdminBlock.fields}),
-        *OrderableAdminBlock.fieldsets,
+        (None, {'fields': HasNameAdmin.fields}),
+        *OrderableAdmin.fieldsets,
     )

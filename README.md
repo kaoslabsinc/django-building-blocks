@@ -59,19 +59,19 @@ class BlogPostAdmin(
     admin.ModelAdmin
 ):
     list_display = (
-        *HasNameAdminBlock.list_display,
-        *PublishableAdminBlock.list_display,
+        *HasNameAdmin.list_display,
+        *PublishableAdmin.list_display,
         ...
     )
     ...
 ```
 
 Notice how we have composed each element in the admin using a concept called Admin Blocks. Each of the abstract classes
-in this library, have an associated Admin Block class, that enables you to define admin for their inheritors in a
-standard way. For example in the case of `Publishable`, you would probably like to show the publication status and date
-in `list_display`. Instead of having to remember to include both fields in all your admins, you can just include the
-Admin Block in the way showed above and have the fields show up in the list table for all the inheritors
-of `Publishable`.
+in this library, have an associated Admin block class (which looks like a normal admin class, but usually isn't meant to
+be inherited), that enables you to define admin for their inheritors in a standard way. For example in the case
+of `Publishable`, you would probably like to show the publication status and date in `list_display`. Instead of having
+to remember to include both fields in all your admins, you can just include the Admin block in the way showed above and
+have the fields show up in the list table for all the inheritors of `Publishable`.
 
 ## Details and classes provided
 
@@ -97,6 +97,10 @@ and `StatusUpdate` would get updated with the new pipeline.
 - [`HasUUID`](building_blocks/models/abstracts.py)
 - [`Archivable`](building_blocks/models/abstracts.py)
 - [`Publishable`](building_blocks/models/abstracts.py)
+
+Note: if you're coming from v0.0.x, take a look at this [migration file](example/sample/migrations/0014_int_status.py)
+to help you with writing migrations for your `Archivable` or `Publishable` models, as in v0.1.0 they have switched to
+use an integer status field.
 
 ### Abstract model factories
 
@@ -127,10 +131,10 @@ from `building_blocks.models.factories.AbstractModelFactory`. Check some of the 
 - [`HasInitials`](building_blocks/models/mixins.py)
 - [`HasAutoFields`](building_blocks/models/mixins.py)
 
-### Admin Block classes
+### Admin block classes
 
-Admin blocks aren't meant to be inherited by your model's admin class. Instead, each field in the admin block is used to
-create your desired admin class. For example:
+The following admins (called admin blocks) aren't usually meant to be inherited by your model's admin class. Instead,
+each field in the admin is used to create your desired admin class. For example:
 
 ```python
 # example/sample/admin.py
@@ -141,23 +145,23 @@ class ArchivableHasUUIDAdmin(
     admin.ModelAdmin
 ):
     search_fields = (
-        *HasUUIDAdminBlock.search_fields,  # AdminBlock to assist in shaping the admin
+        *HasUUIDAdmin.search_fields,  # AdminBlock to assist in shaping the admin
     )
     list_display = (
-        *HasUUIDAdminBlock.list_display,
-        *ArchivableAdminBlock.list_display,
+        *HasUUIDAdmin.list_display,
+        *ArchivableAdmin.list_display,
     )
     list_filter = (
-        *ArchivableAdminBlock.list_filter,
+        *ArchivableAdmin.list_filter,
     )
 
     readonly_fields = (
-        *HasUUIDAdminBlock.readonly_fields,
-        *ArchivableAdminBlock.readonly_fields,
+        *HasUUIDAdmin.readonly_fields,
+        *ArchivableAdmin.readonly_fields,
     )
     fieldsets = (
-        *HasUUIDAdminBlock.fieldsets,
-        *ArchivableAdminBlock.fieldsets,
+        *HasUUIDAdmin.fieldsets,
+        *ArchivableAdmin.fieldsets,
     )
 ```
 
@@ -168,27 +172,26 @@ default and recommended fields for each admin field.
 
 Available Admin Blocks:
 
-- [`HasUUIDAdminBlock`](building_blocks/admin/blocks.py)
-- [`ArchivableAdminBlock`](building_blocks/admin/blocks.py)
-- [`PublishableAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasInitialsAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasNameAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasEmailAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasDescriptionAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasCoverPhotoAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasIconAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasUserAdminBlock`](building_blocks/admin/blocks.py)
-- [`HasAutoSlugAdminBlock`](building_blocks/admin/blocks.py)
-- [`TimeStampedModelAdminBlock`](building_blocks/admin/blocks.py)
+- [`HasUUIDAdmin`](building_blocks/admin/admin.py)
+- [`ArchivableAdmin`](building_blocks/admin/admin.py)
+- [`PublishableAdmin`](building_blocks/admin/admin.py)
+- [`HasInitialsAdmin`](building_blocks/admin/admin.py)
+- [`HasNameAdmin`](building_blocks/admin/admin.py)
+- [`HasEmailAdmin`](building_blocks/admin/admin.py)
+- [`HasDescriptionAdmin`](building_blocks/admin/admin.py)
+- [`HasCoverPhotoAdmin`](building_blocks/admin/admin.py)
+- [`HasIconAdmin`](building_blocks/admin/admin.py)
+- [`HasUserAdmin`](building_blocks/admin/admin.py)
+- [`HasAutoSlugAdmin`](building_blocks/admin/admin.py)
+- [`TimeStampedModelAdmin`](building_blocks/admin/admin.py)
 
-### Inheritable Admin classes
+### Inheritable Admin block classes
 
-Unlike Admin Blocks the following classes are meant to be inherited by your admin class. The usually provide
-functionality such as common admin actions to your admin.
+Some Admin block classes are also meant to be inherited by your admin class. The usually provide functionality such as
+common admin actions to your admin.
 
 - [`ArchivableAdmin`](building_blocks/admin/admin.py)
 - [`PublishableAdmin`](building_blocks/admin/admin.py)
-- [`HasUserAdmin`](building_blocks/admin/admin.py)
 
 Please note that the majority of the inheritable admins
 use [django-object-actions](https://github.com/crccheck/django-object-actions) to enable admin actions on objects'
@@ -197,10 +200,10 @@ project can find the templates from `django_object_actions` which are used in re
 
 ### Mixin Admin classes
 
-- [`CheckUserAdminMixin`](building_blocks/admin/mixins.py)
 - [`EditReadonlyAdminMixin`](building_blocks/admin/mixins.py)
-- [`HasAutoSlugAdminMixin`](building_blocks/admin/mixins.py)
+- [`PrepopulateSlugAdminMixin`](building_blocks/admin/mixins.py)
 - [`DjangoObjectActionsPermissionsMixin`](building_blocks/admin/mixins.py)
+- [`AreYouSureActionsAdminMixin`](building_blocks/admin/mixins.py)
 
 ### Admin inline mixins
 

@@ -1,12 +1,12 @@
 from django.db import models
 
 
-class ArchiveStatus(models.TextChoices):
-    active = 'active'
-    archived = 'archived'
+class ArchiveStatus(models.IntegerChoices):
+    active = 100
+    archived = -1
 
 
-class PublishingStatus(models.TextChoices):
-    draft = 'draft'
-    published = 'published'
-    archived = ArchiveStatus.archived
+class PublishingStatus(models.IntegerChoices):
+    draft = 0
+    published = 100
+    archived = -1
