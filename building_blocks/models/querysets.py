@@ -50,13 +50,22 @@ def _get_filter_dict(objs, lookup_fields):
 
 
 class BulkUpdateCreateQuerySet(models.QuerySet):
-    def bulk_update_or_create(self, objs, lookup_fields, update_fields):
+    def bulk_update_or_create(
+        self,
+        objs,
+        lookup_fields,
+        update_fields,
+        ignore_create=False,
+        ignore_update=False,
+    ):
         """
         Creates or updates in bulk a list of objects
 
         :param objs: List of objects
         :param lookup_fields: Name of field that unique identifies the objects
         :param update_fields: List of fields to update
+        :param ignore_create: Don't create missing records
+        :param ignore_update: Don't update existing records
         :return:
         """
         if not isinstance(lookup_fields, tuple):
@@ -77,8 +86,10 @@ class BulkUpdateCreateQuerySet(models.QuerySet):
                 bulk_update.append(existing_obj)
             else:
                 bulk_create.append(obj)
-        self.bulk_create(bulk_create)
-        self.bulk_update(bulk_update, update_fields)
+        if not ignore_create:
+            self.bulk_create(bulk_create)
+        if not ignore_update:
+            self.bulk_update(bulk_update, update_fields)
         # Rerunning the queryset to make sure all instances returned have ids. The values in created are pointers to
         # instances before they have their id
         return self.filter(**_get_filter_dict(objs, lookup_fields))
