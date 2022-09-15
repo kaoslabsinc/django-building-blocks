@@ -6,6 +6,12 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import django
+from django.conf import settings
+
+settings.configure()
+django.setup()
+
 project = 'Django Building Blocks'
 copyright = '2022, Kaos Labs Inc.'
 author = 'Kaos Labs Inc.'
