@@ -14,7 +14,7 @@ Install::
    :maxdepth: 2
    :caption: Contents:
 
-   building_blocks
+   models
 
 Indices and tables
 ==================
