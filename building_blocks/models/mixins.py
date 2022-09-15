@@ -15,12 +15,12 @@ class HasUUIDModel(models.Model):
 
     @property
     def shortcode(self):
-        return self.uuid_str.split('-')[0]
+        return str(self.uuid).split('-')[0]
 
 
 class NamedModel(models.Model):
     """
-    Model with a name field. __str__ reflects the name.
+    Model with a name field. `__str__` reflects the name.
     """
 
     class Meta:

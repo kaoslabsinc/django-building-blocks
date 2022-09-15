@@ -5,8 +5,8 @@ from .mixins import *
 
 
 class UnnamedBaseKaosModel(
-    TimeStampedModel,
     HasUUIDModel,
+    TimeStampedModel,
     models.Model,
 ):
     class Meta:
