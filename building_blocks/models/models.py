@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class HasUUID(models.Model):
+class HasUUIDModel(models.Model):
     """
     Add a unique UUID field to the model
     """
@@ -17,5 +17,5 @@ class HasUUID(models.Model):
 
 
 __all__ = [
-    'HasUUID',
+    'HasUUIDModel',
 ]
