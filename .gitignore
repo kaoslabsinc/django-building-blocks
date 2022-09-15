@@ -234,3 +234,5 @@ fabric.properties
 ### kaos configuration files
 .kaos/*
 !.kaos/config.yml
+
+requirements.dev.txt
