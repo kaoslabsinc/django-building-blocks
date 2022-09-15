@@ -23,6 +23,11 @@ Mixins
 .. autoclass:: building_blocks.models.SluggedModel
    :show-inheritance:
 
+.. autoclass:: building_blocks.models.OrderableModel
+   :show-inheritance:
+
+.. autoclass:: building_blocks.models.Orderable0Model
+   :show-inheritance:
 
 Base
 ----

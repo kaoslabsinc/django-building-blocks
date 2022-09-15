@@ -8,3 +8,11 @@ def test_NamedModel():
 
 def test_SluggedModel():
     pass
+
+
+def test_OrderableModel():
+    pass
+
+
+def test_Orderable0Model():
+    pass

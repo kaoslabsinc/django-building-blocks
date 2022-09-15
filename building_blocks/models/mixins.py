@@ -52,8 +52,33 @@ class SluggedModel(
         abstract = True
 
 
+class OrderableModel(models.Model):
+    """
+    Adds field order to the inheriting model. Used for manual sorting.
+    """
+    DEFAULT_ORDER = 10e12 - 1
+    order = models.PositiveIntegerField(default=DEFAULT_ORDER)
+
+    class Meta:
+        ordering = ('order', 'id')
+        abstract = True
+
+
+class Orderable0Model(OrderableModel):
+    """
+    Same as OrderableModel, but the default order is set to 0 instead of a large number.
+    """
+    DEFAULT_ORDER = 0
+    order = models.PositiveIntegerField(default=DEFAULT_ORDER)
+
+    class Meta(OrderableModel.Meta):
+        abstract = True
+
+
 __all__ = [
     'HasUUIDModel',
     'NamedModel',
     'SluggedModel',
+    'OrderableModel',
+    'Orderable0Model',
 ]
