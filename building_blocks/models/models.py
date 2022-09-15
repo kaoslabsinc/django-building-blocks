@@ -1,4 +1,6 @@
-from .base import BaseKaosModel
+from rules.contrib.models import RulesModel
+
+from .base import *
 
 
 class KaosModel(

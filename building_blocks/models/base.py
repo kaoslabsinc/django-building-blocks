@@ -1,6 +1,7 @@
-from building_blocks.models import HasUUIDModel
-from building_blocks.models.mixins import NamedModel
 from django.db import models
+from model_utils.models import TimeStampedModel
+
+from .mixins import *
 
 
 class UnnamedBaseKaosModel(

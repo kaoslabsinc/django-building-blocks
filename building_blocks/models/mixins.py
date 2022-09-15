@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -24,7 +26,7 @@ class NamedModel(models.Model):
     class Meta:
         abstract = True
 
-    name = models.CharField(max_length=255, **kwargs)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name if self.name else super(NamedModel, self).__str__()

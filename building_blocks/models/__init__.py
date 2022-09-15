@@ -1,3 +1,3 @@
-from .mixins import *
 from .base import *
+from .mixins import *
 from .models import *
