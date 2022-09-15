@@ -1,21 +1,23 @@
-from django.db import models
+from .base import BaseKaosModel
 
 
-class HasUUIDModel(models.Model):
-    """
-    Add a unique UUID field to the model
-    """
-
+class KaosModel(
+    BaseKaosModel,
+    RulesModel
+):
     class Meta:
         abstract = True
 
-    uuid = models.UUIDField("UUID", unique=True, default=uuid.uuid4, editable=False)
 
-    @property
-    def shortcode(self):
-        return self.uuid_str.split('-')[0]
+class UnnamedKaosModel(
+    UnnamedBaseKaosModel,
+    RulesModel,
+):
+    class Meta:
+        abstract = True
 
 
 __all__ = [
-    'HasUUIDModel',
+    'KaosModel',
+    'UnnamedKaosModel',
 ]
