@@ -1,0 +1,5 @@
+wheel
+sphinx~=5.1
+sphinx-rtd-theme
+
+-e .[test]
