@@ -20,6 +20,9 @@ Mixins
 .. autoclass:: building_blocks.models.NamedModel
    :show-inheritance:
 
+.. autoclass:: building_blocks.models.SluggedModel
+   :show-inheritance:
+
 
 Base
 ----

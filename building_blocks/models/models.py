@@ -22,7 +22,7 @@ class UnnamedKaosModel(
 ):
     """
     Abstract Base Model that comes with UUID, create and modified fields. Powered up by django-rules through
-    `RulesModel`. Cousin of KaosModel but without the name field. 
+    `RulesModel`. Cousin of KaosModel but without the name field.
     """
 
     class Meta:
