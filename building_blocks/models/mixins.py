@@ -22,7 +22,7 @@ class HasUUIDModel(models.Model):
 
 class NamedModel(models.Model):
     """
-    Model with a name field. `__str__` reflects the name.
+    Model with a name field. `__str__()` reflects the name.
     """
 
     class Meta:
