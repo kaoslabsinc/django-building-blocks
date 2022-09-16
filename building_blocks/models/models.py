@@ -1,6 +1,7 @@
 from rules.contrib.models import RulesModel
 
 from .base import *
+from .mixins import *
 
 
 class KaosModel(
@@ -29,7 +30,21 @@ class UnnamedKaosModel(
         abstract = True
 
 
+class SluggedKaosModel(
+    SluggedModel,
+    KaosModel
+):
+    """
+    `KaosModel` with slug.
+    """
+    slug_source = 'name'
+
+    class Meta:
+        abstract = True
+
+
 __all__ = [
     'KaosModel',
     'UnnamedKaosModel',
+    'SluggedKaosModel',
 ]

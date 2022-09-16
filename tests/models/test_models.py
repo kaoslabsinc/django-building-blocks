@@ -4,3 +4,7 @@ def test_UnnamedKaosModel():
 
 def test_KaosModel():
     pass
+
+
+def test_SluggedKaosModel():
+    pass

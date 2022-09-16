@@ -10,6 +10,9 @@ Models
 .. autoclass:: building_blocks.models.UnnamedKaosModel
    :show-inheritance:
 
+.. autoclass:: building_blocks.models.SluggedKaosModel
+   :show-inheritance:
+
 
 Mixins
 ------
