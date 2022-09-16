@@ -4,11 +4,18 @@ Admin
 Inlines
 -------
 
-.. autoclass:: dj_kaos_utils.admin.AddInlineMixin
+.. autoclass:: building_blocks.admin.AddInlineMixin
    :show-inheritance:
 
-.. autoclass:: dj_kaos_utils.admin.ListInlineMixin
+.. autoclass:: building_blocks.admin.ListInlineMixin
    :show-inheritance:
 
-.. autoclass:: dj_kaos_utils.admin.ReadOnlyInlineMixin
+.. autoclass:: building_blocks.admin.ReadOnlyInlineMixin
+   :show-inheritance:
+
+
+Mixins
+-------
+
+.. autoclass:: building_blocks.admin.PrepopulateSlugAdminMixin
    :show-inheritance:
