@@ -5,7 +5,7 @@ from .querysets import ArchivableQuerySet
 
 class Archivable(models.Model):
     """
-    Provides and interface to create archivable (or soft deletable) models. If you don't want to delete ta model from
+    Provides and interface to create archivable (or soft deletable) models. If you don't want to delete an instance from
     your DB, but want to mark it inactive use this abstract model.
     Filter for available (i.e. not archived) objects using the queryset method .available(). It is provided through the
     model's objects manager.
