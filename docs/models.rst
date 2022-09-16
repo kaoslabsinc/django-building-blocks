@@ -40,3 +40,11 @@ Base
 
 .. autoclass:: building_blocks.models.BaseKaosModel
    :show-inheritance:
+
+
+Abstracts
+---------
+
+.. autoclass:: building_blocks.models.Archivable
+   :members: archive, restore
+   :show-inheritance:
