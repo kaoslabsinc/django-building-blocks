@@ -1,5 +1,5 @@
 Welcome to Django Building Blocks's documentation!
-=============================================
+==================================================
 
 Abstract Django base models to act as building blocks for rapid development of Django database models
 
@@ -14,7 +14,8 @@ Install::
    :maxdepth: 2
    :caption: Contents:
 
-   building_blocks
+   models
+   admin
 
 Indices and tables
 ==================
