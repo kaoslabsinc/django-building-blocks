@@ -14,3 +14,5 @@ def test_SluggedKaosModel(db):
     assert product.uuid
     assert product.created
     assert product.slug == 'name'
+
+    assert str(product.uuid).startswith(product.shortcode)
