@@ -6,7 +6,7 @@ class ArchivableQuerySet(models.QuerySet):
         return self.filter(is_archived=False)
 
     def archived(self):
-        return self.filter(status=True)
+        return self.filter(is_archived=True)
 
 
 __all__ = [

@@ -42,7 +42,7 @@ class Archivable(models.Model):
         """
 
         if not force:
-            assert self.is_archived is False, f"{self} is not archived"
+            assert self.is_archived is True, f"{self} is not archived"
         self.is_archived = False
 
 
