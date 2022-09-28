@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 
 from .querysets import ArchivableQuerySet
@@ -18,6 +19,7 @@ class Archivable(models.Model):
 
     objects = ArchivableQuerySet.as_manager()
 
+    @admin.display(boolean=True)
     @property
     def is_available(self):
         return not self.is_archived

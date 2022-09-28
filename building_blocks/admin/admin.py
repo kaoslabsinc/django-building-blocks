@@ -14,6 +14,7 @@ class ArchivableAdmin(
     are_you_sure_actions = actions
 
     list_filter = ('is_archived',)
+    list_display = ('is_available',)
 
     readonly_fields = ('is_archived', 'is_available')
     fields = ('is_archived',)
