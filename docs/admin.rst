@@ -19,3 +19,9 @@ Mixins
 
 .. autoclass:: building_blocks.admin.PrepopulateSlugAdminMixin
    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.ExcludeFromNonSuperusersMixin
+   :show-inheritance:
+
+.. autoclass:: building_blocks.admin.ExcludeFromFieldsetsMixin
+   :show-inheritance:

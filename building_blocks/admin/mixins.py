@@ -52,6 +52,10 @@ class AreYouSureActionsAdminMixin(BaseDjangoObjectActions):
 
 
 class ExcludeFromNonSuperusersMixin(BaseModelAdmin):
+    """
+    Admin mixin to make some fields hidden to non-superusers. Define such fields using `.exclude_from_non_superusers`,
+    or dynamically by overriding `.get_exclude_from_non_superusers()`.
+    """
     exclude_from_non_superusers = ()
 
     def get_exclude_from_non_superusers(self, request, obj=None):
@@ -68,6 +72,11 @@ class ExcludeFromNonSuperusersMixin(BaseModelAdmin):
 
 
 class ExcludeFromFieldsetsMixin(BaseModelAdmin):
+    """
+    Admin mixin to make sure fields that are in `exclude` are removed from the `fieldsets` definition.
+    By default, without this mixin, if a field defined in `fieldsets` is in `exclude`, Django throws an
+    error complaining about a missing value for the field.
+    """
     def get_fieldsets(self, request, obj=None):
         exclude = self.get_exclude(request, obj)
         fieldsets = super().get_fieldsets(request, obj) or ()
