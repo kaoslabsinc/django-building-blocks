@@ -17,7 +17,7 @@ class ArchivableAdmin(
     list_display = ('is_available',)
 
     readonly_fields = ('is_archived', 'is_available')
-    fields = ('is_archived',)
+    fields = ('is_available',)
     fieldsets = (
         ("Management", {'fields': fields}),
     )
