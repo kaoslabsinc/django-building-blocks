@@ -38,6 +38,9 @@ class DjangoObjectActionsPermissionsMixin(BaseDjangoObjectActions):
 
 
 class AreYouSureActionsAdminMixin(BaseDjangoObjectActions):
+    """
+    Add a confirmation prompt to the certain object actions defined in `are_you_sure_actions`.
+    """
     are_you_sure_actions = ()
     are_you_sure_prompt_f = "Are you sure you want to {label} this object?"
 
