@@ -1,9 +1,7 @@
-import pytest
-
 from simple.models import Product
 
 
-def test_ArchivableQuerySet(db):
+def test_Archivable(db):
     product = Product.objects.create(name="Name", price=10)
     assert Product.objects.available().count() == 1
     assert Product.objects.archived().count() == 0
@@ -23,13 +21,10 @@ def test_ArchivableQuerySet(db):
     assert product.is_available is True
 
 
-def test_ArchivableQuerySet__raises(db):
-    product = Product.objects.create(name="Name", price=10)
-
-    with pytest.raises(AssertionError):
-        product.restore()
-
-    product.archive()
-    product.save()
-    with pytest.raises(AssertionError):
-        product.archive()
+def test_Archivable__update_methods(db):
+    Product.objects.create(name="Name", price=10)
+    assert Product.objects.available().count() == 1
+    Product.objects.all().set_archived()
+    assert Product.objects.available().count() == 0
+    Product.objects.all().set_restored()
+    assert Product.objects.available().count() == 1
