@@ -19,8 +19,8 @@ class Archivable(models.Model):
 
     objects = ArchivableQuerySet.as_manager()
 
-    @admin.display(boolean=True)
     @property
+    @admin.display(boolean=True)
     def is_available(self):
         return not self.is_archived
 
