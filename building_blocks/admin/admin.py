@@ -1,6 +1,7 @@
 from django.contrib import admin, messages
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
+from .filters import ArchivableFilter
 from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 
 
@@ -14,7 +15,7 @@ class ArchivableAdmin(
     change_actions = actions
     are_you_sure_actions = actions
 
-    list_filter = ('is_archived',)
+    list_filter = (ArchivableFilter,)
     list_display = ('is_available',)
 
     readonly_fields = ('is_archived', 'is_available')
