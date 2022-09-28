@@ -1,5 +1,5 @@
 from django.contrib import admin, messages
-from django_object_actions import takes_instance_or_queryset
+from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 
@@ -7,6 +7,7 @@ from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsM
 class ArchivableAdmin(
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
+    DjangoObjectActions,
     admin.ModelAdmin
 ):
     actions = ('archive', 'restore')
