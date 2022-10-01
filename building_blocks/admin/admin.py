@@ -1,8 +1,10 @@
+from dj_kaos_utils.admin import EditReadonlyAdminMixin
+from dj_kaos_utils.forms import unrequire_form
 from django.contrib import admin, messages
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from .filters import ArchivableFilter
-from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
+from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin, PrepopulateSlugAdminMixin
 
 
 class ArchivableAdmin(
@@ -52,6 +54,21 @@ class ArchivableAdmin(
         return obj and obj.is_available
 
 
+class SluggedKaosModelAdmin(
+    PrepopulateSlugAdminMixin,
+    EditReadonlyAdminMixin,
+    admin.ModelAdmin
+):
+    slug_source = 'name'
+    search_fields = ('slug', 'name')
+    edit_readonly_fields = ('slug',)
+
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super(SluggedKaosModelAdmin, self).get_form(request, obj, change, **kwargs)
+        return unrequire_form(form, ('slug',)) if not obj else form
+
+
 __all__ = [
     'ArchivableAdmin',
+    'SluggedKaosModelAdmin',
 ]
