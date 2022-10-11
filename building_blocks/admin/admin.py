@@ -49,7 +49,7 @@ class ArchivableAdmin(
 
         return change_actions
 
-    @admin.display(description="✔️", boolean=True)
+    @admin.display(description="✔️", boolean=True, ordering='is_archived')
     def is_available(self, obj):
         return obj and obj.is_available
 
