@@ -48,3 +48,11 @@ Abstracts
 .. autoclass:: building_blocks.models.Archivable
    :members: archive, restore
    :show-inheritance:
+
+
+QuerySets
+---------
+
+.. autoclass:: building_blocks.models.ArchivableQuerySet
+   :members: available, archived, set_archived, set_restored
+   :show-inheritance:
