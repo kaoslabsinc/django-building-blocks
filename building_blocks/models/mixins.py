@@ -94,6 +94,7 @@ class Orderable0Model(OrderableModel):
 __all__ = [
     'HasUUIDModel',
     'NamedModel',
+    'TitledModel',
     'SluggedModel',
     'OrderableModel',
     'Orderable0Model',
