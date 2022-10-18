@@ -2,9 +2,9 @@ from django.contrib import admin
 from django.db import models
 from django_fsm import FSMIntegerField, transition
 
-from .enums import ArchiveStatus
+from .enums import ArchiveStatus, PublishStatus
 from .interfaces import ArchivableInterface
-from .querysets import ArchivableQuerySet, StatusArchivableQuerySet
+from .querysets import ArchivableQuerySet, StatusArchivableQuerySet, PublishableQuerySet
 
 
 class Archivable(ArchivableInterface, models.Model):
@@ -83,8 +83,30 @@ class StatusArchivable(
         abstract = True
 
 
+class Publishable(StatusArchivable, models.Model):
+    status = FSMIntegerField(choices=PublishStatus.choices, default=PublishStatus.draft)
+
+    objects = PublishableQuerySet.as_manager()
+
+    class Meta:
+        abstract = True
+
+    @transition(status, source=PublishStatus.archived, target=PublishStatus.draft)
+    def restore(self):
+        pass
+
+    @transition(status, source=PublishStatus.draft, target=PublishStatus.published)
+    def publish(self):
+        pass
+
+    @transition(status, source=PublishStatus.published, target=PublishStatus.draft)
+    def unpublish(self):
+        pass
+
+
 __all__ = [
     'Archivable',
     'HasStatus',
     'StatusArchivable',
+    'Publishable',
 ]
