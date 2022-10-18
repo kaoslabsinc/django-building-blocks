@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.db import models
 
+from .interfaces import ArchivableInterface
 from .querysets import ArchivableQuerySet
 
 
-class Archivable(models.Model):
+class Archivable(ArchivableInterface, models.Model):
     """
     Provides and interface to create archivable (or soft deletable) models. If you don't want to delete an instance from
     your DB, but want to mark it inactive use this abstract model.
