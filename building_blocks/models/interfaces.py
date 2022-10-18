@@ -1,3 +1,7 @@
+from django.db import models
+from django.db.models import Q
+
+
 class ArchivableInterface:
     is_archived: bool
 
@@ -13,3 +17,25 @@ class ArchivableInterface:
 
     def unarchive(self, *args, **kwargs):
         return self.restore(*args, **kwargs)
+
+
+class ArchivableQuerySetInterface(models.QuerySet):
+    _Q_ARCHIVED: Q
+
+    def archived(self):
+        """
+        :return: queryset with db rows that are archived
+        """
+        return self.filter(self._Q_ARCHIVED)
+
+    def available(self):
+        """
+        :return: queryset with db rows that are "available" (aka not archived)
+        """
+        return self.exclude(self._Q_ARCHIVED)
+
+    def set_archived(self):
+        raise NotImplementedError
+
+    def set_restored(self):
+        raise NotImplementedError

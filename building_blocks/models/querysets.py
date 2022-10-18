@@ -1,21 +1,17 @@
 from django.db import models
+from django.db.models import Q
+
+from .interfaces import ArchivableQuerySetInterface
 
 
-class ArchivableQuerySet(models.QuerySet):
+class ArchivableQuerySet(
+    ArchivableQuerySetInterface,
+    models.QuerySet
+):
     """
     Default queryset interface for Archivable objects. Adds queryset methods to interact with the Archivable interface.
     """
-    def available(self):
-        """
-        :return: queryset with db rows that are "available" (aka not archived)
-        """
-        return self.filter(is_archived=False)
-
-    def archived(self):
-        """
-        :return: queryset with db rows that are archived
-        """
-        return self.filter(is_archived=True)
+    _Q_ARCHIVED = Q(is_archived=True)
 
     def set_archived(self):
         """
