@@ -65,13 +65,22 @@ class HasUUIDAdminMixin(BaseModelAdmin):
 
 
 class SluggedKaosModelAdmin(
+    HasUUIDAdminMixin,
     PrepopulateSlugAdminMixin,
     EditReadonlyAdminMixin,
     admin.ModelAdmin
 ):
     slug_source = 'name'
-    search_fields = ('slug', 'name')
+    search_fields = (*HasUUIDAdminMixin.search_fields, 'slug', 'name')
+    list_display = ('name',)
+    list_display_extra = (*list_display, 'slug')
+
     edit_readonly_fields = ('slug',)
+    fields = ('name', 'slug')
+    fieldsets = (
+        (None, {'fields': fields}),
+        *HasUUIDAdminMixin.fieldsets,
+    )
 
     def get_form(self, request, obj=None, change=False, **kwargs):
         form = super(SluggedKaosModelAdmin, self).get_form(request, obj, change, **kwargs)
