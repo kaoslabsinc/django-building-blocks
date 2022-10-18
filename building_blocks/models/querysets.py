@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 
+from .enums import ArchiveStatus
 from .interfaces import ArchivableQuerySetInterface
 
 
@@ -30,6 +31,20 @@ class ArchivableQuerySet(
         return self.update(is_archived=False)
 
 
+class StatusArchivableQuerySet(
+    ArchivableQuerySetInterface,
+    models.QuerySet
+):
+    _Q_ARCHIVED = Q(status=ArchiveStatus.archived)
+
+    def set_archived(self):
+        return self.update(status=ArchiveStatus.archived)
+
+    def set_restored(self):
+        return self.update(status=ArchiveStatus.available)
+
+
 __all__ = [
     'ArchivableQuerySet',
+    'StatusArchivableQuerySet',
 ]

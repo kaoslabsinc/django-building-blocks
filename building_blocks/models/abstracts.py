@@ -4,7 +4,7 @@ from django_fsm import FSMIntegerField, transition
 
 from .enums import ArchiveStatus
 from .interfaces import ArchivableInterface
-from .querysets import ArchivableQuerySet
+from .querysets import ArchivableQuerySet, StatusArchivableQuerySet
 
 
 class Archivable(ArchivableInterface, models.Model):
@@ -76,6 +76,8 @@ class StatusArchivable(
     @transition(status, source=ArchiveStatus.archived, target=ArchiveStatus.archived)
     def restore(self):
         pass
+
+    objects = StatusArchivableQuerySet.as_manager()
 
     class Meta:
         abstract = True
