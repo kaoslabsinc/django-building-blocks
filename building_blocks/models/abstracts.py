@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.db import models
+from django_fsm import FSMIntegerField, transition
 
+from .enums import ArchiveStatus
 from .interfaces import ArchivableInterface
 from .querysets import ArchivableQuerySet
 
@@ -49,6 +51,38 @@ class Archivable(ArchivableInterface, models.Model):
         self.is_archived = False
 
 
+class HasStatus(models.Model):
+    status = FSMIntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+
+class StatusArchivable(
+    ArchivableInterface,
+    HasStatus,
+    models.Model
+):
+    status = FSMIntegerField(choices=ArchiveStatus.choices, default=ArchiveStatus.available)
+
+    @property
+    def is_archived(self):
+        return self.status == ArchiveStatus.archived
+
+    @transition(status, target=ArchiveStatus.archived)
+    def archive(self):
+        pass
+
+    @transition(status, source=ArchiveStatus.archived, target=ArchiveStatus.archived)
+    def restore(self):
+        pass
+
+    class Meta:
+        abstract = True
+
+
 __all__ = [
     'Archivable',
+    'HasStatus',
+    'StatusArchivable',
 ]

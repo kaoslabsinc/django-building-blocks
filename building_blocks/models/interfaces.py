@@ -1,6 +1,9 @@
 class ArchivableInterface:
     is_archived: bool
-    is_available: bool
+
+    @property
+    def is_available(self):
+        return not self.is_archived
 
     def archive(self, *args, **kwargs):
         raise NotImplementedError
