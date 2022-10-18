@@ -36,6 +36,20 @@ class NamedModel(models.Model):
         return self.name if self.name else super(NamedModel, self).__str__()
 
 
+class TitledModel(models.Model):
+    """
+    Model with a title field. `__str__()` reflects the title.
+    """
+
+    class Meta:
+        abstract = True
+
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title if self.title else super().__str__()
+
+
 class SluggedModel(
     HasAutoFields,
     models.Model
@@ -80,6 +94,7 @@ class Orderable0Model(OrderableModel):
 __all__ = [
     'HasUUIDModel',
     'NamedModel',
+    'TitledModel',
     'SluggedModel',
     'OrderableModel',
     'Orderable0Model',
