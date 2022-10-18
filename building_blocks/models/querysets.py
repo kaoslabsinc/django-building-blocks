@@ -38,15 +38,28 @@ class PublishableQuerySet(
     _Q_PUBLISHED = Q(status=PublishStatus.published)
 
     def published(self):
+        """
+        :return: queryset with db rows that are published
+        """
         return self.filter(self._Q_PUBLISHED)
 
     def set_restored(self):
         return self.update(status=PublishStatus.draft)
 
     def set_published(self):
+        """
+        Publish the objects in this queryset.
+
+        :return: the return value from `.update()` i.e. the count of rows updated.
+        """
         return self.update(status=PublishStatus.published)
 
     def set_unpublished(self):
+        """
+        Unpublish the objects (set to draft) in this queryset.
+
+        :return: the return value from `.update()` i.e. the count of rows updated.
+        """
         return self.update(status=PublishStatus.draft)
 
 
