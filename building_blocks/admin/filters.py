@@ -27,7 +27,14 @@ class ArchivableFilter(QuerysetChoiceFilter):
     queryset_filters = ('available', 'archived')
 
 
+class PublishableFilter(ArchivableFilter):
+    title = "by publish status"
+    parameter_name = 'publish_status'
+    queryset_filters = (*ArchivableFilter.queryset_filters, 'published', 'draft')
+
+
 __all__ = [
     'QuerysetChoiceFilter',
     'ArchivableFilter',
+    'PublishableFilter',
 ]

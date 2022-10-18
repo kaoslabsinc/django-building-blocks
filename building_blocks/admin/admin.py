@@ -4,8 +4,9 @@ from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
-from .filters import ArchivableFilter
+from .filters import *
 from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin, PrepopulateSlugAdminMixin
+from ..models.enums import PublishStatus
 
 
 class ArchivableAdmin(
@@ -54,6 +55,85 @@ class ArchivableAdmin(
     def is_available(self, obj):
         return obj and obj.is_available
 
+    @admin.display(boolean=True, ordering='is_archived')
+    def is_archived(self, obj):
+        return obj and obj.is_archived
+
+
+class HasStatusAdmin(ArchivableAdmin):
+    STATUS = 'status'
+    list_display = (STATUS,)
+    list_filter = (STATUS,)
+    readonly_fields = (STATUS,)
+    fields = (STATUS,)
+    fieldsets = (
+        ("Management", {'fields': fields}),
+    )
+
+
+class PublishableAdmin(HasStatusAdmin, ArchivableAdmin):
+    actions = (*ArchivableAdmin.actions, 'publish', 'unpublish')
+    change_actions = actions
+    list_filter = (PublishableFilter,)
+    list_filter_extra = (*list_filter, *HasStatusAdmin.list_filter)
+
+    readonly_fields = (
+        *ArchivableAdmin.readonly_fields,
+        *HasStatusAdmin.readonly_fields,
+        'is_published',
+        'is_draft',
+    )
+    fields = (
+        *HasStatusAdmin.fields,
+        *ArchivableAdmin.fields,
+    )
+    fields_extra = (
+        *fields[:1],
+        'is_published',
+        'is_draft',
+        *fields[1:],
+    )
+    fieldsets = (
+        ("Management", {'fields': fields}),
+    )
+
+    @admin.display(description="✔️", boolean=True, ordering='status')
+    def is_available(self, obj):
+        return super().is_available(obj)
+
+    @admin.display(boolean=True, ordering='status')
+    def is_published(self, obj):
+        return obj and obj.is_published
+
+    @admin.display(boolean=True, ordering='status')
+    def is_draft(self, obj):
+        return obj and obj.is_draft
+
+    @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
+    def publish(self, request, queryset):
+        count = queryset.set_published()
+        messages.success(request, f"Published {count} objects")
+
+    @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
+    def unpublish(self, request, queryset):
+        count = queryset.set_unpublished()
+        messages.success(request, f"Unpublished {count} objects")
+
+    def get_change_actions(self, request, object_id, form_url):
+        change_actions = super().get_change_actions(request, object_id, form_url)
+        if change_actions:
+            change_actions = list(change_actions)
+            obj = self._get_change_action_object()
+            if obj.status != PublishStatus.published:
+                change_actions.remove('unpublish')
+            if obj.status != PublishStatus.draft:
+                change_actions.remove('publish')
+
+        return change_actions
+
+
 class HasUUIDAdminMixin(BaseModelAdmin):
     UUID = 'uuid'
     search_fields = (UUID,)
@@ -90,5 +170,7 @@ class SluggedKaosModelAdmin(
 __all__ = [
     'ArchivableAdmin',
     'SluggedKaosModelAdmin',
+    'HasStatusAdmin',
+    'PublishableAdmin',
     'HasUUIDAdminMixin',
 ]
