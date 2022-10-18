@@ -36,12 +36,19 @@ class PublishableQuerySet(
     models.QuerySet
 ):
     _Q_PUBLISHED = Q(status=PublishStatus.published)
+    _Q_DRAFT = Q(status=PublishStatus.draft)
 
     def published(self):
         """
         :return: queryset with db rows that are published
         """
         return self.filter(self._Q_PUBLISHED)
+
+    def draft(self):
+        """
+        :return: queryset with db rows that are in draft
+        """
+        return self.filter(self._Q_DRAFT)
 
     def set_restored(self):
         return self.update(status=PublishStatus.draft)

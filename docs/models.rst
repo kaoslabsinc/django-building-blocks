@@ -70,5 +70,5 @@ QuerySets
    :show-inheritance:
 
 .. autoclass:: building_blocks.models.PublishableQuerySet
-   :members: available, archived, published, set_archived, set_restored, set_published, set_unpublished
+   :members: available, archived, published, draft, set_archived, set_restored, set_published, set_unpublished
    :show-inheritance:
