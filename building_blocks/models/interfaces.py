@@ -10,16 +10,29 @@ class ArchivableInterface:
         return not self.is_archived
 
     def archive(self, *args, **kwargs):
+        """
+        Set the object as archived.
+        """
         raise NotImplementedError
 
     def restore(self, *args, **kwargs):
+        """
+        Set the object as not archived (available).
+        """
         raise NotImplementedError
 
     def unarchive(self, *args, **kwargs):
+        """
+        Set the object as not archived (available).
+        """
         return self.restore(*args, **kwargs)
 
 
 class ArchivableQuerySetInterface(models.QuerySet):
+    """
+    Default queryset interface for Archivable objects. Adds queryset methods to interact with the Archivable interface.
+    """
+
     _Q_ARCHIVED: Q
 
     def archived(self):
@@ -35,7 +48,17 @@ class ArchivableQuerySetInterface(models.QuerySet):
         return self.exclude(self._Q_ARCHIVED)
 
     def set_archived(self):
+        """
+        Archive the objects in this queryset.
+
+        :return: the return value from `.update()` i.e. the count of rows updated.
+        """
         raise NotImplementedError
 
     def set_restored(self):
+        """
+        Restore (unarchive) the objects in this queryset.
+
+        :return: the return value from `.update()` i.e. the count of rows updated.
+        """
         raise NotImplementedError
