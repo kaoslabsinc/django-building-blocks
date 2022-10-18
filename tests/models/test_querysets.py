@@ -65,6 +65,8 @@ def test_Publishable(db):
     assert ProductPublishable.objects.archived().count() == 0
     assert ProductPublishable.objects.draft().count() == 1
     assert product.is_available is True
+    assert product.is_draft is True
+    assert product.is_published is False
 
     product.archive()
     product.save()
@@ -72,6 +74,8 @@ def test_Publishable(db):
     assert ProductPublishable.objects.archived().count() == 1
     assert ProductPublishable.objects.draft().count() == 0
     assert product.is_available is False
+    assert product.is_draft is False
+    assert product.is_published is False
 
     product.refresh_from_db()
     product.restore()
@@ -80,6 +84,8 @@ def test_Publishable(db):
     assert ProductPublishable.objects.archived().count() == 0
     assert ProductPublishable.objects.draft().count() == 1
     assert product.is_available is True
+    assert product.is_draft is True
+    assert product.is_published is False
 
     product.refresh_from_db()
     product.publish()
@@ -89,6 +95,8 @@ def test_Publishable(db):
     assert ProductPublishable.objects.published().count() == 1
     assert ProductPublishable.objects.draft().count() == 0
     assert product.is_available is True
+    assert product.is_draft is False
+    assert product.is_published is True
 
     product.refresh_from_db()
     product.unpublish()
@@ -98,6 +106,8 @@ def test_Publishable(db):
     assert ProductPublishable.objects.published().count() == 0
     assert ProductPublishable.objects.draft().count() == 1
     assert product.is_available is True
+    assert product.is_draft is True
+    assert product.is_published is False
 
 
 def test_Publishable__update_methods(db):

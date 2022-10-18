@@ -91,6 +91,14 @@ class Publishable(StatusArchivable, models.Model):
     class Meta:
         abstract = True
 
+    @property
+    def is_published(self):
+        return self.status == PublishStatus.published
+
+    @property
+    def is_draft(self):
+        return self.status == PublishStatus.draft
+
     @transition(status, source=PublishStatus.archived, target=PublishStatus.draft)
     def restore(self):
         pass
