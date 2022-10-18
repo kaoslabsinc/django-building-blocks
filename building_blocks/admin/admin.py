@@ -1,6 +1,7 @@
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from dj_kaos_utils.forms import unrequire_form
 from django.contrib import admin, messages
+from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from .filters import ArchivableFilter
@@ -53,6 +54,15 @@ class ArchivableAdmin(
     def is_available(self, obj):
         return obj and obj.is_available
 
+class HasUUIDAdminMixin(BaseModelAdmin):
+    UUID = 'uuid'
+    search_fields = (UUID,)
+    readonly_fields = (UUID,)
+    fields = (UUID,)
+    fieldsets = (
+        ("Admin", {'fields': fields}),
+    )
+
 
 class SluggedKaosModelAdmin(
     PrepopulateSlugAdminMixin,
@@ -71,4 +81,5 @@ class SluggedKaosModelAdmin(
 __all__ = [
     'ArchivableAdmin',
     'SluggedKaosModelAdmin',
+    'HasUUIDAdminMixin',
 ]
