@@ -1,4 +1,4 @@
-from simple.models import Product, ProductStatusArchivable
+from simple.models import Product, ProductStatusArchivable, ProductPublishable
 
 
 def test_Archivable(db):
@@ -57,3 +57,54 @@ def test_StatusArchivable__update_methods(db):
     assert ProductStatusArchivable.objects.available().count() == 0
     ProductStatusArchivable.objects.all().set_restored()
     assert ProductStatusArchivable.objects.available().count() == 1
+
+
+def test_Publishable(db):
+    product = ProductPublishable.objects.create(name="Name", price=10)
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.archived().count() == 0
+    assert product.is_available is True
+
+    product.archive()
+    product.save()
+    assert ProductPublishable.objects.available().count() == 0
+    assert ProductPublishable.objects.archived().count() == 1
+    assert product.is_available is False
+
+    product.refresh_from_db()
+    product.restore()
+    product.save()
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.archived().count() == 0
+    assert product.is_available is True
+
+    product.refresh_from_db()
+    product.publish()
+    product.save()
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.archived().count() == 0
+    assert ProductPublishable.objects.published().count() == 1
+    assert product.is_available is True
+
+    product.refresh_from_db()
+    product.unpublish()
+    product.save()
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.archived().count() == 0
+    assert ProductPublishable.objects.published().count() == 0
+    assert product.is_available is True
+
+
+def test_Publishable__update_methods(db):
+    ProductPublishable.objects.create(name="Name", price=10)
+    assert ProductPublishable.objects.available().count() == 1
+    ProductPublishable.objects.all().set_archived()
+    assert ProductPublishable.objects.available().count() == 0
+    ProductPublishable.objects.all().set_restored()
+    assert ProductPublishable.objects.available().count() == 1
+    ProductPublishable.objects.all().set_published()
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.published().count() == 1
+    ProductPublishable.objects.all().set_unpublished()
+    assert ProductPublishable.objects.available().count() == 1
+    assert ProductPublishable.objects.published().count() == 0

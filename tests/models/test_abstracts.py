@@ -1,7 +1,7 @@
 import pytest
 from django_fsm import TransitionNotAllowed
 
-from simple.models import Product, ProductStatusArchivable
+from simple.models import Product, ProductStatusArchivable, ProductPublishable
 
 
 def test_Archivable__raises(db):
@@ -26,3 +26,24 @@ def test_StatusArchivable__raises(db):
     product.save()
     with pytest.raises(TransitionNotAllowed):
         product.archive()
+
+
+def test_Publishable__raises(db):
+    product = ProductPublishable.objects.create(name="Name", price=10)
+
+    with pytest.raises(TransitionNotAllowed):
+        product.restore()
+
+    product.archive()
+    with pytest.raises(TransitionNotAllowed):
+        product.archive()
+
+    product.restore()
+    product.publish()
+    with pytest.raises(TransitionNotAllowed):
+        product.publish()
+
+    product.unpublish()
+    with pytest.raises(TransitionNotAllowed):
+        product.unpublish()
+
