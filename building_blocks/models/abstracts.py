@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.db import models
+from django_fsm import FSMIntegerField, transition
 
-from .querysets import ArchivableQuerySet
+from .enums import ArchiveStatus, PublishStatus
+from .interfaces import ArchivableInterface
+from .querysets import ArchivableQuerySet, StatusArchivableQuerySet, PublishableQuerySet
 
 
-class Archivable(models.Model):
+class Archivable(ArchivableInterface, models.Model):
     """
     Provides and interface to create archivable (or soft deletable) models. If you don't want to delete an instance from
     your DB, but want to mark it inactive use this abstract model.
@@ -48,6 +51,62 @@ class Archivable(models.Model):
         self.is_archived = False
 
 
+class HasStatus(models.Model):
+    status = FSMIntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+
+class StatusArchivable(
+    ArchivableInterface,
+    HasStatus,
+    models.Model
+):
+    status = FSMIntegerField(choices=ArchiveStatus.choices, default=ArchiveStatus.available)
+
+    @property
+    def is_archived(self):
+        return self.status == ArchiveStatus.archived
+
+    @transition(status, source='+', target=ArchiveStatus.archived)
+    def archive(self):
+        pass
+
+    @transition(status, source=ArchiveStatus.archived, target=ArchiveStatus.available)
+    def restore(self):
+        pass
+
+    objects = StatusArchivableQuerySet.as_manager()
+
+    class Meta:
+        abstract = True
+
+
+class Publishable(StatusArchivable, models.Model):
+    status = FSMIntegerField(choices=PublishStatus.choices, default=PublishStatus.draft)
+
+    objects = PublishableQuerySet.as_manager()
+
+    class Meta:
+        abstract = True
+
+    @transition(status, source=PublishStatus.archived, target=PublishStatus.draft)
+    def restore(self):
+        pass
+
+    @transition(status, source=PublishStatus.draft, target=PublishStatus.published)
+    def publish(self):
+        pass
+
+    @transition(status, source=PublishStatus.published, target=PublishStatus.draft)
+    def unpublish(self):
+        pass
+
+
 __all__ = [
     'Archivable',
+    'HasStatus',
+    'StatusArchivable',
+    'Publishable',
 ]
