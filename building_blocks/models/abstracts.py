@@ -69,11 +69,11 @@ class StatusArchivable(
     def is_archived(self):
         return self.status == ArchiveStatus.archived
 
-    @transition(status, target=ArchiveStatus.archived)
+    @transition(status, source='+', target=ArchiveStatus.archived)
     def archive(self):
         pass
 
-    @transition(status, source=ArchiveStatus.archived, target=ArchiveStatus.archived)
+    @transition(status, source=ArchiveStatus.archived, target=ArchiveStatus.available)
     def restore(self):
         pass
 
