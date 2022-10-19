@@ -1,5 +1,5 @@
 name: django-building-blocks
-version: 0.2.0-a2
+version: 0.2.0-a3
 description: Abstract Django base models to act as building blocks for rapid development of Django database models
 
 repo_url: https://github.com/kaoslabsinc/django-building-blocks
