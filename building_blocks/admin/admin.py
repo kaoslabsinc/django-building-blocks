@@ -74,6 +74,7 @@ class HasStatusAdmin(ArchivableAdmin):
 class PublishableAdmin(HasStatusAdmin, ArchivableAdmin):
     actions = (*ArchivableAdmin.actions, 'publish', 'unpublish')
     change_actions = actions
+    are_you_sure_actions = actions
     list_filter = (PublishableFilter,)
     list_filter_extra = (*list_filter, *HasStatusAdmin.list_filter)
 
