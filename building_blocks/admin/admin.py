@@ -4,6 +4,7 @@ from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
+from .base import *
 from .filters import *
 from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin, PrepopulateSlugAdminMixin
 from ..models.enums import PublishStatus
@@ -13,6 +14,7 @@ class ArchivableAdmin(
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     DjangoObjectActions,
+    BaseArchivableAdmin,
     admin.ModelAdmin
 ):
     actions = ('archive', 'restore')
@@ -21,12 +23,6 @@ class ArchivableAdmin(
 
     list_filter = (ArchivableFilter,)
     list_display = ('is_available',)
-
-    readonly_fields = ('is_archived', 'is_available')
-    fields = ('is_available',)
-    fieldsets = (
-        ("Management", {'fields': fields}),
-    )
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
@@ -50,14 +46,6 @@ class ArchivableAdmin(
                 change_actions.remove('archive')
 
         return change_actions
-
-    @admin.display(description="✔️", boolean=True, ordering='is_archived')
-    def is_available(self, obj):
-        return obj and obj.is_available
-
-    @admin.display(boolean=True, ordering='is_archived')
-    def is_archived(self, obj):
-        return obj and obj.is_archived
 
 
 class HasStatusAdmin(ArchivableAdmin):
