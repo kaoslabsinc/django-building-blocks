@@ -8,7 +8,7 @@ class AddInlineMixin(NoViewInlineMixin):
     """
 
 
-class ListInlineMixin(NoViewInlineMixin):
+class ListInlineMixin(NoAddInlineMixin):
     """
     Mixin for inline admin classes. Used to create an inline that is used to view objects, or change them, but not add
     new ones. Primarily used alongside :class:`AddInlineMixin` to create edit_readonly fields for an admin
