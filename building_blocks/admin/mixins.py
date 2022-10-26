@@ -1,6 +1,7 @@
 from dj_kaos_utils.admin.utils import render_anchor
 from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
+from django.shortcuts import get_object_or_404
 from django_object_actions import BaseDjangoObjectActions
 
 
@@ -28,7 +29,7 @@ class DjangoObjectActionsPermissionsMixin(BaseDjangoObjectActions):
     """
 
     def get_change_actions(self, request, object_id, form_url):
-        obj = self.model.objects.get(pk=object_id)
+        obj = get_object_or_404(self.model, pk=object_id)
         self.__obj = obj
         if not self.has_change_permission(request, obj):
             return ()
