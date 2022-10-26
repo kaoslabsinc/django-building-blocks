@@ -133,8 +133,16 @@ class HasUUIDAdminMixin(BaseModelAdmin):
     )
 
 
+class TimeStampedModelAdmin(
+    admin.ModelAdmin
+):
+    readonly_fields = ('created', 'modified')
+    fields = ('created', 'modified')
+
+
 class SluggedKaosModelAdmin(
     HasUUIDAdminMixin,
+    TimeStampedModelAdmin,
     PrepopulateSlugAdminMixin,
     EditReadonlyAdminMixin,
     admin.ModelAdmin
@@ -144,11 +152,20 @@ class SluggedKaosModelAdmin(
     list_display = ('name',)
     list_display_extra = (*list_display, 'slug')
 
+    readonly_fields = (
+        *HasUUIDAdminMixin.readonly_fields,
+        *TimeStampedModelAdmin.readonly_fields,
+    )
     edit_readonly_fields = ('slug',)
-    fields = ('name', 'slug')
+    fields = ('name',)
     fieldsets = (
         (None, {'fields': fields}),
-        *HasUUIDAdminMixin.fieldsets,
+        ("Admin", {'fields': (
+            'slug',
+            'created',
+            'modified',
+            'uuid',
+        )}),
     )
 
     def get_form(self, request, obj=None, change=False, **kwargs):
