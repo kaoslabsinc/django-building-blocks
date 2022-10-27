@@ -32,6 +32,18 @@ class BaseArchivableAdminMixin(BaseModelAdmin):
         return obj and obj.is_archived
 
 
+class BaseStatusArchivableAdminMixin(BaseArchivableAdminMixin):
+    readonly_fields = ArchivableAdminBlock.readonly_fields
+
+    @admin.display(description="✔️", boolean=True, ordering='status')
+    def is_available(self, obj):
+        return super().is_available(obj)
+
+    @admin.display(boolean=True, ordering='status')
+    def is_archived(self, obj):
+        return super().is_archived(obj)
+
+
 class ArchivableAdminMixin(
     BaseArchivableAdminMixin,
     admin.ModelAdmin
@@ -78,6 +90,7 @@ class EnhancedArchivableAdminMixin(
 __all__ = (
     'ArchivableAdminBlock',
     'BaseArchivableAdminMixin',
+    'BaseStatusArchivableAdminMixin',
     'ArchivableAdminMixin',
     'EnhancedArchivableAdminMixin',
 )
