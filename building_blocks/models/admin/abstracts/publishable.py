@@ -1,7 +1,7 @@
+from dj_kaos_utils.admin import AreYouSureActionsAdminMixin
 from django.contrib import admin, messages
 from django_object_actions import takes_instance_or_queryset
 
-from building_blocks.admin import AreYouSureActionsAdminMixin
 from building_blocks.models.enums import PublishStatus
 from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter

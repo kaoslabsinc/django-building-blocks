@@ -1,8 +1,8 @@
+from dj_kaos_utils.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
-from building_blocks.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 from .filters import ArchivableAdminFilter
 from ..blocks import FieldsetTitle, BaseAdminBlock
 
