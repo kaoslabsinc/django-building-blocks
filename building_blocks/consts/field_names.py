@@ -17,4 +17,5 @@ USER = 'user'
 OWNER = 'owner'
 AUTHOR = 'author'
 
+ADDRESS = 'address'
 NOTES = 'notes'
