@@ -3,21 +3,23 @@ from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from building_blocks.consts.field_names import *
+
 
 class NameSlugSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
-            'name', 'slug',
+            NAME, SLUG,
         )
-        lookup_field = 'slug'
+        lookup_field = SLUG
 
 
 class HasUUIDSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
-            'uuid',
+            UUID,
         )
-        lookup_field = 'uuid'
+        lookup_field = UUID
 
 
 class SluggedKaosModelSerializer(serializers.ModelSerializer):
@@ -25,8 +27,8 @@ class SluggedKaosModelSerializer(serializers.ModelSerializer):
         fields = (
             *HasUUIDSerializer.Meta.fields,
             *NameSlugSerializer.Meta.fields,
-            'created',
-            'modified',
+            CREATED,
+            MODIFIED,
         )
 
 
