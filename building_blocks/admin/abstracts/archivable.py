@@ -4,7 +4,7 @@ from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from .filters import ArchivableAdminFilter
-from ..blocks import FieldsetTitle, BaseAdminBlock
+from ..blocks import FieldsetTitle, BaseAdminBlock, KaosModelAdminBlock, SluggedKaosModelAdminBlock
 
 
 class ArchivableAdminBlock(BaseAdminBlock):
@@ -91,6 +91,32 @@ class ArchivableAdminMixin(
     are_you_sure_actions = change_actions
 
 
+class ArchivableKaosModelAdminBlock(ArchivableAdminBlock, KaosModelAdminBlock):
+    admin_fields = (
+        *ArchivableAdminBlock.admin_fields,
+        *KaosModelAdminBlock.admin_fields,
+    )
+    extra_admin_fields = (
+        *ArchivableAdminBlock.extra_admin_fields,
+        *KaosModelAdminBlock.extra_admin_fields,
+    )
+    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
+    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
+
+
+class ArchivableSluggedKaosModelAdminBlock(ArchivableAdminBlock, SluggedKaosModelAdminBlock):
+    admin_fields = (
+        *ArchivableAdminBlock.admin_fields,
+        *SluggedKaosModelAdminBlock.admin_fields,
+    )
+    extra_admin_fields = (
+        *ArchivableAdminBlock.extra_admin_fields,
+        *SluggedKaosModelAdminBlock.extra_admin_fields,
+    )
+    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
+    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
+
+
 __all__ = (
     'ArchivableAdminBlock',
     'BaseArchivableAdminMixin',
@@ -98,4 +124,5 @@ __all__ = (
     'BasicArchivableAdminMixin',
     'ArchivableChangeActionsAdminMixin',
     'ArchivableAdminMixin',
+    'ArchivableKaosModelAdminBlock',
 )
