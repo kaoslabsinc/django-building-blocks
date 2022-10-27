@@ -49,8 +49,8 @@ class UnnamedKaosBaseAdminBlock(HasUUIDBaseAdminBlock, TimeStampedBaseAdminBlock
         *TimeStampedBaseAdminBlock.readonly_fields,
     )
     admin_fields = (
-        *HasUUIDBaseAdminBlock.base_fields,
-        *TimeStampedBaseAdminBlock.base_fields,
+        *HasUUIDBaseAdminBlock.admin_fields,
+        *TimeStampedBaseAdminBlock.admin_fields,
     )
     extra_admin_fields = TimeStampedBaseAdminBlock.extra_admin_fields
     the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
