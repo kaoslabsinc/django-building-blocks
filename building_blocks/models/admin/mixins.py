@@ -1,7 +1,7 @@
 from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from dj_kaos_utils.forms import unrequire_form
 
-from building_blocks.admin import PrepopulateSlugAdminMixin
+from dj_kaos_utils.admin import PrepopulateSlugAdminMixin
 from building_blocks.consts.field_names import *
 
 
