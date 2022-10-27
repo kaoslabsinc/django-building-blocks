@@ -15,14 +15,13 @@ class ArchivableAdminBlock(BaseAdminBlock):
 
     actions = ('archive', 'restore')
     list_display = admin_fields
+    list_filter = (ArchivableAdminFilter,)
     extra_list_display = extra_admin_fields
+    readonly_fields = admin_fields + extra_admin_fields
 
 
 class BaseArchivableAdminMixin(BaseModelAdmin):
-    readonly_fields = (
-        *ArchivableAdminBlock.admin_fields,
-        *ArchivableAdminBlock.extra_admin_fields,
-    )
+    readonly_fields = ArchivableAdminBlock.readonly_fields
 
     @admin.display(description="✔️", boolean=True, ordering='is_archived')
     def is_available(self, obj):
@@ -39,8 +38,8 @@ class ArchivableAdminMixin(
 ):
     actions = ArchivableAdminBlock.actions
 
-    list_filter = (ArchivableAdminFilter,)
-    list_display = ('is_available',)
+    list_display = ArchivableAdminBlock.list_display
+    list_filter = ArchivableAdminBlock.list_filter
 
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
