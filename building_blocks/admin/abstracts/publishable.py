@@ -3,7 +3,7 @@ from django.contrib import admin, messages
 from django_object_actions import takes_instance_or_queryset
 
 from building_blocks.models.enums import PublishStatus
-from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin, ArchivableChangeActionsAdminMixin
+from .archivable import ArchivableAdminBlock, BaseStatusArchivableMixinAdmin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
 from ..blocks import FieldsetTitle
@@ -28,7 +28,7 @@ class PublishableAdminBlock(HasStatusAdminBlock):
     list_filter_extra = list_filter + HasStatusAdminBlock.list_filter
 
 
-class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
+class BasePublishableMixinAdmin(BaseStatusArchivableMixinAdmin):
     readonly_fields = PublishableAdminBlock.readonly_fields
 
     @admin.display(boolean=True, ordering='status')
@@ -40,7 +40,7 @@ class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
         return obj and obj.is_draft
 
 
-class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
+class BasicPublishableMixinAdmin(BasePublishableMixinAdmin, admin.ModelAdmin):
     actions = PublishableAdminBlock.actions
 
     list_display = PublishableAdminBlock.list_display
@@ -59,12 +59,12 @@ class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
         messages.success(request, f"Unpublished {count} objects")
 
 
-class PublishableAdminMixin(
+class PublishableMixinAdmin(
     AreYouSureActionsAdminMixin,
     ArchivableChangeActionsAdminMixin,
-    BasicPublishableAdminMixin
+    BasicPublishableMixinAdmin
 ):
-    change_actions = BasicPublishableAdminMixin.actions
+    change_actions = BasicPublishableMixinAdmin.actions
     are_you_sure_actions = change_actions
 
     def get_change_actions(self, request, object_id, form_url):
@@ -78,3 +78,11 @@ class PublishableAdminMixin(
                 change_actions.remove('publish')
 
         return change_actions
+
+
+__all__ = (
+    'PublishableAdminBlock',
+    'BasePublishableMixinAdmin',
+    'BasicPublishableMixinAdmin',
+    'PublishableMixinAdmin',
+)
