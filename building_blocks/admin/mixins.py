@@ -1,5 +1,10 @@
+from dj_kaos_utils.admin import EditReadonlyAdminMixin
+from dj_kaos_utils.admin import PrepopulateSlugAdminMixin
 from dj_kaos_utils.admin.utils import render_anchor
+from dj_kaos_utils.forms import unrequire_form
 from django.contrib import admin
+
+from building_blocks.consts.field_names import *
 
 
 class WithLinkDisplayAdminMixin:
@@ -28,6 +33,23 @@ class WithLinkDisplayAdminMixin:
             return render_anchor(link_url, self.get_link_content(obj))
 
 
+class EnhancedHasSlugModelAdminMixin(EditReadonlyAdminMixin):
+    edit_readonly_fields = (SLUG,)
+
+
+class EnhancedSluggedKaosModelAdminMixin(
+    PrepopulateSlugAdminMixin,
+    EnhancedHasSlugModelAdminMixin
+):
+    slug_source = NAME
+
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super().get_form(request, obj, change, **kwargs)
+        return unrequire_form(form, ('slug',)) if not obj else form
+
+
 __all__ = (
     'WithLinkDisplayAdminMixin',
+    'EnhancedHasSlugModelAdminMixin',
+    'EnhancedSluggedKaosModelAdminMixin',
 )

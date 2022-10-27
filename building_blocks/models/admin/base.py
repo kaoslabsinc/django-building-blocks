@@ -1,7 +1,7 @@
 from django.contrib.admin.options import BaseModelAdmin
 
+from building_blocks.admin.mixins import EnhancedSluggedKaosModelAdminMixin
 from .blocks import *
-from .mixins import EnhancedSluggedKaosModelAdminMixin
 
 
 class BaseKaosModelAdmin(BaseModelAdmin):
