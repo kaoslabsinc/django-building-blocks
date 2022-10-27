@@ -1,10 +1,5 @@
 from django.contrib import admin
 
-from building_blocks.models.admin.abstracts.filters import *
-
-ArchivableFilter = ArchivableAdminFilter  # For compatibility # TODO: remove
-PublishableFilter = PublishableAdminFilter  # For compatibility # TODO: remove
-
 
 class QuerysetChoiceFilter(admin.SimpleListFilter):
     queryset_filters = ()
@@ -26,10 +21,6 @@ class QuerysetChoiceFilter(admin.SimpleListFilter):
         return queryset
 
 
-__all__ = [
+__all__ = (
     'QuerysetChoiceFilter',
-    # TODO: remove
-    'PublishableFilter',
-    'ArchivableAdminFilter',
-    'ArchivableFilter',
-]
+)
