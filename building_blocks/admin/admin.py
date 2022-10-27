@@ -2,50 +2,14 @@ from dj_kaos_utils.admin import EditReadonlyAdminMixin
 from dj_kaos_utils.forms import unrequire_form
 from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
-from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
+from django_object_actions import takes_instance_or_queryset
 
-from .base import *
+from building_blocks.models.admin import ArchivableAdminMixin
+from building_blocks.models.enums import PublishStatus
 from .filters import *
-from .mixins import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin, PrepopulateSlugAdminMixin
-from ..models.enums import PublishStatus
+from .mixins import PrepopulateSlugAdminMixin
 
-
-class ArchivableAdmin(
-    AreYouSureActionsAdminMixin,
-    DjangoObjectActionsPermissionsMixin,
-    DjangoObjectActions,
-    BaseArchivableAdmin,
-    admin.ModelAdmin
-):
-    actions = ('archive', 'restore')
-    change_actions = actions
-    are_you_sure_actions = actions
-
-    list_filter = (ArchivableFilter,)
-    list_display = ('is_available',)
-
-    @takes_instance_or_queryset
-    @admin.action(permissions=['change'])
-    def archive(self, request, queryset):
-        count = queryset.set_archived()
-        messages.success(request, f"Archived {count} objects")
-
-    @takes_instance_or_queryset
-    @admin.action(permissions=['change'])
-    def restore(self, request, queryset):
-        count = queryset.set_restored()
-        messages.success(request, f"Restored {count} objects")
-
-    def get_change_actions(self, request, object_id, form_url):
-        change_actions = super().get_change_actions(request, object_id, form_url)
-        if change_actions:
-            change_actions = list(change_actions)
-            if self._get_change_action_object().is_available:
-                change_actions.remove('restore')
-            else:
-                change_actions.remove('archive')
-
-        return change_actions
+ArchivableAdmin = ArchivableAdminMixin  # TODO: remove
 
 
 class HasStatusAdmin(ArchivableAdmin):
