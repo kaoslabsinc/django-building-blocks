@@ -31,6 +31,18 @@ class BaseArchivableAdminMixin(BaseModelAdmin):
     def is_archived(self, obj):
         return obj and obj.is_archived
 
+    @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
+    def archive(self, request, queryset):
+        count = queryset.set_archived()
+        messages.success(request, f"Archived {count} objects")
+
+    @takes_instance_or_queryset
+    @admin.action(permissions=['change'])
+    def restore(self, request, queryset):
+        count = queryset.set_restored()
+        messages.success(request, f"Restored {count} objects")
+
 
 class BaseStatusArchivableAdminMixin(BaseArchivableAdminMixin):
     readonly_fields = ArchivableAdminBlock.readonly_fields
@@ -52,18 +64,6 @@ class ArchivableAdminMixin(
 
     list_display = ArchivableAdminBlock.list_display
     list_filter = ArchivableAdminBlock.list_filter
-
-    @takes_instance_or_queryset
-    @admin.action(permissions=['change'])
-    def archive(self, request, queryset):
-        count = queryset.set_archived()
-        messages.success(request, f"Archived {count} objects")
-
-    @takes_instance_or_queryset
-    @admin.action(permissions=['change'])
-    def restore(self, request, queryset):
-        count = queryset.set_restored()
-        messages.success(request, f"Restored {count} objects")
 
 
 class EnhancedArchivableAdminMixin(
