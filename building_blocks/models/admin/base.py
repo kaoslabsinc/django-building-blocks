@@ -5,6 +5,7 @@ from .mixins import EnhancedSluggedKaosModelAdminMixin
 
 
 class BaseKaosModelAdmin(BaseModelAdmin):
+    readonly_fields = KaosModelAdminBlock.readonly_fields
     fieldsets = (
         (None, {'fields': (KaosModelAdminBlock.base_fields,)}),
         KaosModelAdminBlock.the_admin_fieldset,
