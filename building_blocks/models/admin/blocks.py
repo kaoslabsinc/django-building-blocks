@@ -75,6 +75,7 @@ class SluggedKaosModelAdminBlock(HasSlugBaseAdminBlock, UnnamedKaosBaseAdminBloc
 
 
 __all__ = (
+    'FieldsetTitle',
     'BaseAdminBlock',
     'HasUUIDBaseAdminBlock',
     'HasSlugBaseAdminBlock',

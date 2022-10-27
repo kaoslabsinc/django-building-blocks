@@ -3,15 +3,15 @@ from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from building_blocks.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
-from ..blocks import BaseAdminBlock
+from ..blocks import FieldsetTitle, BaseAdminBlock
 from ..filters import ArchivableAdminFilter
 
 
 class ArchivableAdminBlock(BaseAdminBlock):
     admin_fields = ('is_available',)
     extra_admin_fields = ('is_archived',)
-    the_admin_fieldset = ("Admin", {'fields': admin_fields})
-    the_admin_fieldset_extra = ("Admin", {'fields': admin_fields + extra_admin_fields})
+    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
+    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
 
     actions = ('archive', 'restore')
     list_display = admin_fields
