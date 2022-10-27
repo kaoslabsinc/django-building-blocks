@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from building_blocks.admin.utils import combine_admin_blocks_factory
+from .utils import combine_admin_blocks_factory
 from building_blocks.consts.field_names import *
 
 

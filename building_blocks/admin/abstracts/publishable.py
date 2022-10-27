@@ -6,8 +6,7 @@ from building_blocks.models.enums import PublishStatus
 from .archivable import ArchivableAdminBlock, BaseStatusArchivableMixinAdmin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
-from .. import KaosModelAdminBlock, SluggedKaosModelAdminBlock
-from ..blocks import FieldsetTitle
+from ..blocks import KaosModelAdminBlock, SluggedKaosModelAdminBlock
 from ..utils import combine_admin_blocks_factory
 
 
