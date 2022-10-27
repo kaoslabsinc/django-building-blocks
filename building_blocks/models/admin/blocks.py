@@ -6,14 +6,18 @@ class FieldsetTitle:
 
 
 class BaseAdminBlock:
-    base_fields = ()
+    base_fields = None
     extra_fields = None
-    admin_fields = ()
+    admin_fields = None
     extra_admin_fields = None
     the_fieldset = None
     the_fieldset_extra = None
     the_admin_fieldset = None
     the_admin_fieldset_extra = None
+
+    actions = None
+    list_display = None
+    extra_list_display = None
 
 
 class HasUUIDBaseAdminBlock(BaseAdminBlock):
