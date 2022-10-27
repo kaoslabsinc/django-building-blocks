@@ -16,12 +16,19 @@ class BaseAdminBlock:
     the_admin_fieldset_extra = None
 
     actions = None
+    extra_actions = None
     list_display = None
     extra_list_display = None
     list_filter = None
     extra_list_filter = None
     readonly_fields = None
     extra_readonly_fields = None
+    edit_readonly_fields = None
+    extra_edit_readonly_fields = None
+    autocomplete_fields = None
+    extra_autocomplete_fields = None
+    search_fields = None
+    extra_search_fields = None
 
 
 class HasUUIDBaseAdminBlock(BaseAdminBlock):
