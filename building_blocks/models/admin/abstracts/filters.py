@@ -1,4 +1,4 @@
-from building_blocks.admin import QuerysetChoiceFilter
+from dj_kaos_utils.admin import QuerysetChoiceFilter
 
 
 class ArchivableAdminFilter(QuerysetChoiceFilter):
