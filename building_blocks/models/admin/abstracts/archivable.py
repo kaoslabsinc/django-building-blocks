@@ -66,15 +66,10 @@ class BasicArchivableAdminMixin(
     list_filter = ArchivableAdminBlock.list_filter
 
 
-class ArchivableAdminMixin(
-    AreYouSureActionsAdminMixin,
+class ArchivableChangeActionsAdminMixin(
     DjangoObjectActionsPermissionsMixin,
-    DjangoObjectActions,
-    BasicArchivableAdminMixin
+    DjangoObjectActions
 ):
-    change_actions = BasicArchivableAdminMixin.actions
-    are_you_sure_actions = change_actions
-
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
         if change_actions:
@@ -87,10 +82,20 @@ class ArchivableAdminMixin(
         return change_actions
 
 
+class ArchivableAdminMixin(
+    AreYouSureActionsAdminMixin,
+    ArchivableChangeActionsAdminMixin,
+    BasicArchivableAdminMixin
+):
+    change_actions = BasicArchivableAdminMixin.actions
+    are_you_sure_actions = change_actions
+
+
 __all__ = (
     'ArchivableAdminBlock',
     'BaseArchivableAdminMixin',
     'BaseStatusArchivableAdminMixin',
     'BasicArchivableAdminMixin',
+    'ArchivableChangeActionsAdminMixin',
     'ArchivableAdminMixin',
 )

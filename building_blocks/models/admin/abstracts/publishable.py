@@ -1,9 +1,9 @@
 from django.contrib import admin, messages
-from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
+from django_object_actions import takes_instance_or_queryset
 
-from building_blocks.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
+from building_blocks.admin import AreYouSureActionsAdminMixin
 from building_blocks.models.enums import PublishStatus
-from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin
+from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
 from ..blocks import FieldsetTitle
@@ -61,8 +61,7 @@ class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
 
 class PublishableAdminMixin(
     AreYouSureActionsAdminMixin,
-    DjangoObjectActionsPermissionsMixin,
-    DjangoObjectActions,
+    ArchivableChangeActionsAdminMixin,
     BasicPublishableAdminMixin
 ):
     change_actions = BasicPublishableAdminMixin.actions
