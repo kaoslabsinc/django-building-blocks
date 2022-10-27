@@ -19,7 +19,7 @@ class PublishableAdminBlock(HasStatusAdminBlock):
         *HasStatusAdminBlock.readonly_fields,
         *fields
     )
-    admin_fields = HasStatusAdminBlock.admin_fields + ArchivableAdminBlock.readonly_fields
+    admin_fields = HasStatusAdminBlock.admin_fields + ArchivableAdminBlock.admin_fields
     extra_admin_fields = fields
     the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
     the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
