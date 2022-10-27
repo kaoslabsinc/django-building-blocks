@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from building_blocks.models.admin.filters import *
+from building_blocks.models.admin.abstracts.filters import *
 
 ArchivableFilter = ArchivableAdminFilter  # For compatibility # TODO: remove
 PublishableFilter = PublishableAdminFilter  # For compatibility # TODO: remove
