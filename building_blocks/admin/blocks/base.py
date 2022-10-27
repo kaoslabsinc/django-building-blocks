@@ -41,33 +41,35 @@ class BaseAdminBlock(metaclass=AdminBlockMeta):
     extra_fields = None
     admin_fields = None
     extra_admin_fields = None
-
-    actions = None
-    extra_actions = None
-    list_display = None
-    extra_list_display = None
-    list_filter = None
-    extra_list_filter = None
     readonly_fields = None
     extra_readonly_fields = None
     edit_readonly_fields = None
     extra_edit_readonly_fields = None
     autocomplete_fields = None
     extra_autocomplete_fields = None
+
+
+class AdminBlock(BaseAdminBlock):
+    actions = None
+    extra_actions = None
     search_fields = None
     extra_search_fields = None
+    list_display = None
+    extra_list_display = None
+    list_filter = None
+    extra_list_filter = None
 
 
-class HasUUIDBaseAdminBlock(BaseAdminBlock):
+class HasUUIDAdminBlock(AdminBlock):
     readonly_fields = (UUID,)
     admin_fields = (UUID,)
 
 
-class HasSlugBaseAdminBlock(BaseAdminBlock):
+class HasSlugAdminBlock(AdminBlock):
     admin_fields = (SLUG,)
 
 
-class TimeStampedBaseAdminBlock(BaseAdminBlock):
+class TimeStampedAdminBlock(AdminBlock):
     readonly_fields = (CREATED, MODIFIED)
     admin_fields = (CREATED,)
     extra_admin_fields = (MODIFIED,)
@@ -76,7 +78,8 @@ class TimeStampedBaseAdminBlock(BaseAdminBlock):
 __all__ = (
     'FieldsetTitle',
     'BaseAdminBlock',
-    'HasUUIDBaseAdminBlock',
-    'HasSlugBaseAdminBlock',
-    'TimeStampedBaseAdminBlock',
+    'AdminBlock',
+    'HasUUIDAdminBlock',
+    'HasSlugAdminBlock',
+    'TimeStampedAdminBlock',
 )

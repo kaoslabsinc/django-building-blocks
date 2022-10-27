@@ -1,9 +1,9 @@
 from typing import Sequence, Type
 
-from building_blocks.admin.blocks.base import BaseAdminBlock
+from building_blocks.admin.blocks.base import AdminBlock
 
 
-def _combine_fields(attr, admin_block_classes: Sequence[Type['BaseAdminBlock']]):
+def _combine_fields(attr, admin_block_classes: Sequence[Type['AdminBlock']]):
     return tuple(
         field
         for cls in admin_block_classes if getattr(cls, attr) is not None
@@ -11,8 +11,8 @@ def _combine_fields(attr, admin_block_classes: Sequence[Type['BaseAdminBlock']])
     )
 
 
-def combine_admin_blocks_factory(*admin_block_classes: Type['BaseAdminBlock']):
-    class XXXAdminBlock(*admin_block_classes, BaseAdminBlock):
+def combine_admin_blocks_factory(*admin_block_classes: Type['AdminBlock']):
+    class XXXAdminBlock(*admin_block_classes, AdminBlock):
         base_fields = _combine_fields('base_fields', admin_block_classes)
         extra_fields = _combine_fields('extra_fields', admin_block_classes)
         admin_fields = _combine_fields('admin_fields', admin_block_classes)

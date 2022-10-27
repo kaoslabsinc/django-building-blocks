@@ -3,11 +3,11 @@ from .base import *
 from ..utils import combine_admin_blocks_factory
 
 UnnamedKaosBaseAdminBlock = combine_admin_blocks_factory(
-    HasUUIDBaseAdminBlock,
-    TimeStampedBaseAdminBlock
+    HasUUIDAdminBlock,
+    TimeStampedAdminBlock
 )
 SluggedKaosModelAdminBlock = combine_admin_blocks_factory(
-    HasSlugBaseAdminBlock,
+    HasSlugAdminBlock,
     UnnamedKaosBaseAdminBlock
 )
 

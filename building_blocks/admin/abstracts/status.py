@@ -1,8 +1,8 @@
 from building_blocks.consts.field_names import *
-from ..blocks import BaseAdminBlock
+from ..blocks import AdminBlock
 
 
-class HasStatusAdminBlock(BaseAdminBlock):
+class HasStatusAdminBlock(AdminBlock):
     list_display = (STATUS,)
     list_filter = (STATUS,)
     readonly_fields = (STATUS,)

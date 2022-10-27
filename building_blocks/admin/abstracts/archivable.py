@@ -8,7 +8,7 @@ from ..blocks import *
 from ..utils import combine_admin_blocks_factory
 
 
-class ArchivableAdminBlock(BaseAdminBlock):
+class ArchivableAdminBlock(AdminBlock):
     admin_fields = ('is_available',)
     extra_admin_fields = ('is_archived',)
 
@@ -21,7 +21,7 @@ class ArchivableAdminBlock(BaseAdminBlock):
 
 ArchivableHasUUIDAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
-    HasUUIDBaseAdminBlock
+    HasUUIDAdminBlock
 )
 ArchivableUnnamedKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
