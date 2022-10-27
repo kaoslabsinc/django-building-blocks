@@ -8,7 +8,7 @@ from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
 from .. import KaosModelAdminBlock, SluggedKaosModelAdminBlock
 from ..blocks import FieldsetTitle
-from ..utils import experimental_combine_admin_blocks_factory
+from ..utils import combine_admin_blocks_factory
 
 
 class PublishableAdminBlock(HasStatusAdminBlock):
@@ -29,12 +29,12 @@ class PublishableAdminBlock(HasStatusAdminBlock):
     list_filter_extra = list_filter + HasStatusAdminBlock.list_filter
 
 
-PublishableKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+PublishableKaosModelAdminBlock = combine_admin_blocks_factory(
     PublishableAdminBlock,
     KaosModelAdminBlock
 )
 
-PublishableSluggedKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+PublishableSluggedKaosModelAdminBlock = combine_admin_blocks_factory(
     PublishableAdminBlock,
     SluggedKaosModelAdminBlock
 )

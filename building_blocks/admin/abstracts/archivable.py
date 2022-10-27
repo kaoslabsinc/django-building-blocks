@@ -5,7 +5,7 @@ from django_object_actions import takes_instance_or_queryset, DjangoObjectAction
 
 from .filters import ArchivableAdminFilter
 from ..blocks import FieldsetTitle, BaseAdminBlock, KaosModelAdminBlock, SluggedKaosModelAdminBlock
-from ..utils import experimental_combine_admin_blocks_factory
+from ..utils import combine_admin_blocks_factory
 
 
 class ArchivableAdminBlock(BaseAdminBlock):
@@ -19,12 +19,12 @@ class ArchivableAdminBlock(BaseAdminBlock):
     readonly_fields = admin_fields + extra_admin_fields
 
 
-ArchivableKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+ArchivableKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
     KaosModelAdminBlock
 )
 
-ArchivableSluggedKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+ArchivableSluggedKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
     SluggedKaosModelAdminBlock
 )
