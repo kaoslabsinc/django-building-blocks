@@ -6,7 +6,9 @@ from building_blocks.models.enums import PublishStatus
 from .archivable import ArchivableAdminBlock, BaseStatusArchivableMixinAdmin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
+from .. import KaosModelAdminBlock, SluggedKaosModelAdminBlock
 from ..blocks import FieldsetTitle
+from ..utils import experimental_combine_admin_blocks_factory
 
 
 class PublishableAdminBlock(HasStatusAdminBlock):
@@ -21,11 +23,24 @@ class PublishableAdminBlock(HasStatusAdminBlock):
     )
     admin_fields = HasStatusAdminBlock.admin_fields + ArchivableAdminBlock.admin_fields
     extra_admin_fields = fields
+
     the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
     the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
+
     actions = (*ArchivableAdminBlock.actions, 'publish', 'unpublish')
     list_filter = (PublishableAdminFilter,)
     list_filter_extra = list_filter + HasStatusAdminBlock.list_filter
+
+
+PublishableKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+    PublishableAdminBlock,
+    KaosModelAdminBlock
+)
+
+PublishableSluggedKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+    PublishableAdminBlock,
+    SluggedKaosModelAdminBlock
+)
 
 
 class BasePublishableMixinAdmin(BaseStatusArchivableMixinAdmin):
@@ -82,6 +97,8 @@ class PublishableMixinAdmin(
 
 __all__ = (
     'PublishableAdminBlock',
+    'PublishableKaosModelAdminBlock',
+    'PublishableSluggedKaosModelAdminBlock',
     'BasePublishableMixinAdmin',
     'BasicPublishableMixinAdmin',
     'PublishableMixinAdmin',

@@ -5,6 +5,7 @@ from django_object_actions import takes_instance_or_queryset, DjangoObjectAction
 
 from .filters import ArchivableAdminFilter
 from ..blocks import FieldsetTitle, BaseAdminBlock, KaosModelAdminBlock, SluggedKaosModelAdminBlock
+from ..utils import experimental_combine_admin_blocks_factory
 
 
 class ArchivableAdminBlock(BaseAdminBlock):
@@ -18,6 +19,17 @@ class ArchivableAdminBlock(BaseAdminBlock):
     list_filter = (ArchivableAdminFilter,)
     extra_list_display = extra_admin_fields
     readonly_fields = admin_fields + extra_admin_fields
+
+
+ArchivableKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    KaosModelAdminBlock
+)
+
+ArchivableSluggedKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    SluggedKaosModelAdminBlock
+)
 
 
 class BaseArchivableMixinAdmin(BaseModelAdmin):
@@ -91,38 +103,13 @@ class ArchivableMixinAdmin(
     are_you_sure_actions = change_actions
 
 
-class ArchivableKaosModelAdminBlock(ArchivableAdminBlock, KaosModelAdminBlock):
-    admin_fields = (
-        *ArchivableAdminBlock.admin_fields,
-        *KaosModelAdminBlock.admin_fields,
-    )
-    extra_admin_fields = (
-        *ArchivableAdminBlock.extra_admin_fields,
-        *KaosModelAdminBlock.extra_admin_fields,
-    )
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
-
-
-class ArchivableSluggedKaosModelAdminBlock(ArchivableAdminBlock, SluggedKaosModelAdminBlock):
-    admin_fields = (
-        *ArchivableAdminBlock.admin_fields,
-        *SluggedKaosModelAdminBlock.admin_fields,
-    )
-    extra_admin_fields = (
-        *ArchivableAdminBlock.extra_admin_fields,
-        *SluggedKaosModelAdminBlock.extra_admin_fields,
-    )
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
-
-
 __all__ = (
     'ArchivableAdminBlock',
+    'ArchivableKaosModelAdminBlock',
+    'ArchivableSluggedKaosModelAdminBlock',
     'BaseArchivableMixinAdmin',
     'BaseStatusArchivableMixinAdmin',
     'BasicArchivableMixinAdmin',
     'ArchivableChangeActionsAdminMixin',
     'ArchivableMixinAdmin',
-    'ArchivableKaosModelAdminBlock',
 )

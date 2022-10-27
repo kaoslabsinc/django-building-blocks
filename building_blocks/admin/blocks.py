@@ -1,3 +1,4 @@
+from building_blocks.admin.utils import experimental_combine_admin_blocks_factory
 from building_blocks.consts.field_names import *
 
 
@@ -50,18 +51,10 @@ class TimeStampedBaseAdminBlock(BaseAdminBlock):
     the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
 
 
-class UnnamedKaosBaseAdminBlock(HasUUIDBaseAdminBlock, TimeStampedBaseAdminBlock):
-    readonly_fields = (
-        *HasUUIDBaseAdminBlock.readonly_fields,
-        *TimeStampedBaseAdminBlock.readonly_fields,
-    )
-    admin_fields = (
-        *HasUUIDBaseAdminBlock.admin_fields,
-        *TimeStampedBaseAdminBlock.admin_fields,
-    )
-    extra_admin_fields = TimeStampedBaseAdminBlock.extra_admin_fields
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
+UnnamedKaosBaseAdminBlock = experimental_combine_admin_blocks_factory(
+    HasUUIDBaseAdminBlock,
+    TimeStampedBaseAdminBlock
+)
 
 
 class KaosModelAdminBlock(UnnamedKaosBaseAdminBlock):
@@ -71,15 +64,10 @@ class KaosModelAdminBlock(UnnamedKaosBaseAdminBlock):
     the_fieldset = (None, {'fields': base_fields})
 
 
-class SluggedKaosModelAdminBlock(HasSlugBaseAdminBlock, UnnamedKaosBaseAdminBlock):
-    admin_fields = (
-        *HasSlugBaseAdminBlock.admin_fields,
-        *UnnamedKaosBaseAdminBlock.admin_fields,
-    )
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': (*admin_fields,
-                                                                 *UnnamedKaosBaseAdminBlock.extra_admin_fields)})
-
+SluggedKaosModelAdminBlock = experimental_combine_admin_blocks_factory(
+    HasSlugBaseAdminBlock,
+    UnnamedKaosBaseAdminBlock
+)
 
 __all__ = (
     'FieldsetTitle',
