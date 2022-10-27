@@ -1,23 +1,51 @@
-from django.contrib import admin
 from django.contrib.admin.options import BaseModelAdmin
 
+from .blocks import *
+from .mixins import EnhancedSluggedKaosModelAdminMixin
 
-class BaseArchivableAdmin(BaseModelAdmin):
-    readonly_fields = ('is_archived', 'is_available')
-    fields = ('is_available',)
+
+class BaseKaosModelAdmin(BaseModelAdmin):
+    readonly_fields = KaosModelAdminBlock.readonly_fields
     fieldsets = (
-        ("Management", {'fields': fields}),
+        (None, {'fields': (KaosModelAdminBlock.base_fields,)}),
+        KaosModelAdminBlock.the_admin_fieldset,
     )
 
-    @admin.display(description="✔️", boolean=True, ordering='is_archived')
-    def is_available(self, obj):
-        return obj and obj.is_available
 
-    @admin.display(boolean=True, ordering='is_archived')
-    def is_archived(self, obj):
-        return obj and obj.is_archived
+class BaseKaosModelAdminExtra(BaseKaosModelAdmin):
+    fieldsets = (
+        *BaseKaosModelAdmin.fieldsets[:-1],
+        KaosModelAdminBlock.the_admin_fieldset_extra,
+    )
+
+
+class BaseBasicSluggedKaosModelAdmin(BaseKaosModelAdmin):
+    fieldsets = (
+        *BaseKaosModelAdmin.fieldsets[:-1],
+        SluggedKaosModelAdminBlock.the_admin_fieldset,
+    )
+
+
+class BaseBasicSluggedKaosModelAdminExtra(BaseKaosModelAdmin):
+    fieldsets = (
+        *BaseBasicSluggedKaosModelAdmin.fieldsets[:-1],
+        SluggedKaosModelAdminBlock.the_admin_fieldset_extra,
+    )
+
+
+class BaseSluggedKaosModelAdmin(EnhancedSluggedKaosModelAdminMixin, BaseBasicSluggedKaosModelAdmin):
+    pass
+
+
+class BaseSluggedKaosModelAdminExtra(EnhancedSluggedKaosModelAdminMixin, BaseBasicSluggedKaosModelAdminExtra):
+    pass
 
 
 __all__ = (
-    'BaseArchivableAdmin',
+    'BaseKaosModelAdmin',
+    'BaseKaosModelAdminExtra',
+    'BaseBasicSluggedKaosModelAdmin',
+    'BaseBasicSluggedKaosModelAdminExtra',
+    'BaseSluggedKaosModelAdmin',
+    'BaseSluggedKaosModelAdminExtra',
 )

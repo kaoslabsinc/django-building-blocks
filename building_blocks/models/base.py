@@ -1,7 +1,7 @@
 from django.db import models
 from model_utils.models import TimeStampedModel
 
-from .mixins import *
+from .blocks import *
 
 
 class UnnamedBaseKaosModel(
