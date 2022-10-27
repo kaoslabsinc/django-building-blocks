@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from building_blocks.admin.mixins import EnhancedSluggedKaosModelAdminMixin
 from building_blocks.consts.field_names import *
 from .base import *
+from .mixins import EnhancedSluggedKaosModelAdminMixin
 
 
 class KaosModelAdmin(BaseKaosModelAdmin, admin.ModelAdmin):
