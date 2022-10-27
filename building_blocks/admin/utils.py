@@ -17,12 +17,6 @@ def experimental_combine_admin_blocks_factory(*admin_block_classes: Type[BaseAdm
         extra_fields = _combine_fields('extra_fields', admin_block_classes)
         admin_fields = _combine_fields('admin_fields', admin_block_classes)
         extra_admin_fields = _combine_fields('extra_admin_fields', admin_block_classes)
-        the_fieldset = _combine_fields('the_fieldset', admin_block_classes)
-        the_fieldset_extra = _combine_fields('the_fieldset_extra', admin_block_classes)
-
-        the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-        the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
-
         actions = _combine_fields('actions', admin_block_classes)
         extra_actions = _combine_fields('extra_actions', admin_block_classes)
         list_display = _combine_fields('list_display', admin_block_classes)

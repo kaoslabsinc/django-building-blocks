@@ -24,9 +24,6 @@ class PublishableAdminBlock(HasStatusAdminBlock):
     admin_fields = HasStatusAdminBlock.admin_fields + ArchivableAdminBlock.admin_fields
     extra_admin_fields = fields
 
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
-
     actions = (*ArchivableAdminBlock.actions, 'publish', 'unpublish')
     list_filter = (PublishableAdminFilter,)
     list_filter_extra = list_filter + HasStatusAdminBlock.list_filter

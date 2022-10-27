@@ -1,5 +1,5 @@
 from building_blocks.consts.field_names import *
-from ..blocks import BaseAdminBlock, FieldsetTitle
+from ..blocks import BaseAdminBlock
 
 
 class HasStatusAdminBlock(BaseAdminBlock):
@@ -7,7 +7,6 @@ class HasStatusAdminBlock(BaseAdminBlock):
     list_filter = (STATUS,)
     readonly_fields = (STATUS,)
     admin_fields = (STATUS,)
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
 
 
 __all__ = (

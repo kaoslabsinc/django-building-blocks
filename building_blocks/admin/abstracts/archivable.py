@@ -11,8 +11,6 @@ from ..utils import experimental_combine_admin_blocks_factory
 class ArchivableAdminBlock(BaseAdminBlock):
     admin_fields = ('is_available',)
     extra_admin_fields = ('is_archived',)
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
 
     actions = ('archive', 'restore')
     list_display = admin_fields
