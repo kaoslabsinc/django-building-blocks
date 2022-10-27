@@ -4,14 +4,13 @@ from django.contrib.admin.options import BaseModelAdmin
 from django_object_actions import takes_instance_or_queryset, DjangoObjectActions
 
 from .filters import ArchivableAdminFilter
-from ..blocks import FieldsetTitle, BaseAdminBlock
+from ..blocks import *
+from ..utils import combine_admin_blocks_factory
 
 
-class ArchivableAdminBlock(BaseAdminBlock):
+class ArchivableAdminBlock(AdminBlock):
     admin_fields = ('is_available',)
     extra_admin_fields = ('is_archived',)
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
 
     actions = ('archive', 'restore')
     list_display = admin_fields
@@ -20,7 +19,25 @@ class ArchivableAdminBlock(BaseAdminBlock):
     readonly_fields = admin_fields + extra_admin_fields
 
 
-class BaseArchivableAdminMixin(BaseModelAdmin):
+ArchivableHasUUIDAdminBlock = combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    HasUUIDAdminBlock
+)
+ArchivableUnnamedKaosModelAdminBlock = combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    UnnamedKaosBaseAdminBlock,
+)
+ArchivableKaosModelAdminBlock = combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    KaosModelAdminBlock
+)
+ArchivableSluggedKaosModelAdminBlock = combine_admin_blocks_factory(
+    ArchivableAdminBlock,
+    SluggedKaosModelAdminBlock
+)
+
+
+class BaseArchivableMixinAdmin(BaseModelAdmin):
     readonly_fields = ArchivableAdminBlock.readonly_fields
 
     @admin.display(description="✔️", boolean=True, ordering='is_archived')
@@ -44,7 +61,7 @@ class BaseArchivableAdminMixin(BaseModelAdmin):
         messages.success(request, f"Restored {count} objects")
 
 
-class BaseStatusArchivableAdminMixin(BaseArchivableAdminMixin):
+class BaseStatusArchivableMixinAdmin(BaseArchivableMixinAdmin):
     readonly_fields = ArchivableAdminBlock.readonly_fields
 
     @admin.display(description="✔️", boolean=True, ordering='status')
@@ -56,8 +73,8 @@ class BaseStatusArchivableAdminMixin(BaseArchivableAdminMixin):
         return super().is_archived(obj)
 
 
-class BasicArchivableAdminMixin(
-    BaseArchivableAdminMixin,
+class BasicArchivableMixinAdmin(
+    BaseArchivableMixinAdmin,
     admin.ModelAdmin
 ):
     actions = ArchivableAdminBlock.actions
@@ -82,20 +99,24 @@ class ArchivableChangeActionsAdminMixin(
         return change_actions
 
 
-class ArchivableAdminMixin(
+class ArchivableMixinAdmin(
     AreYouSureActionsAdminMixin,
     ArchivableChangeActionsAdminMixin,
-    BasicArchivableAdminMixin
+    BasicArchivableMixinAdmin
 ):
-    change_actions = BasicArchivableAdminMixin.actions
+    change_actions = BasicArchivableMixinAdmin.actions
     are_you_sure_actions = change_actions
 
 
 __all__ = (
     'ArchivableAdminBlock',
-    'BaseArchivableAdminMixin',
-    'BaseStatusArchivableAdminMixin',
-    'BasicArchivableAdminMixin',
+    'ArchivableHasUUIDAdminBlock',
+    'ArchivableUnnamedKaosModelAdminBlock',
+    'ArchivableKaosModelAdminBlock',
+    'ArchivableSluggedKaosModelAdminBlock',
+    'BaseArchivableMixinAdmin',
+    'BaseStatusArchivableMixinAdmin',
+    'BasicArchivableMixinAdmin',
     'ArchivableChangeActionsAdminMixin',
-    'ArchivableAdminMixin',
+    'ArchivableMixinAdmin',
 )

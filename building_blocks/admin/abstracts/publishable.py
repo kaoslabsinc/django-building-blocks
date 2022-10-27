@@ -3,10 +3,11 @@ from django.contrib import admin, messages
 from django_object_actions import takes_instance_or_queryset
 
 from building_blocks.models.enums import PublishStatus
-from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin, ArchivableChangeActionsAdminMixin
+from .archivable import ArchivableAdminBlock, BaseStatusArchivableMixinAdmin, ArchivableChangeActionsAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
-from ..blocks import FieldsetTitle
+from ..blocks import KaosModelAdminBlock, SluggedKaosModelAdminBlock
+from ..utils import combine_admin_blocks_factory
 
 
 class PublishableAdminBlock(HasStatusAdminBlock):
@@ -21,14 +22,24 @@ class PublishableAdminBlock(HasStatusAdminBlock):
     )
     admin_fields = HasStatusAdminBlock.admin_fields + ArchivableAdminBlock.admin_fields
     extra_admin_fields = fields
-    the_admin_fieldset = (FieldsetTitle.admin, {'fields': admin_fields})
-    the_admin_fieldset_extra = (FieldsetTitle.admin, {'fields': admin_fields + extra_admin_fields})
+
     actions = (*ArchivableAdminBlock.actions, 'publish', 'unpublish')
     list_filter = (PublishableAdminFilter,)
     list_filter_extra = list_filter + HasStatusAdminBlock.list_filter
 
 
-class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
+PublishableKaosModelAdminBlock = combine_admin_blocks_factory(
+    PublishableAdminBlock,
+    KaosModelAdminBlock
+)
+
+PublishableSluggedKaosModelAdminBlock = combine_admin_blocks_factory(
+    PublishableAdminBlock,
+    SluggedKaosModelAdminBlock
+)
+
+
+class BasePublishableMixinAdmin(BaseStatusArchivableMixinAdmin):
     readonly_fields = PublishableAdminBlock.readonly_fields
 
     @admin.display(boolean=True, ordering='status')
@@ -40,7 +51,7 @@ class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
         return obj and obj.is_draft
 
 
-class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
+class BasicPublishableMixinAdmin(BasePublishableMixinAdmin, admin.ModelAdmin):
     actions = PublishableAdminBlock.actions
 
     list_display = PublishableAdminBlock.list_display
@@ -59,12 +70,12 @@ class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
         messages.success(request, f"Unpublished {count} objects")
 
 
-class PublishableAdminMixin(
+class PublishableMixinAdmin(
     AreYouSureActionsAdminMixin,
     ArchivableChangeActionsAdminMixin,
-    BasicPublishableAdminMixin
+    BasicPublishableMixinAdmin
 ):
-    change_actions = BasicPublishableAdminMixin.actions
+    change_actions = BasicPublishableMixinAdmin.actions
     are_you_sure_actions = change_actions
 
     def get_change_actions(self, request, object_id, form_url):
@@ -78,3 +89,13 @@ class PublishableAdminMixin(
                 change_actions.remove('publish')
 
         return change_actions
+
+
+__all__ = (
+    'PublishableAdminBlock',
+    'PublishableKaosModelAdminBlock',
+    'PublishableSluggedKaosModelAdminBlock',
+    'BasePublishableMixinAdmin',
+    'BasicPublishableMixinAdmin',
+    'PublishableMixinAdmin',
+)
