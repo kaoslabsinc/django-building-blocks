@@ -1,6 +1,6 @@
 from typing import Sequence, Type
 
-from building_blocks.admin import BaseAdminBlock, FieldsetTitle
+from building_blocks.admin import BaseAdminBlock
 
 
 def _combine_fields(attr, admin_block_classes: Sequence[Type[BaseAdminBlock]]):
@@ -35,3 +35,15 @@ def combine_admin_blocks_factory(*admin_block_classes: Type[BaseAdminBlock]):
     cls_names = [cls.__name__.replace('AdminBlock', '') for cls in admin_block_classes]
     XXXAdminBlock.__name__ = XXXAdminBlock.__name__.replace('XXX', ''.join(cls_names))
     return XXXAdminBlock
+
+
+def make_fieldset_collapsible(admin_fieldset):
+    name, defs = admin_fieldset
+    classes = defs.pop('classes', ())
+    return name, {**defs, 'classes': (*classes, 'collapse')}
+
+
+__all__ = (
+    'combine_admin_blocks_factory',
+    'make_fieldset_collapsible',
+)
