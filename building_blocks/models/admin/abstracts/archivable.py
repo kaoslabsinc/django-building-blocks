@@ -79,5 +79,6 @@ class EnhancedArchivableAdminMixin(
 __all__ = (
     'ArchivableAdminBlock',
     'BaseArchivableAdminMixin',
+    'ArchivableAdminMixin',
     'EnhancedArchivableAdminMixin',
 )
