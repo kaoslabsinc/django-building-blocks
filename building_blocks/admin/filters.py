@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from building_blocks.models.admin import ArchivableAdminFilter
+from building_blocks.models.admin.filters import *
 
 ArchivableFilter = ArchivableAdminFilter  # For compatibility # TODO: remove
+PublishableFilter = PublishableAdminFilter  # For compatibility # TODO: remove
 
 
 class QuerysetChoiceFilter(admin.SimpleListFilter):
@@ -25,16 +26,10 @@ class QuerysetChoiceFilter(admin.SimpleListFilter):
         return queryset
 
 
-class PublishableFilter(ArchivableAdminFilter):
-    title = "by publish status"
-    parameter_name = 'publish_status'
-    queryset_filters = (*ArchivableAdminFilter.queryset_filters, 'published', 'draft')
-
-
 __all__ = [
     'QuerysetChoiceFilter',
-    'ArchivableAdminFilter',
-    'PublishableFilter',
     # TODO: remove
+    'PublishableFilter',
+    'ArchivableAdminFilter',
     'ArchivableFilter',
 ]
