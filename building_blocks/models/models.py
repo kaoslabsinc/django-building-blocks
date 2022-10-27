@@ -1,8 +1,8 @@
 from rules.contrib.models import RulesModel
 
 from .base import *
-from .mixins import *
-from .mixins import TitledModel
+from .blocks import *
+from .blocks import TitledModel
 
 
 class KaosModel(

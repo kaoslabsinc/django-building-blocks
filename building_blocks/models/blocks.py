@@ -1,5 +1,3 @@
-# TODO: rename to blocks.py?
-
 import uuid
 
 from dj_kaos_utils.models import HasAutoFields

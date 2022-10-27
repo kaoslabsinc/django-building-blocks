@@ -11,4 +11,10 @@ IMAGE = 'image'
 CATEGORY = 'category'
 TYPE = 'type'
 
+STATUS = 'status'
+
+USER = 'user'
+OWNER = 'owner'
+AUTHOR = 'author'
+
 NOTES = 'notes'
