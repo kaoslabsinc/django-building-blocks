@@ -1,5 +1,5 @@
 from .abstracts import *
 from .base import *
-from .mixins import *
+from .blocks import *
 from .models import *
 from .querysets import *
