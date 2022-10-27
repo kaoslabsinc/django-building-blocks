@@ -18,7 +18,7 @@ class ArchivableAdminBlock(BaseAdminBlock):
     extra_list_display = extra_admin_fields
 
 
-class BaseArchivableAdmin(BaseModelAdmin):
+class BaseArchivableAdminMixin(BaseModelAdmin):
     readonly_fields = (
         *ArchivableAdminBlock.admin_fields,
         *ArchivableAdminBlock.extra_admin_fields,
@@ -33,8 +33,8 @@ class BaseArchivableAdmin(BaseModelAdmin):
         return obj and obj.is_archived
 
 
-class ArchivableAdmin(
-    BaseArchivableAdmin,
+class ArchivableAdminMixin(
+    BaseArchivableAdminMixin,
     admin.ModelAdmin
 ):
     actions = ArchivableAdminBlock.actions
@@ -55,13 +55,13 @@ class ArchivableAdmin(
         messages.success(request, f"Restored {count} objects")
 
 
-class EnhancedArchivableAdmin(
+class EnhancedArchivableAdminMixin(
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     DjangoObjectActions,
-    ArchivableAdmin
+    ArchivableAdminMixin
 ):
-    change_actions = ArchivableAdmin.actions
+    change_actions = ArchivableAdminMixin.actions
     are_you_sure_actions = change_actions
 
     def get_change_actions(self, request, object_id, form_url):
@@ -78,6 +78,6 @@ class EnhancedArchivableAdmin(
 
 __all__ = (
     'ArchivableAdminBlock',
-    'BaseArchivableAdmin',
-    'EnhancedArchivableAdmin',
+    'BaseArchivableAdminMixin',
+    'EnhancedArchivableAdminMixin',
 )
