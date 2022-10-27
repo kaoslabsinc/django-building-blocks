@@ -18,6 +18,10 @@ class BaseAdminBlock:
     actions = None
     list_display = None
     extra_list_display = None
+    list_filter = None
+    extra_list_filter = None
+    readonly_fields = None
+    extra_readonly_fields = None
 
 
 class HasUUIDBaseAdminBlock(BaseAdminBlock):

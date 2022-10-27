@@ -11,4 +11,6 @@ IMAGE = 'image'
 CATEGORY = 'category'
 TYPE = 'type'
 
+STATUS = 'status'
+
 NOTES = 'notes'
