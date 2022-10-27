@@ -1,6 +1,5 @@
 from typing import Sequence
 
-from .utils import combine_admin_blocks_factory
 from building_blocks.consts.field_names import *
 
 
@@ -74,31 +73,10 @@ class TimeStampedBaseAdminBlock(BaseAdminBlock):
     extra_admin_fields = (MODIFIED,)
 
 
-UnnamedKaosBaseAdminBlock = combine_admin_blocks_factory(
-    HasUUIDBaseAdminBlock,
-    TimeStampedBaseAdminBlock
-)
-
-
-class KaosModelAdminBlock(UnnamedKaosBaseAdminBlock):
-    base_fields = (
-        NAME,
-    )
-    the_fieldset = (None, {'fields': base_fields})
-
-
-SluggedKaosModelAdminBlock = combine_admin_blocks_factory(
-    HasSlugBaseAdminBlock,
-    UnnamedKaosBaseAdminBlock
-)
-
 __all__ = (
     'FieldsetTitle',
     'BaseAdminBlock',
     'HasUUIDBaseAdminBlock',
     'HasSlugBaseAdminBlock',
     'TimeStampedBaseAdminBlock',
-    'UnnamedKaosBaseAdminBlock',
-    'KaosModelAdminBlock',
-    'SluggedKaosModelAdminBlock',
 )

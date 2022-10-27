@@ -1,7 +1,6 @@
-from typing import Sequence, Type, TYPE_CHECKING
+from typing import Sequence, Type
 
-if TYPE_CHECKING:
-    from building_blocks.admin import BaseAdminBlock
+from building_blocks.admin.blocks.base import BaseAdminBlock
 
 
 def _combine_fields(attr, admin_block_classes: Sequence[Type['BaseAdminBlock']]):
@@ -13,7 +12,7 @@ def _combine_fields(attr, admin_block_classes: Sequence[Type['BaseAdminBlock']])
 
 
 def combine_admin_blocks_factory(*admin_block_classes: Type['BaseAdminBlock']):
-    class XXXAdminBlock(*admin_block_classes):
+    class XXXAdminBlock(*admin_block_classes, BaseAdminBlock):
         base_fields = _combine_fields('base_fields', admin_block_classes)
         extra_fields = _combine_fields('extra_fields', admin_block_classes)
         admin_fields = _combine_fields('admin_fields', admin_block_classes)
