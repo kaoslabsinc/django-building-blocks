@@ -3,7 +3,7 @@ from django_object_actions import takes_instance_or_queryset, DjangoObjectAction
 
 from building_blocks.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 from building_blocks.models.enums import PublishStatus
-from .archivable import *
+from .archivable import ArchivableAdminBlock, BaseStatusArchivableAdminMixin
 from .filters import PublishableAdminFilter
 from .status import HasStatusAdminBlock
 from ..blocks import FieldsetTitle
@@ -40,7 +40,7 @@ class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
         return obj and obj.is_draft
 
 
-class PublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
+class BasicPublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
     actions = PublishableAdminBlock.actions
 
     list_display = PublishableAdminBlock.list_display
@@ -59,13 +59,13 @@ class PublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
         messages.success(request, f"Unpublished {count} objects")
 
 
-class EnhancedPublishableAdminMixin(
+class PublishableAdminMixin(
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     DjangoObjectActions,
-    PublishableAdminMixin
+    BasicPublishableAdminMixin
 ):
-    change_actions = PublishableAdminMixin.actions
+    change_actions = BasicPublishableAdminMixin.actions
     are_you_sure_actions = change_actions
 
     def get_change_actions(self, request, object_id, form_url):

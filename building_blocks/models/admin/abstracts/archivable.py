@@ -56,7 +56,7 @@ class BaseStatusArchivableAdminMixin(BaseArchivableAdminMixin):
         return super().is_archived(obj)
 
 
-class ArchivableAdminMixin(
+class BasicArchivableAdminMixin(
     BaseArchivableAdminMixin,
     admin.ModelAdmin
 ):
@@ -66,13 +66,13 @@ class ArchivableAdminMixin(
     list_filter = ArchivableAdminBlock.list_filter
 
 
-class EnhancedArchivableAdminMixin(
+class ArchivableAdminMixin(
     AreYouSureActionsAdminMixin,
     DjangoObjectActionsPermissionsMixin,
     DjangoObjectActions,
-    ArchivableAdminMixin
+    BasicArchivableAdminMixin
 ):
-    change_actions = ArchivableAdminMixin.actions
+    change_actions = BasicArchivableAdminMixin.actions
     are_you_sure_actions = change_actions
 
     def get_change_actions(self, request, object_id, form_url):
@@ -91,6 +91,6 @@ __all__ = (
     'ArchivableAdminBlock',
     'BaseArchivableAdminMixin',
     'BaseStatusArchivableAdminMixin',
+    'BasicArchivableAdminMixin',
     'ArchivableAdminMixin',
-    'EnhancedArchivableAdminMixin',
 )

@@ -19,33 +19,33 @@ class BaseKaosModelAdminExtra(BaseKaosModelAdmin):
     )
 
 
-class BaseSluggedKaosModelAdmin(BaseKaosModelAdmin):
+class BaseBasicSluggedKaosModelAdmin(BaseKaosModelAdmin):
     fieldsets = (
         *BaseKaosModelAdmin.fieldsets[:-1],
         SluggedKaosModelAdminBlock.the_admin_fieldset,
     )
 
 
-class BaseSluggedKaosModelAdminExtra(BaseKaosModelAdmin):
+class BaseBasicSluggedKaosModelAdminExtra(BaseKaosModelAdmin):
     fieldsets = (
-        *BaseSluggedKaosModelAdmin.fieldsets[:-1],
+        *BaseBasicSluggedKaosModelAdmin.fieldsets[:-1],
         SluggedKaosModelAdminBlock.the_admin_fieldset_extra,
     )
 
 
-class BaseEnhancedSluggedKaosModelAdmin(EnhancedSluggedKaosModelAdminMixin, BaseSluggedKaosModelAdmin):
+class BaseSluggedKaosModelAdmin(EnhancedSluggedKaosModelAdminMixin, BaseBasicSluggedKaosModelAdmin):
     pass
 
 
-class BaseEnhancedSluggedKaosModelAdminExtra(EnhancedSluggedKaosModelAdminMixin, BaseSluggedKaosModelAdminExtra):
+class BaseSluggedKaosModelAdminExtra(EnhancedSluggedKaosModelAdminMixin, BaseBasicSluggedKaosModelAdminExtra):
     pass
 
 
 __all__ = (
     'BaseKaosModelAdmin',
     'BaseKaosModelAdminExtra',
+    'BaseBasicSluggedKaosModelAdmin',
+    'BaseBasicSluggedKaosModelAdminExtra',
     'BaseSluggedKaosModelAdmin',
     'BaseSluggedKaosModelAdminExtra',
-    'BaseEnhancedSluggedKaosModelAdmin',
-    'BaseEnhancedSluggedKaosModelAdminExtra',
 )

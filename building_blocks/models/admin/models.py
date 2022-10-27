@@ -14,18 +14,18 @@ class KaosModelAdminExtra(BaseKaosModelAdminExtra, KaosModelAdmin):
     pass
 
 
-class SluggedKaosModelAdmin(BaseSluggedKaosModelAdmin, KaosModelAdmin):
+class BasicSluggedKaosModelAdmin(BaseBasicSluggedKaosModelAdmin, KaosModelAdmin):
     search_fields = (UUID, SLUG, NAME)
     list_display_extra = (SLUG,)
 
 
-class SluggedKaosModelAdminExtra(BaseSluggedKaosModelAdminExtra, SluggedKaosModelAdmin):
+class BasicSluggedKaosModelAdminExtra(BaseBasicSluggedKaosModelAdminExtra, BasicSluggedKaosModelAdmin):
     pass
 
 
-class EnhancedSluggedKaosModelAdmin(EnhancedSluggedKaosModelAdminMixin, SluggedKaosModelAdmin):
+class SluggedKaosModelAdmin(EnhancedSluggedKaosModelAdminMixin, BasicSluggedKaosModelAdmin):
     pass
 
 
-class EnhancedSluggedKaosModelAdminExtra(EnhancedSluggedKaosModelAdminMixin, SluggedKaosModelAdminExtra):
+class SluggedKaosModelAdminExtra(EnhancedSluggedKaosModelAdminMixin, BasicSluggedKaosModelAdminExtra):
     pass
