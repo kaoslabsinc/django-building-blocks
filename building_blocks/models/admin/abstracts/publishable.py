@@ -43,6 +43,9 @@ class BasePublishableAdminMixin(BaseStatusArchivableAdminMixin):
 class PublishableAdminMixin(BasePublishableAdminMixin, admin.ModelAdmin):
     actions = PublishableAdminBlock.actions
 
+    list_display = PublishableAdminBlock.list_display
+    list_filter = PublishableAdminBlock.list_filter
+
     @takes_instance_or_queryset
     @admin.action(permissions=['change'])
     def publish(self, request, queryset):
