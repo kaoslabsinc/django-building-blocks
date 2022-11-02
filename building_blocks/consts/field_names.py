@@ -19,3 +19,4 @@ AUTHOR = 'author'
 
 ADDRESS = 'address'
 NOTES = 'notes'
+ICON = 'icon'
