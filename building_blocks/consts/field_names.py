@@ -1,3 +1,4 @@
+ID = 'id'
 UUID = 'uuid'
 SLUG = 'slug'
 
@@ -5,11 +6,16 @@ CREATED = 'created'
 MODIFIED = 'modified'
 
 NAME = 'name'
+TITLE = 'title'
 DESCRIPTION = 'description'
-IMAGE = 'image'
+
+NOTES = 'notes'
 
 CATEGORY = 'category'
 TYPE = 'type'
+
+IMAGE = 'image'
+ICON = 'icon'
 
 STATUS = 'status'
 
@@ -18,5 +24,10 @@ OWNER = 'owner'
 AUTHOR = 'author'
 
 ADDRESS = 'address'
-NOTES = 'notes'
-ICON = 'icon'
+EMAIL = 'email'
+PHONE = 'phone'
+
+PRICE = 'price'
+AMOUNT = 'amount'
+PRODUCT = 'product'
+QUANTITY = 'quantity'

@@ -29,7 +29,21 @@ class SluggedKaosModelSerializer(serializers.ModelSerializer):
         )
 
 
+class CurrentProfileDefault(serializers.CurrentUserDefault):
+    requires_context = True
+
+    def __init__(self, profile_cls):
+        self.profile_cls = profile_cls
+
+    def __call__(self, serializer_field):
+        user = serializer_field.context['request'].user
+        # If a user has access to the API, we can create a profile for them
+        return self.profile_cls.objects.get_or_create(user=user)[0]
+
+
 __all__ = [
     'NameSlugSerializer',
     'HasUUIDSerializer',
+    'SluggedKaosModelSerializer',
+    'CurrentProfileDefault',
 ]
