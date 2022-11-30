@@ -4,7 +4,7 @@ from django.contrib.admin.options import BaseModelAdmin
 from django.shortcuts import redirect
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
-from .models.mixins import HasVisualizationMixin
+from .models.interfaces import HasVisualizationInterface
 
 
 class WithLinkDisplayAdminMixin:
@@ -42,13 +42,13 @@ class WithVisualizeAdminMixin(BaseModelAdmin):
     )
 
     @admin.display(description="visualize")
-    def visualize_display(self, obj: HasVisualizationMixin):
+    def visualize_display(self, obj: HasVisualizationInterface):
         raise NotImplementedError
 
 
 class WithSVGVisualizeAdminMixin(WithVisualizeAdminMixin):
     @admin.display(description="visualize")
-    def visualize_display(self, obj: HasVisualizationMixin):
+    def visualize_display(self, obj: HasVisualizationInterface):
         if not obj:
             return
         return render_img(f"data:image/svg+xml;utf8,{obj.visualize()}", attrs={'style': "max-width: 100%;"})
@@ -56,7 +56,7 @@ class WithSVGVisualizeAdminMixin(WithVisualizeAdminMixin):
 
 class WithPNGVisualizeAdminMixin(WithVisualizeAdminMixin):
     @admin.display(description="visualize")
-    def visualize_display(self, obj: HasVisualizationMixin):
+    def visualize_display(self, obj: HasVisualizationInterface):
         if not obj:
             return
         return render_img(f"data:image/png;base64,{obj.visualize()}", attrs={'style': "max-width: 100%;"})

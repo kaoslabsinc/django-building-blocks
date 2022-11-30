@@ -1,8 +1,8 @@
-class HasVisualizationMixin:
+class HasVisualizationInterface:
     def visualize(self):
         raise NotImplementedError
 
 
 __all__ = (
-    'HasVisualizationMixin',
+    'HasVisualizationInterface',
 )

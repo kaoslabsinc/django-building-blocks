@@ -1,4 +1,4 @@
 from .enums import *
 from .fields import *
-from .mixins import *
+from .interfaces import *
 from .models import *
