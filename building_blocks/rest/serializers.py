@@ -32,4 +32,5 @@ class SluggedKaosModelSerializer(serializers.ModelSerializer):
 __all__ = [
     'NameSlugSerializer',
     'HasUUIDSerializer',
+    'SluggedKaosModelSerializer',
 ]
