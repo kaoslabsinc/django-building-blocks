@@ -4,6 +4,7 @@ from django.contrib.admin.options import BaseModelAdmin
 from django.shortcuts import redirect
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
+from building_blocks.consts.field_names import LINK_DISPLAY
 from .models.interfaces import HasVisualizationInterface
 
 
@@ -14,9 +15,8 @@ class WithLinkDisplayAdminMixin:
     link_field = None
     link_content = "🔗 Link"
 
-    list_display = ('link_display',)
-    readonly_fields = ('link_display',)
-    fields = ('link_display',)
+    list_display = (LINK_DISPLAY,)
+    readonly_fields = (LINK_DISPLAY,)
 
     def get_link_url(self, obj):
         if self.link_field:
