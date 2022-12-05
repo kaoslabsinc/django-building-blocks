@@ -39,3 +39,5 @@ START_DT = 'start_dt'
 END = 'end'
 END_DT = 'end_dt'
 PUBLISHED_DT = 'published_dt'
+
+LINK_DISPLAY = 'link_display'
