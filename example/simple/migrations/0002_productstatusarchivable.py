@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             name='ProductStatusArchivable',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', django_fsm.FSMIntegerField(choices=[(100, 'Available'), (-1, 'Archived')], default=100)),
+                ('status', django_fsm.FSMIntegerField(choices=[(0, 'Available'), (-1, 'Archived')], default=0)),
                 ('created', model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created')),
                 ('modified', model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified')),
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name='UUID')),

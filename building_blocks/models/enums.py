@@ -2,7 +2,7 @@ from django.db import models
 
 
 class ArchiveStatus(models.IntegerChoices):
-    available = 100
+    available = 0
     archived = -1
 
 
