@@ -119,8 +119,10 @@ class HasSlugAdminBlock(AdminBlock):
     AdminBlock for models with a `slug` field
 
     :param admin_fields: (SLUG,)
+    :param edit_readonly_fields: (SLUG,)
     """
     admin_fields = (SLUG,)
+    edit_readonly_fields = (SLUG,)
 
 
 class TimeStampedAdminBlock(AdminBlock):
