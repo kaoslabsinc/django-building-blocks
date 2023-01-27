@@ -29,7 +29,8 @@ class WithLinkDisplayAdminMixin:
 
     @admin.display(description="link")
     def link_display(self, obj):
-        if link_url := self.get_link_url(obj):
+        link_url = self.get_link_url(obj)
+        if link_url:
             return render_anchor(link_url, self.get_link_content(obj))
 
 
