@@ -6,7 +6,7 @@ Abstract Django base models to act as building blocks for rapid development of D
 pip install django-building-blocks
 ```
 
-Documentation: [https://django-building-blocks.readthedocs.io/]()
+Documentation: https://django-building-blocks.readthedocs.io/
 
 ## Development and Testing
 
