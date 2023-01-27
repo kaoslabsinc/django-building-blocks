@@ -18,6 +18,7 @@ Install::
     admin
     consts
     rest
+    contrib
 
 Indices and tables
 ==================

@@ -10,7 +10,6 @@ class DynamicTimeRangeField(models.PositiveIntegerField):
 
     def deconstruct(self):
         name, path, args, kwargs = super().deconstruct()
-        del kwargs['choices']
         if kwargs.get('choices') == DynamicTimeRangeChoice.choices:
             del kwargs['choices']
         return name, path, args, kwargs
