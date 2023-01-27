@@ -5,9 +5,10 @@ Admin
     :depth: 2
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   admin/blocks
+    admin/blocks
+    admin/abstracts
 
 Base
 =====
