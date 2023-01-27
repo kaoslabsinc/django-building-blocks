@@ -3,7 +3,7 @@ from typing import Sequence
 from building_blocks.consts.field_names import *
 
 
-class FieldsetTitle:
+class AdminFieldsetTitle:
     """
     Class to hold constant values for django fieldset titles
 
@@ -28,18 +28,18 @@ class AdminBlockMeta(type):
     @property
     def the_fieldset_extra(cls):
         if cls.base_fields is not None:
-            return FieldsetTitle.extra, {'fields': cls.extra_fields}
+            return AdminFieldsetTitle.extra, {'fields': cls.extra_fields}
 
     @property
     def the_admin_fieldset(cls):
         if cls.admin_fields is not None:
-            return FieldsetTitle.admin, {'fields': cls.admin_fields}
+            return AdminFieldsetTitle.admin, {'fields': cls.admin_fields}
 
     @property
     def the_admin_fieldset_extra(cls):
         if cls.extra_admin_fields is not None:
             admin_fields = cls.admin_fields or ()
-            return FieldsetTitle.admin, {'fields': (*admin_fields, *cls.extra_admin_fields)}
+            return AdminFieldsetTitle.admin, {'fields': (*admin_fields, *cls.extra_admin_fields)}
 
 
 class BaseAdminBlock(metaclass=AdminBlockMeta):
@@ -139,7 +139,7 @@ class TimeStampedAdminBlock(AdminBlock):
 
 
 __all__ = (
-    'FieldsetTitle',
+    'AdminFieldsetTitle',
     'BaseAdminBlock',
     'AdminBlock',
     'HasUUIDAdminBlock',

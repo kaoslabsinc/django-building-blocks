@@ -49,4 +49,4 @@ Implementations
 
 Utils
 =====
-.. autoclass:: building_blocks.admin.blocks.base.FieldsetTitle
+.. autoclass:: building_blocks.admin.blocks.base.AdminFieldsetTitle
