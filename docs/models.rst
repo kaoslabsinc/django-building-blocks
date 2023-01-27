@@ -1,9 +1,8 @@
 Models
-======
+******
 
 Models
-------
-
+======
 .. autoclass:: building_blocks.models.KaosModel
    :show-inheritance:
 
@@ -15,8 +14,7 @@ Models
 
 
 Mixins
-------
-
+======
 .. autoclass:: building_blocks.models.HasUUIDModel
    :show-inheritance:
 
@@ -33,8 +31,7 @@ Mixins
    :show-inheritance:
 
 Base
-----
-
+======
 .. autoclass:: building_blocks.models.UnnamedBaseKaosModel
    :show-inheritance:
 
@@ -44,7 +41,6 @@ Base
 
 Abstracts
 ---------
-
 .. autoclass:: building_blocks.models.Archivable
    :members: archive, restore
    :show-inheritance:
@@ -58,8 +54,7 @@ Abstracts
    :show-inheritance:
 
 QuerySets
----------
-
+=============
 .. autoclass:: building_blocks.models.ArchivableQuerySet
    :members: available, archived, set_archived, set_restored
    :show-inheritance:
@@ -72,3 +67,15 @@ QuerySets
 .. autoclass:: building_blocks.models.PublishableQuerySet
    :members: available, archived, published, draft, set_archived, set_restored, set_published, set_unpublished
    :show-inheritance:
+
+
+Interfaces
+============
+.. automodule:: building_blocks.models.interfaces
+    :members:
+
+Blocks
+============
+.. automodule:: building_blocks.models.blocks
+    :members:
+
