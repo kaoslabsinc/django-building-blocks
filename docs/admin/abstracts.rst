@@ -47,3 +47,35 @@ Filters
 -------
 .. autoclass:: building_blocks.admin.abstracts.filters.ArchivableAdminFilter
     :show-inheritance:
+
+
+Publishable
+===========
+.. automodule:: building_blocks.admin.abstracts.publishable
+
+Admin Blocks
+------------
+.. autoclass:: building_blocks.admin.abstracts.publishable.PublishableAdminBlock
+    :show-inheritance:
+
+.. autoclass:: PublishableKaosModelAdminBlock
+    :show-inheritance:
+
+.. autoclass:: PublishableSluggedKaosModelAdminBlock
+    :show-inheritance:
+
+Mixins
+------
+.. autoclass:: building_blocks.admin.abstracts.publishable.BasePublishableMixinAdmin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.abstracts.publishable.BasicPublishableMixinAdmin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.abstracts.publishable.PublishableMixinAdmin
+    :show-inheritance:
+
+Filters
+-------
+.. autoclass:: building_blocks.admin.abstracts.filters.PublishableAdminFilter
+    :show-inheritance:
