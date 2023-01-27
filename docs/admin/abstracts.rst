@@ -79,3 +79,9 @@ Filters
 -------
 .. autoclass:: building_blocks.admin.abstracts.filters.PublishableAdminFilter
     :show-inheritance:
+
+
+Status
+======
+.. autoclass:: building_blocks.admin.abstracts.status.HasStatusAdminBlock
+    :show-inheritance:
