@@ -16,6 +16,7 @@ Install::
 
     models
     admin
+    consts
 
 Indices and tables
 ==================
