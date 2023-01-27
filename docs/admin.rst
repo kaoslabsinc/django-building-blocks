@@ -40,3 +40,26 @@ Mixins
 
 .. autoclass:: building_blocks.admin.mixins.EnhancedSluggedKaosModelAdminMixin
     :show-inheritance:
+
+
+Models
+======
+.. automodule:: building_blocks.admin.models
+
+.. autoclass:: building_blocks.admin.models.KaosModelAdmin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.models.KaosModelAdminExtra
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.models.BasicSluggedKaosModelAdmin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.models.BasicSluggedKaosModelAdminExtra
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.models.SluggedKaosModelAdmin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.models.SluggedKaosModelAdminExtra
+    :show-inheritance:
