@@ -42,3 +42,8 @@ Mixins
 
 .. autoclass:: building_blocks.admin.abstracts.archivable.ArchivableMixinAdmin
     :show-inheritance:
+
+Filters
+-------
+.. autoclass:: building_blocks.admin.abstracts.filters.ArchivableAdminFilter
+    :show-inheritance:
