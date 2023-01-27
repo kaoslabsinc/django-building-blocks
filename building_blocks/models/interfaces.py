@@ -3,6 +3,7 @@ from django.db.models import Q
 
 
 class ArchivableInterface:
+    """Interface for Archivable objects"""
     is_archived: bool
 
     @property

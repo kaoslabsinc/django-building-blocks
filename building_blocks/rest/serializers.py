@@ -4,6 +4,7 @@ from building_blocks.consts.field_names import *
 
 
 class NameSlugSerializer(serializers.ModelSerializer):
+    """Serializer for NameSlug"""
     class Meta:
         fields = (
             NAME, SLUG,
@@ -12,6 +13,7 @@ class NameSlugSerializer(serializers.ModelSerializer):
 
 
 class HasUUIDSerializer(serializers.ModelSerializer):
+    """Serializer for HasUUID"""
     class Meta:
         fields = (
             UUID,
@@ -20,6 +22,7 @@ class HasUUIDSerializer(serializers.ModelSerializer):
 
 
 class SluggedKaosModelSerializer(serializers.ModelSerializer):
+    """Serializer for SluggedKaosModel"""
     class Meta(NameSlugSerializer.Meta):
         fields = (
             *HasUUIDSerializer.Meta.fields,
@@ -30,6 +33,13 @@ class SluggedKaosModelSerializer(serializers.ModelSerializer):
 
 
 class CurrentProfileDefault(serializers.CurrentUserDefault):
+    """
+    Rest serializer field to set default value for a profile field, if the user has the profile
+
+    Example:
+        >>> class MyModelSerializer(serializers.Serializer):
+        >>>     profile = UserProfileSerializer(default=CurrentProfileDefault(UserProfile))
+    """
     requires_context = True
 
     def __init__(self, profile_cls):

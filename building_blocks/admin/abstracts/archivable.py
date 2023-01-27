@@ -1,3 +1,7 @@
+"""
+Admins for models extending `Archivable`
+"""
+
 from dj_kaos_utils.admin import AreYouSureActionsAdminMixin, DjangoObjectActionsPermissionsMixin
 from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
@@ -9,6 +13,17 @@ from ..utils import combine_admin_blocks_factory
 
 
 class ArchivableAdminBlock(AdminBlock):
+    """
+    AdminBlock for models extending `KaosModel`
+
+    :param actions: ('archive', 'restore')
+    :param admin_fields: ('is_available',)
+    :param extra_admin_fields: ('is_archived',)
+    :param extra_list_display: ('is_archived',)
+    :param readonly_fields: ('is_available', 'is_archived')
+    :param list_filter: (ArchivableAdminFilter,)
+    """
+
     admin_fields = ('is_available',)
     extra_admin_fields = ('is_archived',)
 
@@ -25,7 +40,7 @@ ArchivableHasUUIDAdminBlock = combine_admin_blocks_factory(
 )
 ArchivableUnnamedKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
-    UnnamedKaosBaseAdminBlock,
+    UnnamedBaseKaosModelAdminBlock,
 )
 ArchivableKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
@@ -38,6 +53,9 @@ ArchivableSluggedKaosModelAdminBlock = combine_admin_blocks_factory(
 
 
 class BaseArchivableMixinAdmin(BaseModelAdmin):
+    """
+    Mixin for ArchivableAdmin with archive and restore actions and display fields
+    """
     readonly_fields = ArchivableAdminBlock.readonly_fields
 
     @admin.display(description="✔️", boolean=True, ordering='is_archived')
@@ -62,6 +80,9 @@ class BaseArchivableMixinAdmin(BaseModelAdmin):
 
 
 class BaseStatusArchivableMixinAdmin(BaseArchivableMixinAdmin):
+    """
+    `BaseArchivableMixinAdmin` but for StatusArchivables
+    """
     readonly_fields = ArchivableAdminBlock.readonly_fields
 
     @admin.display(description="✔️", boolean=True, ordering='status')
@@ -77,6 +98,7 @@ class BasicArchivableMixinAdmin(
     BaseArchivableMixinAdmin,
     admin.ModelAdmin
 ):
+    """Basic ArchivableMixinAdmin"""
     actions = ArchivableAdminBlock.actions
 
     list_display = ArchivableAdminBlock.list_display
@@ -87,6 +109,7 @@ class ArchivableChangeActionsAdminMixin(
     DjangoObjectActionsPermissionsMixin,
     DjangoObjectActions
 ):
+    """Mixin to bring in `DjangoObjectActions` enhancements to ArchivableAdmins"""
     def get_change_actions(self, request, object_id, form_url):
         change_actions = super().get_change_actions(request, object_id, form_url)
         if change_actions:
@@ -104,6 +127,7 @@ class ArchivableMixinAdmin(
     ArchivableChangeActionsAdminMixin,
     BasicArchivableMixinAdmin
 ):
+    """Mixin this class to model admins for models extending Archivable"""
     change_actions = BasicArchivableMixinAdmin.actions
     are_you_sure_actions = change_actions
 

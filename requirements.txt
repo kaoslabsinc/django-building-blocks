@@ -1,5 +1,5 @@
 wheel
-sphinx~=5.1
-sphinx-rtd-theme
+sphinx~=6.1
+sphinx-rtd-theme==1.2.0rc3
 
 -e .[test]
