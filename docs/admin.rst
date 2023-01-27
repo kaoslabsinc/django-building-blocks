@@ -63,3 +63,11 @@ Models
 
 .. autoclass:: building_blocks.admin.models.SluggedKaosModelAdminExtra
     :show-inheritance:
+
+Utils
+=====
+.. automodule:: building_blocks.admin.utils
+
+.. autofunction:: building_blocks.admin.utils.combine_admin_blocks_factory
+
+.. autofunction:: building_blocks.admin.utils.make_fieldset_collapsible
