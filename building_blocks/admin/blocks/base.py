@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from typing import Sequence
+from typing import Sequence, Optional
 
 from building_blocks.consts.field_names import *
 
@@ -17,10 +15,10 @@ class AdminFieldsetTitle:
 
 
 class AdminBlockMeta(type):
-    base_fields: Sequence[str] | None
-    extra_fields: Sequence[str] | None
-    admin_fields: Sequence[str] | None
-    extra_admin_fields: Sequence[str] | None
+    base_fields: Optional[Sequence[str]]
+    extra_fields: Optional[Sequence[str]]
+    admin_fields: Optional[Sequence[str]]
+    extra_admin_fields: Optional[Sequence[str]]
 
     @property
     def the_fieldset(cls):
