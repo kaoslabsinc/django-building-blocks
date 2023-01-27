@@ -9,6 +9,15 @@ UnnamedBaseKaosModelAdminBlock = combine_admin_blocks_factory(
 
 
 class KaosModelAdminBlock(UnnamedBaseKaosModelAdminBlock):
+    """
+    AdminBlock for models extending `KaosModel`
+
+    :param admin_fields: (UUID, CREATED)
+    :param base_fields: (NAME,)
+    :param extra_admin_fields: (MODIFIED,)
+    :param readonly_fields: (UUID, CREATED, MODIFIED,)
+    :param the_fieldset: (None, {'fields': (NAME,)})
+    """
     base_fields = (
         NAME,
     )

@@ -25,6 +25,28 @@ Implementations
 .. autoclass:: building_blocks.admin.blocks.base.TimeStampedAdminBlock
     :show-inheritance:
 
+.. py:class:: UnnamedBaseKaosModelAdminBlock
+
+    AdminBlock for models extending `UnnamedBaseKaosModel`
+
+    :param admin_fields: (UUID, CREATED)
+    :param extra_admin_fields: (MODIFIED,)
+    :param readonly_fields: (UUID, CREATED, MODIFIED,)
+
+.. autoclass:: building_blocks.admin.blocks.extra.KaosModelAdminBlock
+    :show-inheritance:
+
+.. py:class:: SluggedKaosModelAdminBlock
+
+    AdminBlock for models extending both `SluggedModel` and `UnnamedBaseKaosModel`
+
+    :param admin_fields: (SLUG, UUID, CREATED)
+    :param base_fields: (NAME,)
+    :param edit_readonly_fields: (SLUG,)
+    :param extra_admin_fields: (MODIFIED,)
+    :param readonly_fields: (UUID, CREATED, MODIFIED,)
+    :param the_fieldset: (None, {'fields': (NAME,)})
+
 Utils
 =====
 .. autoclass:: building_blocks.admin.blocks.base.FieldsetTitle
