@@ -6,10 +6,6 @@ UnnamedBaseKaosModelAdminBlock = combine_admin_blocks_factory(
     HasUUIDAdminBlock,
     TimeStampedAdminBlock
 )
-SluggedKaosModelAdminBlock = combine_admin_blocks_factory(
-    HasSlugAdminBlock,
-    UnnamedBaseKaosModelAdminBlock
-)
 
 
 class KaosModelAdminBlock(UnnamedBaseKaosModelAdminBlock):
@@ -18,6 +14,11 @@ class KaosModelAdminBlock(UnnamedBaseKaosModelAdminBlock):
     )
     the_fieldset = (None, {'fields': base_fields})
 
+
+SluggedKaosModelAdminBlock = combine_admin_blocks_factory(
+    HasSlugAdminBlock,
+    KaosModelAdminBlock
+)
 
 __all__ = (
     'UnnamedBaseKaosModelAdminBlock',
