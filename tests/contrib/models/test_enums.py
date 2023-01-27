@@ -12,18 +12,16 @@ class TestDynamicTimeRangeChoice:
 
     def test_last_hour(self):
         assert DynamicTimeRangeChoice.last_hour == 3600
-        assert DynamicTimeRangeChoice.last_hour.label == "Last Hour"
+        assert DynamicTimeRangeChoice.last_hour.label == "Last hour"
 
     def test_last_24hrs(self):
         assert DynamicTimeRangeChoice.last_24hrs == 3600 * 24
-        assert DynamicTimeRangeChoice.last_24hrs.label == "Last 24Hrs"
+        assert DynamicTimeRangeChoice.last_24hrs.label == "Last 24 hours"
 
     def test_last_week(self):
         assert DynamicTimeRangeChoice.last_week == 3600 * 24 * 7
-        assert DynamicTimeRangeChoice.last_week.label == "Last Week"
+        assert DynamicTimeRangeChoice.last_week.label == "Last week"
 
     def test_last_30days(self):
         assert DynamicTimeRangeChoice.last_30days == 3600 * 24 * 30
-        assert DynamicTimeRangeChoice.last_30days.label == "Last 30Days"
-
-
+        assert DynamicTimeRangeChoice.last_30days.label == "Last 30 days"
