@@ -30,3 +30,13 @@ Base
 
 .. autoclass:: building_blocks.admin.base.BaseSluggedKaosModelAdminExtra
     :show-inheritance:
+
+Mixins
+======
+.. automodule:: building_blocks.admin.mixins
+
+.. autoclass:: building_blocks.admin.mixins.EnhancedHasSlugModelAdminMixin
+    :show-inheritance:
+
+.. autoclass:: building_blocks.admin.mixins.EnhancedSluggedKaosModelAdminMixin
+    :show-inheritance:
