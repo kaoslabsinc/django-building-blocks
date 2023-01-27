@@ -1,6 +1,6 @@
 import pytest
 
-from building_blocks.models.interfaces import ArchivableInterface
+from building_blocks.models.interfaces import ArchivableInterface, ArchivableQuerySetInterface
 
 
 class TestArchivableInterface:
@@ -33,3 +33,17 @@ class TestArchivableInterface:
             getattr(instance_inherited, 'some_value')
         instance_inherited.unarchive()
         assert instance_inherited.some_value == 1
+
+
+class TestArchivableQuerySetInterface:
+    @pytest.fixture
+    def instance(self):
+        return ArchivableQuerySetInterface()
+
+    def test_set_archived_not_implemented(self, instance):
+        with pytest.raises(NotImplementedError):
+            instance.set_archived()
+
+    def test_set_restored_not_implemented(self, instance):
+        with pytest.raises(NotImplementedError):
+            instance.set_restored()
