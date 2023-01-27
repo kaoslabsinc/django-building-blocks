@@ -25,7 +25,7 @@ ArchivableHasUUIDAdminBlock = combine_admin_blocks_factory(
 )
 ArchivableUnnamedKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,
-    UnnamedKaosBaseAdminBlock,
+    UnnamedBaseKaosModelAdminBlock,
 )
 ArchivableKaosModelAdminBlock = combine_admin_blocks_factory(
     ArchivableAdminBlock,

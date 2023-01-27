@@ -2,17 +2,17 @@ from building_blocks.consts.field_names import *
 from .base import *
 from ..utils import combine_admin_blocks_factory
 
-UnnamedKaosBaseAdminBlock = combine_admin_blocks_factory(
+UnnamedBaseKaosModelAdminBlock = combine_admin_blocks_factory(
     HasUUIDAdminBlock,
     TimeStampedAdminBlock
 )
 SluggedKaosModelAdminBlock = combine_admin_blocks_factory(
     HasSlugAdminBlock,
-    UnnamedKaosBaseAdminBlock
+    UnnamedBaseKaosModelAdminBlock
 )
 
 
-class KaosModelAdminBlock(UnnamedKaosBaseAdminBlock):
+class KaosModelAdminBlock(UnnamedBaseKaosModelAdminBlock):
     base_fields = (
         NAME,
     )
@@ -20,7 +20,7 @@ class KaosModelAdminBlock(UnnamedKaosBaseAdminBlock):
 
 
 __all__ = (
-    'UnnamedKaosBaseAdminBlock',
+    'UnnamedBaseKaosModelAdminBlock',
     'KaosModelAdminBlock',
     'SluggedKaosModelAdminBlock',
 )
