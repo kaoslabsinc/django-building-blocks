@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Sequence
 
 from building_blocks.consts.field_names import *
