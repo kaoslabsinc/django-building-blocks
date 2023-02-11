@@ -1,0 +1,30 @@
+.open-stackedit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  margin-right: 0.25rem;
+
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+
+  width: 2rem;
+  aspect-ratio: 1/1;
+  transform: scaleX(-1);
+}
+
+.open-stackedit-btn:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+.stackedit-wrapper {
+  position: relative;
+}
+
+@media (max-width: 767px) {
+  .stackedit-wrapper {
+    max-width: 100%;
+  }
+}
