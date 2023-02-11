@@ -1,7 +1,8 @@
-from dj_kaos_utils.admin.utils import render_img, render_anchor
+from dj_kaos_utils.admin.utils import render_img, render_anchor, render_element
 from django.contrib import admin, messages
 from django.contrib.admin.options import BaseModelAdmin
 from django.shortcuts import redirect
+from django.utils.html import format_html, format_html_join
 from django_object_actions import DjangoObjectActions, takes_instance_or_queryset
 
 from building_blocks.consts.field_names import LINK_DISPLAY
@@ -120,6 +121,63 @@ class HasTimeRangeAdmin(BaseModelAdmin):
     )
 
 
+class AdminViewWell:
+    def __init__(self, title, body, properties=None):
+        self.title = title
+        self.body = body
+        self.properties = properties or {}
+
+    def render(self):
+        title_html = render_element('h2', self.title) if self.title else format_html("")
+        properties_html = self._render_properties(self.properties) if self.properties else format_html("")
+        body_html = render_element('p', self.body) if self.body else format_html("")
+
+        return self._render_well(title_html + properties_html + body_html)
+
+    @staticmethod
+    def _render_properties(properties):
+        properties_html = format_html_join(
+            '\n',
+            render_element('p', render_element('b', "{}: ") + render_element('span', "{}")),
+            (
+                (title, children)
+                for title, children in properties.items()
+                if children is not None
+            )
+        )
+        return render_element('div', properties_html, attrs={'class': 'admin-well-properties'})
+
+    @staticmethod
+    def _render_well(children, attrs=None):
+        attrs = attrs or {}
+        return render_element(
+            'div',
+            children,
+            attrs={
+                'class': 'admin-well',
+                **attrs,
+            }
+        )
+
+
+WELL_DISPLAY = 'well_display'
+
+
+class HasWellDisplayAdminMixin(BaseModelAdmin):
+    readonly_fields = (
+        WELL_DISPLAY,
+    )
+    fieldsets = (
+        ("⎚", {'fields': (
+            WELL_DISPLAY,
+        ), 'classes': ('collapse', 'collapsed',)}),
+    )
+
+    @admin.display(description="view")
+    def well_display(self, obj):
+        raise NotImplementedError
+
+
 __all__ = (
     'WithLinkDisplayAdminMixin',
     'WithVisualizeAdminMixin',
@@ -130,4 +188,8 @@ __all__ = (
     'HasImageAdminMixin',
     'HasGeneratableImageAdminMixin',
     'HasTimeRangeAdmin',
+    'AdminViewWell',
+    'WELL_DISPLAY',
+    'HasWellDisplayAdminMixin',
+    'HasVisualizationInterface',
 )
